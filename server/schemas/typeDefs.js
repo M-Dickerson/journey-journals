@@ -43,7 +43,7 @@ const typeDefs = gql`
 
     # Read operations 
     type Query {
-        me: User
+        me(userId: String!): User
     }
 
     # Create, Update, Delete operations
