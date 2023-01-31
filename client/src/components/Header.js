@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 // pages that will contain information
 import Landing from "./pages/Landing";
-// import Portfolio from "./pages/Portfolio";
-// import Contact from "./pages/Contact";
-// import Resume from "./pages/Resume";
 // link to navbar
 import Navbar from "./Navbar";
 
