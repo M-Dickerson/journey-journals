@@ -14,6 +14,8 @@ function BasicExample({ handlePageChange }) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link href="#Signup" onClick={() => handlePageChange("Signup")}>Login/Signup</Nav.Link>
+                        <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>TravelFeed</Nav.Link>
+                        <Nav.Link href="#ProfilePage" onClick={() => handlePageChange("ProfilePage")}>ProfilePage</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

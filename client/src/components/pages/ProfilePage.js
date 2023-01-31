@@ -1,7 +1,7 @@
 import React from "react"
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+// import Col from "react-bootstrap/Col";
 
 
 export default function ProfilePage() {
@@ -11,7 +11,7 @@ export default function ProfilePage() {
                 <span>Profile Info</span>
                 <a>Edit</a>
                 {/* profile picure: */}
-                <img></img>
+                <img alt="placeholder"></img>
                 <span>Jane Doe</span>
                 <span>Bio: I love nature</span>
                 <span>Posts: </span>
