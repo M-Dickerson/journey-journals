@@ -4,18 +4,12 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-export default function About() {
+export default function Landing() {
     return (
-        <Container className="aboutContainer">
+        <Container className="landingCon">
             <Row>
-                <Col lg={4}>
-                    <img className="aboutImage" alt="me smiling against a yellow background" />
-                </Col>
-                <Col lg={8}>
-                    <h1>About Me</h1>
-                    <hr></hr>
-                    <p>Hi! My name is Morgan Dickerson and I'm a Full-Stack Web Dev! I used to spend a lot of time editing Tumblr blog themes but I'd never go any further than that out of fear of breaking something. It feels nice not having to worry about that anymore haha! When I'm not coding I'm either creating art or gaming. I've been drawing for roughly 12 years now, give or take, and I mostly do digital art. Fun fact: I actually drew the image to the left!</p>
-                    <p>My coding knowledge was very limited before the LPS Coding Bootcamp but thanks to it I'm now all the better! I'm super excited to start this new chapter of my life and start applying the skills I've learned.</p>
+                <Col lg={5}>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
                 </Col>
             </Row>
         </Container>
