@@ -18,6 +18,13 @@ export default function ProfilePage() {
                 <span>Followers: </span>
                 <button>Follow Me</button>
             </Row>
+            <Row>
+                <span>Saved places/places I want to visit:</span>
+            </Row>
+            <Row>
+                <span>Profile Info</span>
+                <a>Edit</a>
+            </Row>
         </Container>
-    )
+    );
 }
