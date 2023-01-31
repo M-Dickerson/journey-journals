@@ -36,6 +36,39 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
+
+        // Add user's new trip
+        addTrip: async (parent, { userId, location }) => {
+            const trip = await Trip.create({ location });
+        
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: userId },
+                {
+                    $addToSet: {
+                        trips: trip
+                    }
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('trips');
+            return updatedUser;
+        },
+
+        // Delete user's trip
+        deleteTrip: async (parent, { userId, tripId }) => {
+            const result = await Trip.deleteOne({ _id: tripId });
+            console.log(result);
+
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: userId},
+                { $pull: { trips: { _id: tripId } } },
+                { new: true }
+            ).populate('trips');
+
+            return updatedUser;
+        }
     }
 }
 
