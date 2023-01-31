@@ -7,9 +7,16 @@ const resolvers = {
         // Get logged-in user info
         me: async (parent, { userId }) => {
             if (/*context.user*/ true) {
-                return await User.findOne({ _id: /*context.user._id*/ userId }).populate('trips');
+                return await User.findOne({ _id: /*context.user._id*/ userId }).populate('trips').populate({
+                    path: 'trips',
+                    populate: 'posts'
+                });
             }
             throw new AuthenticationError('You need to be logged in!');
+        },
+
+        getPosts: async (parent, args) => {
+            return await Post.find({});
         }
     },
 
@@ -58,8 +65,7 @@ const resolvers = {
 
         // Delete user's trip
         deleteTrip: async (parent, { userId, tripId }) => {
-            const result = await Trip.deleteOne({ _id: tripId });
-            console.log(result);
+            const result = await Trip.findOneAndDelete({ _id: tripId });
 
             const updatedUser = await User.findOneAndUpdate(
                 { _id: userId},
@@ -68,6 +74,33 @@ const resolvers = {
             ).populate('trips');
 
             return updatedUser;
+        },
+
+        // Add post from certain trip
+        addPost: async (parent, { postInfo }) => {
+            // Create post
+            const post = await Post.create({
+                title: postInfo.title,
+                description: postInfo.description,
+                image: postInfo.image
+            });
+
+            // Update that trip collection
+            const updatedTrip = Trip.findOneAndUpdate(
+                { _id: postInfo.tripId },
+                { $addToSet: { posts: post } },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('posts');
+
+            return updatedTrip;
+        },
+
+        // Delete post from certain trip
+        deletePost: async (parent, { postId }) => {
+            return await Post.findOneAndDelete({ _id: postId });
         }
     }
 }

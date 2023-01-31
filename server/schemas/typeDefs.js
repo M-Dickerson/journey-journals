@@ -41,9 +41,17 @@ const typeDefs = gql`
         user: User
     }
 
+    input AddPostInfo {
+        title: String!
+        description: String!
+        image: String
+        tripId: String
+    }
+
     # Read operations 
     type Query {
         me(userId: String!): User
+        getPosts: [Post]
     }
 
     # Create, Update, Delete operations
@@ -52,6 +60,8 @@ const typeDefs = gql`
         addUser(username: String!, email: String!, password: String!): Auth
         addTrip(userId: String!, location: String!): User
         deleteTrip(userId: String!, tripId: String!): User
+        addPost(postInfo: AddPostInfo): Trip
+        deletePost(postId: String!): Post
     }
 `;
 
