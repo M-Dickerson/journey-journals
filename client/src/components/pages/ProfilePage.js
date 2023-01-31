@@ -8,22 +8,22 @@ export default function ProfilePage() {
     return (
         <Container>
             <Row>
-                <span>Profile Info</span>
-                <a>Edit</a>
+                <p>Profile Info</p>
+                <p>Edit</p>
                 {/* profile picure: */}
                 <img alt="placeholder"></img>
-                <span>Jane Doe</span>
-                <span>Bio: I love nature</span>
-                <span>Posts: </span>
-                <span>Followers: </span>
+                <p>Jane Doe</p>
+                <p>Bio: I love nature</p>
+                <p>Posts: </p>
+                <p>Followers: </p>
                 <button>Follow Me</button>
             </Row>
             <Row>
-                <span>Saved places/places I want to visit:</span>
+                <p>Saved places/places I want to visit:</p>
             </Row>
             <Row>
-                <span>Profile Info</span>
-                <a>Edit</a>
+                <p>Profile Info</p>
+                <p>Edit</p>
             </Row>
         </Container>
     );
