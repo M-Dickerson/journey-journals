@@ -1,0 +1,12 @@
+.pfp {
+    width: 50%;
+    padding: 5%;
+}
+h2, h3 {
+    color: white;
+}
+.comments {
+    display: flex;
+    color: white;
+    justify-content: end;
+}
