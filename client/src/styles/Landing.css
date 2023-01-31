@@ -1,5 +1,13 @@
-.landingCon {
-    margin: 20%;
-    background-color: aqua;
+body {
+    background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1473&q=80");
+    height: 100%;
+    background-repeat: no-repeat;
     background-size: cover;
+}
+
+.landingP {
+    text-align: center;
+    translate: 20% 70%;
+    background-color: #E9E186;
+    border-radius: 10px;
 }
