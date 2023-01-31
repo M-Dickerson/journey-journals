@@ -13,7 +13,7 @@ export default function TravelFeed() {
         <Container>
             <Row>
                 <Col>
-                <h2>Travel Feed</h2>
+                    <h2>Travel Feed</h2>
                     <Card className="pfp">
                         <Image src="https://wallpapers-clan.com/wp-content/uploads/2022/05/cute-pfp-02.jpg" alt="profile picture" roundedCircle></Image>
                         <hr></hr>
@@ -63,14 +63,14 @@ export default function TravelFeed() {
                         </Carousel.Item>
                     </Carousel>
                 </Col>
-                {/* <Col>
-                    <span>date</span> */}
-                    {/* how are we handling comments and likes? */}
-                    {/* <span>Comment/Like</span>
-                </Col> */}
             </Row>
             <Row>
                 {/* 3rd party API--recommendations, etc */}
+                <Col className="comments">
+                    <p>date</p>
+                    {/* how are we handling comments and likes? */}
+                    <p>Comment/Like</p>
+                </Col>
             </Row>
         </Container>
     );
