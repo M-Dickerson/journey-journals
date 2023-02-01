@@ -5,22 +5,29 @@ body {
     position: relative;
     background-size: cover;
 }
-.landingP {
+.landing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.landing1 {
     text-align: center;
-    translate: 7rem 20rem;
     background-color: #E9E186;
+    background-size: 50%;
     border-radius: 10px;
 }
-.landingT {
-    margin-top: 1rem;
+.landing2 {
+    text-align: center;
+    background-size: 50%;
+    border-radius: 10px;
 }
 
-@media screen and (max-width: 920px) {
+/* @media screen and (max-width: 920px) {
     .landingP {
-        /* text-align: center;
+        text-align: center;
         background-color: #E9E186;
         border-radius: 10px;
-        translate: 7rem 10rem; */
+        translate: 7rem 10rem;
         width: 50%;
     }
 }
@@ -38,4 +45,4 @@ body {
         border-radius: 10px;
         translate: 0;
     }
-}
+} */

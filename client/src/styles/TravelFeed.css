@@ -2,11 +2,12 @@
     width: 50%;
     padding: 5%;
 }
-h2, h3 {
+h2 {
     color: white;
 }
 .comments {
     display: flex;
     color: white;
-    justify-content: end;
+    flex-direction: column;
+    justify-content: flex-end;
 }

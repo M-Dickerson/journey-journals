@@ -23,7 +23,7 @@ export default function TravelFeed() {
                     </Card>
                 </Col>
                 <Col>
-                    <h3>Day 1</h3>
+                    <h2>Day 1</h2>
                     {/* do we want to use glide.js or bootstrap to carousel images? */}
                     <Carousel>
                         <Carousel.Item interval={3000}>
@@ -64,14 +64,15 @@ export default function TravelFeed() {
                     </Carousel>
                 </Col>
             </Row>
-            <Row>
+            <Col xl={5} className="comments">
                 {/* 3rd party API--recommendations, etc */}
-                <Col className="comments">
-                    <p>date</p>
-                    {/* how are we handling comments and likes? */}
-                    <p>Comment/Like</p>
-                </Col>
-            </Row>
+                <Row>
+                    <Card>
+                        <p>date</p>
+                        <p>Comment/Like</p>
+                    </Card>
+                </Row>
+            </Col>
         </Container>
     );
 }
