@@ -1,43 +1,14 @@
 import React from "react"
 // links for react bootstrap styling
 import "../../styles/TravelFeed.css";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Image from 'react-bootstrap/Image';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Carousel from 'react-bootstrap/Carousel';
+import { Container, Row, Col, Card, Carousel } from "react-bootstrap";
 
 export default function TravelFeed() {
     return (
         // PROFILE CARD
         <Container className="travel">
-            <Card className="pfp">
-                <Row>
-                    <Col xl={6} sm={6} xs={6}>
-                        <Image src="https://wallpapers-clan.com/wp-content/uploads/2022/05/cute-pfp-02.jpg" alt="profile picture" roundedCircle thumbnail></Image>
-                        <hr></hr>
-                        <h5>Followers: 200</h5>
-                        <h5>Posts: 90</h5>
-                        <Button className="travelButton" size="sm">
-                            Follow
-                        </Button>
-                        <Button className="travelButton" size="sm">
-                            Block
-                        </Button>
-                        <Button className="travelButton" size="sm">
-                            Message
-                        </Button>
-                    </Col>
-                    <Col xl={6} sm={6} xs={6} >
-                        <h3>Username</h3>
-                        <p>Inset bio here</p>
-                    </Col>
-                </Row>
-            </Card>
         {/* IMAGE CAROUSEL */}
-            <Row className="test">
+            <Row>
                 <Carousel>
                     <Carousel.Item interval={3000}>
                         <img
@@ -76,11 +47,12 @@ export default function TravelFeed() {
                     </Carousel.Item>
                 </Carousel>
             </Row>
-            <Col className="comments">
+            <Col>
                 <Row>
-                    <Card>
+                    <Card className="comments">
                         <p>date</p>
-                        <p>Comment/Like</p>
+                        <a href="https://github.com/M-Dickerson" target="blank"><i class="fa-solid fa-comment"></i></a>
+                        <a href="https://github.com/M-Dickerson" target="blank"><i class="fa-solid fa-heart"></i></a>
                     </Card>
                 </Row>
             </Col>

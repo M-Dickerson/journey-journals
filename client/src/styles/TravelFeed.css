@@ -1,41 +1,14 @@
 .travel {
     padding-top: 2%;
+    border-radius: 10px;
 }
-
-.pfp {
-    width: 40%;
-    padding: 2%;
-}
-
-h3,
-p {
-    text-align: right;
-}
-
-.travelButton {
-    background-color: #F68D2E !important;
-    border: none !important;
-    margin-right: 5%;
-}
-
-.test {
-    display: flex!important;
-    width: 50%;
-}
-
 .comments {
     display: flex;
-    color: white;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-
-.travelP {
-    float: right;
-    align-items: right;
+    padding-top: 2%;
+    font-size: 25px;
 }
 /* MOBILE RESPONSIVENESS */
-@media screen and (max-width: 500px) { 
+@media screen and (max-width: 500px) {
     .pfp {
         width: 100%;
     }
