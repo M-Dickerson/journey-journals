@@ -8,7 +8,7 @@ import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignupForm from './SignupForm';
 import LoginForm from './LoginForm';
 
-function BasicExample({ handlePageChange }) {
+function AppNavbar({ handlePageChange }) {
     // Set modal display state
     const [showModal, setShowModal] = useState(false);
 
@@ -36,10 +36,11 @@ function BasicExample({ handlePageChange }) {
                 onHide={() => setShowModal(false)}
                 aria-labelledby='signup-modal'
                 centered>
+
                 {/* Tab container to do either signup or login component */}
                 <Tab.Container defaultActiveKey='login'>
                     <Modal.Header closeButton>
-                        <Modal.Title id='signup-modal'>
+                        <Modal.Title id='login-modal'>
                             <Nav variant='pills'>
                                 <Nav.Item>
                                     <Nav.Link eventKey='login'>Login</Nav.Link>
@@ -50,14 +51,15 @@ function BasicExample({ handlePageChange }) {
                             </Nav>
                         </Modal.Title>
                     </Modal.Header>
+
                     <Modal.Body>
                         <Tab.Content>
                             <Tab.Pane eventKey='login'>
                                 <LoginForm handleModalClose={() => setShowModal(false)} />
                             </Tab.Pane>
-                            {/* <Tab.Pane eventKey='signup'>
+                            <Tab.Pane eventKey='signup'>
                                 <SignupForm handleModalClose={() => setShowModal(false)} />
-                            </Tab.Pane> */}
+                            </Tab.Pane>
                         </Tab.Content>
                     </Modal.Body>
                 </Tab.Container>
@@ -66,4 +68,4 @@ function BasicExample({ handlePageChange }) {
     );
 }
 
-export default BasicExample;
+export default AppNavbar;

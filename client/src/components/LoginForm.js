@@ -20,7 +20,6 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -39,7 +38,6 @@ const LoginForm = () => {
     // }
 
     setUserFormData({
-      username: '',
       email: '',
       password: '',
     });
@@ -76,6 +74,8 @@ const LoginForm = () => {
           />
           <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
         </Form.Group>
+
+        {/* Button disabled until email and password provided */}
         <Button
           disabled={!(userFormData.email && userFormData.password)}
           type='submit'
