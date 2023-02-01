@@ -1,13 +1,25 @@
+.travel {
+    padding-top: 2%;
+}
 .pfp {
-    width: 50%;
-    padding: 5%;
+    width: 40%;
+    padding: 2%;
 }
-h2 {
-    color: white;
+h3 {
+    text-align: right;
 }
-.comments {
+.travelButton {
+    background-color: #F68D2E!important;
+    border: none!important;
+    margin-right: 5%;
+}
+/* .comments {
     display: flex;
     color: white;
     flex-direction: column;
     justify-content: flex-end;
 }
+.travelP {
+    float: right;
+    align-items: right;
+} */
