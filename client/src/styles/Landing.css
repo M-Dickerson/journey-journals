@@ -7,42 +7,17 @@ body {
 }
 .landing {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+    margin-top: 15vh!important;
 }
 .landing1 {
-    text-align: center;
     background-color: #E9E186;
-    background-size: 50%;
-    border-radius: 10px;
+    padding-right: 5%;
 }
-.landing2 {
+.landing1, .landing2 {
     text-align: center;
+    padding: 2%;
     background-size: 50%;
     border-radius: 10px;
 }
-
-/* @media screen and (max-width: 920px) {
-    .landingP {
-        text-align: center;
-        background-color: #E9E186;
-        border-radius: 10px;
-        translate: 7rem 10rem;
-        width: 50%;
-    }
-}
-@media screen and (max-width: 450px) {
-    body {
-        background-image: url("https://images.unsplash.com/photo-1561571994-3c61c554181a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=772&q=80");
-        background-repeat: no-repeat;
-        background-size: cover;
-        position: relative;
-        height: 100%;
-    }
-    .landingP {
-        text-align: center;
-        background-color: #E9E186;
-        border-radius: 10px;
-        translate: 0;
-    }
-} */
