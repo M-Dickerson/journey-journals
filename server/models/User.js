@@ -18,6 +18,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    bio: {
+      type: String,
+      default: 'No bio'
+    },
     trips: [
       {
         type: Schema.Types.ObjectId,
