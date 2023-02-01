@@ -1,15 +1,14 @@
 .travel {
     padding-top: 2%;
-    border-radius: 10px;
+}
+.commContainer {
+    padding-top: 2%;
 }
 .comments {
-    display: flex;
-    padding-top: 2%;
-    font-size: 25px;
+    display: flex!important;
+    flex-direction: row!important;
 }
-/* MOBILE RESPONSIVENESS */
-@media screen and (max-width: 500px) {
-    .pfp {
-        width: 100%;
-    }
+.comments a {
+    font-size: 25px;
+    padding: 1%;
 }

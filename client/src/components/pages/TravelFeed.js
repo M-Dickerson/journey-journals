@@ -1,13 +1,13 @@
 import React from "react"
 // links for react bootstrap styling
 import "../../styles/TravelFeed.css";
-import { Container, Row, Col, Card, Carousel } from "react-bootstrap";
+import { Container, Row, Card, Carousel } from "react-bootstrap";
 
 export default function TravelFeed() {
     return (
         // PROFILE CARD
         <Container className="travel">
-        {/* IMAGE CAROUSEL */}
+            {/* IMAGE CAROUSEL */}
             <Row>
                 <Carousel>
                     <Carousel.Item interval={3000}>
@@ -47,15 +47,12 @@ export default function TravelFeed() {
                     </Carousel.Item>
                 </Carousel>
             </Row>
-            <Col>
-                <Row>
-                    <Card className="comments">
-                        <p>date</p>
-                        <a href="https://github.com/M-Dickerson" target="blank"><i class="fa-solid fa-comment"></i></a>
-                        <a href="https://github.com/M-Dickerson" target="blank"><i class="fa-solid fa-heart"></i></a>
-                    </Card>
-                </Row>
-            </Col>
+            <Row className="commContainer">
+                <Card className="comments">
+                    <a href="google.com" target="blank"><i class="fa-solid fa-heart"></i></a>
+                    <a href="google.com" target="blank"><i class="fa-solid fa-comment"></i></a>
+                </Card>
+            </Row>
         </Container>
     );
 }
