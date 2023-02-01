@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Form, Button, Alert } from 'react-bootstrap';
-import { useMutation } from '@apollo/client';
+// import { useMutation } from '@apollo/client';
 
 // import { LOGIN_USER } from '../utils/mutations';
 // import Auth from '../utils/auth';
@@ -50,7 +50,7 @@ const LoginForm = () => {
           Something went wrong with your login credentials!
         </Alert>
         <Form.Group>
-          <Form.Label htmlFor='email'>Email</Form.Label>
+          <Form.Label htmlFor='email'><i class="fa-solid fa-envelope"></i> Email</Form.Label>
           <Form.Control
             type='text'
             placeholder='Your email'
@@ -63,7 +63,7 @@ const LoginForm = () => {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label htmlFor='password'>Password</Form.Label>
+          <Form.Label htmlFor='password'><i class="fa-solid fa-key"></i> Password</Form.Label>
           <Form.Control
             type='password'
             placeholder='Your password'
@@ -76,7 +76,7 @@ const LoginForm = () => {
         </Form.Group>
 
         {/* Button disabled until email and password provided */}
-        <Button
+        <Button className='signlogButton'
           disabled={!(userFormData.email && userFormData.password)}
           type='submit'
           variant='success'>

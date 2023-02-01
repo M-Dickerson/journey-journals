@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 // links for react bootstrap styling
 import "../styles/Navbar.css";
-// import Container from 'react-bootstrap/Container';
-// import Nav from 'react-bootstrap/Nav';
-// import Navbar from 'react-bootstrap/Navbar';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignupForm from './SignupForm';
 import LoginForm from './LoginForm';
@@ -21,9 +18,8 @@ function AppNavbar({ handlePageChange }) {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
-                            {/* <Nav.Link href="#Signup" onClick={() => handlePageChange("Signup")}>Login/Signup</Nav.Link> */}
-                            <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>TravelFeed</Nav.Link>
-                            <Nav.Link href="#ProfilePage" onClick={() => handlePageChange("ProfilePage")}>ProfilePage</Nav.Link>
+                            <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>Travel Feed</Nav.Link>
+                            <Nav.Link href="#ProfilePage" onClick={() => handlePageChange("ProfilePage")}>Profile Page</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
@@ -42,7 +38,7 @@ function AppNavbar({ handlePageChange }) {
                     <Modal.Header closeButton>
                         <Modal.Title id='login-modal'>
                             <Nav variant='pills'>
-                                <Nav.Item>
+                                <Nav.Item className="testing">
                                     <Nav.Link eventKey='login'>Login</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>

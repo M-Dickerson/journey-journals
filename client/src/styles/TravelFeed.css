@@ -1,12 +1,42 @@
+.travel {
+    padding-top: 2%;
+}
+
 .pfp {
+    width: 40%;
+    padding: 2%;
+}
+
+h3,
+p {
+    text-align: right;
+}
+
+.travelButton {
+    background-color: #F68D2E !important;
+    border: none !important;
+    margin-right: 5%;
+}
+
+.test {
+    display: flex!important;
     width: 50%;
-    padding: 5%;
 }
-h2, h3 {
-    color: white;
-}
+
 .comments {
     display: flex;
     color: white;
-    justify-content: end;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.travelP {
+    float: right;
+    align-items: right;
+}
+/* MOBILE RESPONSIVENESS */
+@media screen and (max-width: 500px) { 
+    .pfp {
+        width: 100%;
+    }
 }
