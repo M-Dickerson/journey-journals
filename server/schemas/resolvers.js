@@ -101,6 +101,33 @@ const resolvers = {
         // Delete post from certain trip
         deletePost: async (parent, { postId }) => {
             return await Post.findOneAndDelete({ _id: postId });
+        },
+
+        // Add comment to a post
+        addComment: async (parent, { postId, text, userId }) => {
+            return await Post.findOneAndUpdate(
+                { _id: postId },
+                {
+                    $addToSet: {
+                        comments: {
+                            text,
+                            user: userId
+                        }
+                    }
+                },
+            ).populate('comments').populate({
+                path: 'comments',
+                populate: 'user'
+            });
+        },
+
+        // Delete comment from post
+        deleteComment: async (parent, { commentId, postId }) => {
+            return await Post.findOneAndUpdate(
+                { _id: postId },
+                { $pull: { comments: { _id: commentId } } },
+                { new: true }
+            );
         }
     }
 }

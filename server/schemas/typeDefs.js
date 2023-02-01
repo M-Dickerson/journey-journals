@@ -32,7 +32,7 @@ const typeDefs = gql`
     type Comment {
         _id: ID!
         text: String!
-        username: [User]
+        user: User
         createdAt: String!
     }
 
@@ -62,6 +62,8 @@ const typeDefs = gql`
         deleteTrip(userId: String!, tripId: String!): User
         addPost(postInfo: AddPostInfo): Trip
         deletePost(postId: String!): Post
+        addComment(postId: String!, text: String!, userId: String!): Post
+        deleteComment(commentId: String!, postId: String!): Post
     }
 `;
 
