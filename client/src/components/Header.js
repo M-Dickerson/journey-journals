@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // pages that will contain information
 import Landing from "./pages/Landing";
+import Login from "./pages/Login";
 import TravelFeed from "./pages/TravelFeed";
 import ProfilePage from "./pages/ProfilePage";
 // link to navbar
@@ -13,6 +14,9 @@ export default function Header() {
         if (currentPage === "Landing") {
             return <Landing />;
         }
+        // if (currentPage === "Signup") {
+        //     return <Login />;
+        // }
         if (currentPage === "TravelFeed") {
             return <TravelFeed />;
         }

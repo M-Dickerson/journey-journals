@@ -1,25 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 // links for react bootstrap styling
 import "../styles/Navbar.css";
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+// import Container from 'react-bootstrap/Container';
+// import Nav from 'react-bootstrap/Nav';
+// import Navbar from 'react-bootstrap/Navbar';
+import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
+import SignupForm from './SignupForm';
+import LoginForm from './LoginForm';
 
 function BasicExample({ handlePageChange }) {
+    // Set modal display state
+    const [showModal, setShowModal] = useState(false);
+
     return (
-        <Navbar>
-            <Container className="navCon">
-                <Navbar.Brand className="jj">Journey Journals</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link href="#Signup" onClick={() => handlePageChange("Signup")}>Login/Signup</Nav.Link>
-                        <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>TravelFeed</Nav.Link>
-                        <Nav.Link href="#ProfilePage" onClick={() => handlePageChange("ProfilePage")}>ProfilePage</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+        <>
+            <Navbar>
+                <Container className="navCon">
+                    <Navbar.Brand className="jj">Journey Journals</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
+                            {/* <Nav.Link href="#Signup" onClick={() => handlePageChange("Signup")}>Login/Signup</Nav.Link> */}
+                            <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>TravelFeed</Nav.Link>
+                            <Nav.Link href="#ProfilePage" onClick={() => handlePageChange("ProfilePage")}>ProfilePage</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+
+            {/* Set modal data up */}
+            <Modal
+                size='lg'
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                aria-labelledby='signup-modal'
+                centered>
+                {/* Tab container to do either signup or login component */}
+                <Tab.Container defaultActiveKey='login'>
+                    <Modal.Header closeButton>
+                        <Modal.Title id='signup-modal'>
+                            <Nav variant='pills'>
+                                <Nav.Item>
+                                    <Nav.Link eventKey='login'>Login</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey='signup'>Sign Up</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Tab.Content>
+                            <Tab.Pane eventKey='login'>
+                                <LoginForm handleModalClose={() => setShowModal(false)} />
+                            </Tab.Pane>
+                            {/* <Tab.Pane eventKey='signup'>
+                                <SignupForm handleModalClose={() => setShowModal(false)} />
+                            </Tab.Pane> */}
+                        </Tab.Content>
+                    </Modal.Body>
+                </Tab.Container>
+            </Modal>
+        </>
     );
 }
 
