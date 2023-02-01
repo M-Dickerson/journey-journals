@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Form, Button, Alert } from 'react-bootstrap';
 // import { useMutation } from '@apollo/client';
 
@@ -76,7 +76,7 @@ const LoginForm = () => {
         </Form.Group>
 
         {/* Button disabled until email and password provided */}
-        <Button
+        <Button className='signlogButton'
           disabled={!(userFormData.email && userFormData.password)}
           type='submit'
           variant='success'>

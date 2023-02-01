@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import "../styles/Signup.css";
 // import { useMutation } from '@apollo/client';
 
 // import Auth from '../utils/auth';
@@ -13,7 +14,7 @@ const SignupForm = () => {
   // Set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
-//   const [addUser, { error }] = useMutation(ADD_USER);
+  //   const [addUser, { error }] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -95,7 +96,7 @@ const SignupForm = () => {
         </Form.Group>
 
         {/* Button disabled until username, email, password provided */}
-        <Button
+        <Button className='signlogButton'
           disabled={!(userFormData.username && userFormData.email && userFormData.password)}
           type='submit'
           variant='success'>
