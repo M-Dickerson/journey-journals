@@ -6,6 +6,7 @@ const typeDefs = gql`
         username: String!
         email: String!
         password: String!
+        bio: String
         trips: [Trip]
         posts: [Post]
         followers: [User]
@@ -50,7 +51,7 @@ const typeDefs = gql`
 
     # Read operations 
     type Query {
-        me(userId: String!): User
+        me: User
         getPosts(postId: String): [Post]
     }
 
