@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 // links for react bootstrap styling
 import "../styles/Navbar.css";
-// import Container from 'react-bootstrap/Container';
-// import Nav from 'react-bootstrap/Nav';
-// import Navbar from 'react-bootstrap/Navbar';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignupForm from './SignupForm';
 import LoginForm from './LoginForm';
@@ -50,7 +47,7 @@ function AppNavbar({ handlePageChange }) {
                     <Modal.Header closeButton>
                         <Modal.Title id='login-modal'>
                             <Nav variant='pills'>
-                                <Nav.Item>
+                                <Nav.Item className="testing">
                                     <Nav.Link eventKey='login'>Login</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
