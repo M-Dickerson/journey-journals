@@ -15,9 +15,16 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
 
+        // Returns either single post by ID or all posts from newest to oldest (for travel feed)
         getPosts: async (parent, args) => {
-            return await Post.find({});
-        }
+            if (args.postId) {
+                const post = await Post.find({ _id: args.postId });
+                return post;
+            }
+            const posts = await Post.find({});
+            const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt);
+            return sortedPosts;
+        },
     },
 
     Mutation: {

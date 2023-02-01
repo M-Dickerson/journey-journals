@@ -51,7 +51,7 @@ const typeDefs = gql`
     # Read operations 
     type Query {
         me(userId: String!): User
-        getPosts: [Post]
+        getPosts(postId: String): [Post]
     }
 
     # Create, Update, Delete operations
