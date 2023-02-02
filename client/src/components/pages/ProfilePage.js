@@ -37,7 +37,32 @@ export default function ProfilePage() {
 
     return (
         <Container>
-
+            <h2>Profile Page</h2>
+            
+            <Card className="pfp">
+                <Row>
+                    <Col xl={6} sm={6} xs={6}>
+                        <Image src="https://wallpapers-clan.com/wp-content/uploads/2022/05/cute-pfp-02.jpg" alt="profile picture" roundedCircle thumbnail></Image>
+                        <hr></hr>
+                        <h5>Followers: {profile.followerCount}</h5>
+                        <h5>Posts: {profile.postCount}</h5>
+                        <h5>Trips: {profile.tripCount}</h5>
+                        <Button className="travelButton" size="sm">
+                            Follow
+                        </Button>
+                        <Button className="travelButton" size="sm">
+                            Block
+                        </Button>
+                        <Button className="travelButton" size="sm">
+                            Message
+                        </Button>
+                    </Col>
+                    <Col xl={6} sm={6} xs={6} >
+                        <h3>{profile.username}</h3>
+                        <p>{profile.bio}</p>
+                    </Col>
+                </Row>
+            </Card>
 
         </Container>
     );
