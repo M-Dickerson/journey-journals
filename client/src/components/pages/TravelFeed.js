@@ -6,20 +6,21 @@ import { Container, Row, Card, Form, Col, Image, Button } from "react-bootstrap"
 export default function TravelFeed() {
     return (
         <Container className="travel">
-            <Card className="travelPfp">
-                <Row>
+            <Card className="travelCon">
+                <Row className="image2">
                     <Col xl={6} sm={6} xs={6}>
-                        <Image className="test23" src="https://i.imgur.com/kC72c8e.jpg" alt="profile picture" roundedCircle thumbnail></Image>
+                        <Image className="testPfp" src="https://i.imgur.com/kC72c8e.jpg" alt="profile picture" roundedCircle thumbnail></Image>
                     </Col>
                     <Col xl={6} sm={6} xs={6}>
                         <h5 className="travelText">Username</h5>
                         <p className="travelText">date</p>
                     </Col>
-                    <Row xl={12}>
+                    <Row xl={12} className="image2">
                         <Card.Img className="travelImg" variant="top" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1421&q=80" />
                         <Card.Body>
                             <Card.Text>
                                 Some quick example text to build on the card title and make up the
+                                bulk of the card's content. Some quick example text to build on the card title and make up the
                                 bulk of the card's content.
                             </Card.Text>
                         </Card.Body>

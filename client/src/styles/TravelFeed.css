@@ -3,7 +3,7 @@
 }
 /* Shrinks the entire container down */
 .travel.container {
-    width: 55%;
+    width: 60%;
 }
 /* Image */
 img.travelImg {
@@ -11,11 +11,15 @@ img.travelImg {
     padding: 0;
     border-radius: 10px;
 }
-div.row.row-cols-xl-12 {
-    justify-content: center;
+.image2 {
+    justify-content: space-evenly;
+}
+/* Profile picture */
+.testPfp {
+    width: 25%;
 }
 /* Adds padding to entire card. Also contains pfp and right aligned text*/
-.travelPfp {
+.travelCon {
     padding: 2%;
 }
 /* Comment section */
@@ -25,9 +29,6 @@ div.row.row-cols-xl-12 {
 .comments a {
     font-size: 20px;
     padding: 1%;
-}
-.test23 {
-    width: 25%;
 }
 .commentButton {
     margin: 1% 0;
