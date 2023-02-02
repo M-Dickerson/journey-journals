@@ -1,8 +1,11 @@
-.travel, .commContainer, .comments p, .travelComment {
+.travel, .comments p, .travelComment {
     padding-top: 2%;
 }
 .comments {
     padding-top: 1%;
+}
+travel Image {
+    width: 20%;
 }
 .comments a {
     font-size: 25px;

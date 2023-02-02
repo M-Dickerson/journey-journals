@@ -2,10 +2,6 @@ html, body {
     position: relative;
     overflow: auto;
 }
-h5 {
-    color: white;
-    text-align: center;
-}
 .footer {
     width: 100%;
     height: 35px;
