@@ -193,6 +193,7 @@ export default function ProfilePage() {
                                 <i id="deletePost" className="fa-solid fa-square-minus" onClick={()=> {handlePostDelete(post._id)}}></i>
                             </section>
                             <p>{post.description}</p>
+                            <p>{post.createdAt}</p>
                         </Card>
                     )))
                 }
