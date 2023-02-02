@@ -34,7 +34,12 @@ const resolvers = {
             const trip = await Trip.findOne({ _id: tripId }).populate('posts');
             console.log(trip);
             return trip;
-        }
+        },
+
+        // Get all trips that user has
+        // getUsersTrips: async (parent, args, context) => {
+        //     const trips = await 
+        // }
     },
 
     Mutation: {
@@ -79,7 +84,7 @@ const resolvers = {
                 }
             ).populate('trips');
             console.log(updatedUser);
-            return updatedUser;
+            return trip;
         },
 
         // Delete user's trip
@@ -132,7 +137,7 @@ const resolvers = {
             );
             console.log(updatedUser);
 
-            return updatedTrip;
+            return post;
         },
 
         // Delete post from certain trip

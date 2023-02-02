@@ -5,7 +5,7 @@ import { Container, Row, Col, Card, Image, Button, Modal } from "react-bootstrap
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 import Auth from '../../utils/auth';
-import { GET_ME, GET_TRIP } from '../../utils/queries';
+import { GET_ME, GET_TRIP/*, GET_TRIPS*/ } from '../../utils/queries';
 import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST } from '../../utils/mutations';
 
 export default function ProfilePage() {
@@ -16,7 +16,7 @@ export default function ProfilePage() {
     // tripPosts = array of posts associated with trip that user clicked on
     const [tripPosts, setTripPosts] = useState([]);
     // Below two are for whether to show modal form to add trip or add post
-    const [showTripModal, setTripShowModal] = useState(false);
+    const [showTripModal, setShowTripModal] = useState(false);
     const [showPostModal, setShowPostModal] = useState(false);
     // Keep track of input fields
     const [newLocation, setNewLocation] = useState('');
@@ -31,10 +31,92 @@ export default function ProfilePage() {
     const [getTrip, { loadingGetTrip, errorGetTrip, dataGetTrip }] = useLazyQuery(GET_TRIP);
 
     // Mutations to add/delete trip & post 
-    const [addTrip, { errorAddTrip }] = useMutation(ADD_TRIP);
-    const [addPost, { errorAddPost }] = useMutation(ADD_POST);
-    const [deleteTrip, { errorDeleteTrip }] = useMutation(DELETE_TRIP);
-    const [deletePost, { errorDeletePost }] = useMutation(DELETE_POST);
+    const [addTrip, { error: errorAddTrip }] = useMutation(ADD_TRIP, {
+        update(cache, { data: { addTrip } }) {
+            try {
+                // import GET_TRIPS query
+                const { me } = cache.readQuery({ query: GET_ME });
+                console.log(me);
+                cache.writeQuery({
+                    query: GET_ME,
+
+                    data: { me: { 
+                        ...me,
+                        trips: [...me.trips, addTrip] 
+                    } },
+                });
+                
+            } catch (e) {
+                console.error(e);
+            }
+        },
+    });
+
+    const [addPost, { error: errorAddPost }] = useMutation(ADD_POST, {
+        update(cache, { data: { addPost } }) {
+            try {
+                const { me } = cache.readQuery({ query: GET_ME });
+                console.log('ME:');
+                // console.log(me.trips.length);
+                const tripIndex = me.trips.findIndex(trip => trip._id === currentTrip);
+                console.log('tripIndex: ' + tripIndex);
+                cache.writeQuery({
+                    query: GET_ME,
+
+                    data: { me: { 
+                        ...me,
+                        trips: [
+                            ...me.trips,
+                            me.trips[tripIndex].posts[[me.trips[tripIndex].posts.length][addPost]]
+                            // posts: [
+                            //     ...me.trips.posts
+                            // ],
+                            // me.trips[tripIndex].posts: addPost
+                        ] 
+                    } }
+                });
+                
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    });
+    
+    const [deleteTrip, { error: errorDeleteTrip }] = useMutation(DELETE_TRIP, {
+        update(cache, { data: { deleteTrip } }) {
+            try {
+                const { me } = cache.readQuery({ query: GET_ME });
+
+                cache.writeQuery({
+                    query: GET_ME,
+
+                    data: { me: { 
+                        ...me
+                    } },
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        },
+    });
+
+    const [deletePost, { error: errorDeletePost }] = useMutation(DELETE_POST, {
+        update(cache, { data: { deletePost } }) {
+            try {
+                const { me } = cache.readQuery({ query: GET_ME });
+
+                cache.writeQuery({
+                    query: GET_ME,
+
+                    data: { me: { 
+                        ...me
+                    } },
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        },
+    });
 
     // If data isn't here yet, say so
     if (loading) {
@@ -55,8 +137,6 @@ export default function ProfilePage() {
                     }
                 });
                 console.log(data);
-                // REPLACE WITH APOLLO CACHE LATER
-                window.location.reload();
             } catch (err) {
                 console.log(err);
             }
@@ -91,9 +171,7 @@ export default function ProfilePage() {
                     location: newLocation
                 }
             });
-            console.log(data);
-            // REPLACE WITH APOLLO CACHE LATER
-            window.location.reload();
+            setShowTripModal(false);
         } catch (err) {
             console.log(err);
         }
@@ -116,7 +194,9 @@ export default function ProfilePage() {
             });
             console.log(data);
             // REPLACE WITH APOLLO CACHE LATER
-            window.location.reload();
+            // window.location.reload();
+            // setShowPostModal(false);
+
         } catch (err) {
             console.log(err);
         }
@@ -134,7 +214,7 @@ export default function ProfilePage() {
             });
             console.log(data);
             // REPLACE WITH APOLLO CACHE LATER
-            window.location.reload();
+            // window.location.reload();
         } catch (err) {
             console.log(err);
         }
@@ -200,7 +280,7 @@ export default function ProfilePage() {
             </Card>
 
             {/* If rendering trip cards, show add trip button */}
-            {seeTrips && <Button onClick={() => setTripShowModal(true)}>Add a New Trip</Button>}
+            {seeTrips && <Button onClick={() => setShowTripModal(true)}>Add a New Trip</Button>}
             {/* If rendering post cards, show add post and go back btns */}
             {!seeTrips && <Button onClick={() => setShowPostModal(true)}>Add a New Post</Button>}
             {!seeTrips && <Button onClick={handleGoBack}>Go Back</Button>}
@@ -209,7 +289,7 @@ export default function ProfilePage() {
             <Modal
                 size='lg'
                 show={showTripModal}
-                onHide={() => setTripShowModal(false)}
+                onHide={() => setShowTripModal(false)}
                 aria-labelledby='add-trip-modal'
                 centered>
 

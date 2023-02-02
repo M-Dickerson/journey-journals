@@ -11,6 +11,7 @@ export const GET_ME = gql`
                 _id
                 location
                 posts {
+                    _id
                     title
                     description
                 }
@@ -42,3 +43,24 @@ export const GET_TRIP = gql`
         }
     }
 `;
+
+
+// export const GET_TRIPS = gql`
+//     query getTrips($tripId: String!) {
+//         getTrip(tripId: $tripId) {
+//             _id
+//             location
+//             posts {
+//                 _id
+//                 title
+//                 comments {
+//                     text
+//                 }
+//                 likes
+//                 image
+//                 description
+//                 createdAt
+//             }
+//         }
+//     }
+// `;
