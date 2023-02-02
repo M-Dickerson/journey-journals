@@ -6,7 +6,6 @@ export default function Contact() {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [touched, setTouched] = useState({ name: false, email: false, message: false });
 
     const handleInputChange = (e) => {
         const { target } = e;
