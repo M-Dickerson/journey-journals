@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 // links for react bootstrap styling
 import "../../styles/ProfilePage.css";
-import { Container, Row, Col, Card, Image, Button, Modal, Tab, Nav } from "react-bootstrap";
+import { Container, Row, Col, Card, Image, Button, Modal } from "react-bootstrap";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 import Auth from '../../utils/auth';
@@ -9,21 +9,28 @@ import { GET_ME, GET_TRIP } from '../../utils/queries';
 import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST } from '../../utils/mutations';
 
 export default function ProfilePage() {
+    // seeTrips is true when rendering trips, false when rendering posts
     const [seeTrips, setSeeTrips] = useState(true);
+    // currentTrip = tripId that user clicked on
     const [currentTrip, setCurrentTrip] = useState('');
+    // tripPosts = array of posts associated with trip that user clicked on
     const [tripPosts, setTripPosts] = useState([]);
-    const [showModal, setShowModal] = useState(false);
+    // Below two are for whether to show modal form to add trip or add post
+    const [showTripModal, setTripShowModal] = useState(false);
     const [showPostModal, setShowPostModal] = useState(false);
+    // Keep track of input fields
     const [newLocation, setNewLocation] = useState('');
     const [postTitle, setPostTitle] = useState('');
     const [postDescription, setPostDescription] = useState('');
 
+    // GET_ME query to get info about user/profile
     const { loading, data } = useQuery(GET_ME);
     const profile = data?.me;
     console.log(profile);
+    // GET_TRIP query to get specific trip info
+    const [getTrip, { loadingGetTrip, errorGetTrip, dataGetTrip }] = useLazyQuery(GET_TRIP);
 
-    const [getTrip, { loading1, error1, data1 }] = useLazyQuery(GET_TRIP);
-
+    // Mutations to add/delete trip & post 
     const [addTrip, { errorAddTrip }] = useMutation(ADD_TRIP);
     const [addPost, { errorAddPost }] = useMutation(ADD_POST);
     const [deleteTrip, { errorDeleteTrip }] = useMutation(DELETE_TRIP);
@@ -34,9 +41,11 @@ export default function ProfilePage() {
         return <h2>LOADING...</h2>;
     }
 
+    // Either show associated posts or delete trip
     const handleTripClick = async (tripId, event) => {
-        console.log('Handle Trip click');
-        console.log(event.target.id);
+        console.log('Handle trip click');
+        
+        // Delete trip if user clicked on delete icon on the trip card
         if (event.target.id === 'deleteTrip') {
             console.log('delete trip');
             try {
@@ -51,9 +60,9 @@ export default function ProfilePage() {
             } catch (err) {
                 console.log(err);
             }
+        // Toggle seeTrips to false, set currentTrip, get posts from trip that was clicked on
         } else {
             setSeeTrips((prev) => !prev);
-
             setCurrentTrip(tripId);
             const { data } = await getTrip({
                 variables: {
@@ -66,15 +75,17 @@ export default function ProfilePage() {
         }
     }
 
+    // Toggle seeTrips to true if Go Back btn clicked
     const handleGoBack = () => {
         setSeeTrips((prev) => !prev);
     }
 
-    const handleSubmitTrip = async (event) => {
+    // Submit form to add a new trip
+    const handleAddTrip = async (event) => {
         event.preventDefault();
-        console.log('Handle Submit Trip');
+        console.log('Handle add trip');
+
         try {
-            console.log(newLocation);
             const { data } = await addTrip({
                 variables: {
                     location: newLocation
@@ -88,9 +99,11 @@ export default function ProfilePage() {
         }
     }
 
-    const handleSubmitPost = async (event) => {
+    // Submit form to add a new post for a trip
+    const handleAddPost = async (event) => {
         event.preventDefault();
-        console.log('Handle Post Trip');
+        console.log('Handle add post');
+
         try {
             const { data } = await addPost({
                 variables: {
@@ -109,8 +122,10 @@ export default function ProfilePage() {
         }
     }
 
+    // Delete post if user clicks on delete icon on post
     const handlePostDelete = async (postId) => {
         console.log('handle post delete');
+
         try {
             const { data } = await deletePost({
                 variables: {
@@ -129,6 +144,7 @@ export default function ProfilePage() {
         <Container>
             <h2>Profile Page</h2>
             
+            {/* Profile Card */}
             <Card className="pfp">
                 <Row>
                     <Col xl={6} sm={6} xs={6}>
@@ -154,8 +170,10 @@ export default function ProfilePage() {
                 </Row>
             </Card>
 
+            {/* Render card to display either all of user's trips or posts */}
             <Card>
-                {seeTrips && <h1>Trips</h1>}
+                {seeTrips && <h1>{profile.username}'s Trips</h1>}
+                {/* Render card for each trip */}
                 {seeTrips &&
                     profile.trips.map((trip) => (
                         <Card key={trip._id} className="text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
@@ -166,7 +184,7 @@ export default function ProfilePage() {
                 }
 
                 {!seeTrips && <h1>Posts</h1>}
-                {/* ITERATE OVER POSTS */}
+                {/* Render card for each post for the trip clicked on */}
                 {!seeTrips &&
                     (tripPosts.map((post) => (
                         <Card key={post._id} className="d-flex flex-column justify-content-between">
@@ -180,20 +198,22 @@ export default function ProfilePage() {
                 }
             </Card>
 
-            {seeTrips && <Button onClick={() => setShowModal(true)}>Add a New Trip</Button>}
+            {/* If rendering trip cards, show add trip button */}
+            {seeTrips && <Button onClick={() => setTripShowModal(true)}>Add a New Trip</Button>}
+            {/* If rendering post cards, show add post and go back btns */}
             {!seeTrips && <Button onClick={() => setShowPostModal(true)}>Add a New Post</Button>}
             {!seeTrips && <Button onClick={handleGoBack}>Go Back</Button>}
 
-            {/* Set modal data up */}
+            {/* Modal form to add new trip */}
             <Modal
                 size='lg'
-                show={showModal}
-                onHide={() => setShowModal(false)}
-                aria-labelledby='signup-modal'
+                show={showTripModal}
+                onHide={() => setTripShowModal(false)}
+                aria-labelledby='add-trip-modal'
                 centered>
 
                 <Modal.Header closeButton>
-                    <Modal.Title id='login-modal'>
+                    <Modal.Title id='add-trip-modal'>
                         Add a New Trip
                     </Modal.Title>
                 </Modal.Header>
@@ -202,11 +222,12 @@ export default function ProfilePage() {
                     <form className="d-flex flex-column">
                         <label htmlFor="trip-location">Location:</label>
                         <input type='text' name="trip-location" onChange={(e) => setNewLocation(e.target.value)} />
-                        <button onClick={handleSubmitTrip}>Submit</button>
+                        <button onClick={handleAddTrip}>Submit</button>
                     </form>
                 </Modal.Body>
             </Modal>
 
+            {/* Modal form to add new post */}
             <Modal
                 size='lg'
                 show={showPostModal}
@@ -215,7 +236,7 @@ export default function ProfilePage() {
                 centered>
 
                 <Modal.Header closeButton>
-                    <Modal.Title id='login-modal'>
+                    <Modal.Title id='add-post-modal'>
                         Add a New Post
                     </Modal.Title>
                 </Modal.Header>
@@ -228,7 +249,7 @@ export default function ProfilePage() {
                         <label htmlFor="description">Description:</label>
                         <textarea type="text" name="description" onChange={(e) => setPostDescription(e.target.value)} />
 
-                        <button onClick={handleSubmitPost}>Submit</button>
+                        <button onClick={handleAddPost}>Submit</button>
                     </form>
                 </Modal.Body>
             </Modal>
