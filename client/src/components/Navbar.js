@@ -47,11 +47,11 @@ function AppNavbar({ handlePageChange }) {
                     <Modal.Header closeButton>
                         <Modal.Title id='login-modal'>
                             <Nav variant='pills'>
-                                <Nav.Item className="testing">
-                                    <Nav.Link eventKey='login'>Login</Nav.Link>
+                                <Nav.Item>
+                                    <Nav.Link className="something2" eventKey='login'>Login</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
-                                    <Nav.Link eventKey='signup'>Sign Up</Nav.Link>
+                                    <Nav.Link className="something2" eventKey='signup'>Sign Up</Nav.Link>
                                 </Nav.Item>
                             </Nav>
                         </Modal.Title>
