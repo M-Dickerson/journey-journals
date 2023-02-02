@@ -5,6 +5,8 @@ import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignupForm from './SignupForm';
 import LoginForm from './LoginForm';
 
+import Auth from '../utils/auth';
+
 function AppNavbar({ handlePageChange }) {
     // Set modal display state
     const [showModal, setShowModal] = useState(false);
@@ -17,9 +19,16 @@ function AppNavbar({ handlePageChange }) {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
-                            <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>Travel Feed</Nav.Link>
-                            <Nav.Link href="#ProfilePage" onClick={() => handlePageChange("ProfilePage")}>Profile Page</Nav.Link>
+                            {/* If logged in, render all accessible tabs in navbar */}
+                            {Auth.loggedIn() ? (
+                                <>
+                                    <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>TravelFeed</Nav.Link>
+                                    <Nav.Link href="#ProfilePage" onClick={() => handlePageChange("ProfilePage")}>ProfilePage</Nav.Link>
+                                    <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
+                                </>
+                            ) : (
+                                <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
+                            )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
@@ -38,11 +47,11 @@ function AppNavbar({ handlePageChange }) {
                     <Modal.Header closeButton>
                         <Modal.Title id='login-modal'>
                             <Nav variant='pills'>
-                                <Nav.Item className="testing">
-                                    <Nav.Link eventKey='login'>Login</Nav.Link>
+                                <Nav.Item>
+                                    <Nav.Link className="something2" eventKey='login'>Login</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
-                                    <Nav.Link eventKey='signup'>Sign Up</Nav.Link>
+                                    <Nav.Link className="something2" eventKey='signup'>Sign Up</Nav.Link>
                                 </Nav.Item>
                             </Nav>
                         </Modal.Title>

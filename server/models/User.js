@@ -7,16 +7,22 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      trim: true
     },
     email: {
       type: String,
       required: true,
       unique: true,
-      match: [/.+@.+\..+/, 'Must use a valid email address'],
+      match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, 'Must use a valid email address'],
     },
     password: {
       type: String,
       required: true,
+      minlength: 5,
+    },
+    bio: {
+      type: String,
+      default: 'No bio'
     },
     trips: [
       {
@@ -59,6 +65,11 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
+
+// Number of user's trips
+userSchema.virtual('tripCount').get(function () {
+  return this.trips.length;
+});
 
 // Number of user's posts
 userSchema.virtual('postCount').get(function () {

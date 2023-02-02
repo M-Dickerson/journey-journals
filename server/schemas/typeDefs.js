@@ -6,9 +6,11 @@ const typeDefs = gql`
         username: String!
         email: String!
         password: String!
+        bio: String
         trips: [Trip]
         posts: [Post]
         followers: [User]
+        tripCount: Int
         postCount: Int
         followerCount: Int
     }
@@ -50,16 +52,17 @@ const typeDefs = gql`
 
     # Read operations 
     type Query {
-        me(userId: String!): User
+        me: User
         getPosts(postId: String): [Post]
+        getTrip(tripId: String!): Trip
     }
 
     # Create, Update, Delete operations
     type Mutation {
         login(email: String!, password: String!): Auth 
         addUser(username: String!, email: String!, password: String!): Auth
-        addTrip(userId: String!, location: String!): User
-        deleteTrip(userId: String!, tripId: String!): User
+        addTrip(location: String!): User
+        deleteTrip(tripId: String!): User
         addPost(postInfo: AddPostInfo): Trip
         deletePost(postId: String!): Post
         addComment(postId: String!, text: String!, userId: String!): Post
