@@ -11,6 +11,9 @@
 .navbar {
   background-color: #F65275;
 }
+.something2 {
+  color: black!important;
+}
 a.nav-link {
   color: #fff;
   font-size: 1.5vh;

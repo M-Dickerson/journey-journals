@@ -1,6 +1,28 @@
 .travel, .comments p, .travelComment {
     padding-top: 2%;
 }
+/* Shrinks the entire container down */
+.travel.container {
+    width: 60%;
+}
+/* Image */
+img.travelImg {
+    width: 70%;
+    padding: 0;
+    border-radius: 10px;
+}
+.image2 {
+    justify-content: space-evenly;
+}
+/* Profile picture */
+.testPfp {
+    width: 25%;
+}
+/* Adds padding to entire card. Also contains pfp and right aligned text*/
+.travelCon {
+    padding: 2%;
+}
+/* Comment section */
 .comments {
     padding-top: 1%;
 }
