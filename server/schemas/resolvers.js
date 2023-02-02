@@ -8,10 +8,10 @@ const resolvers = {
         me: async (parent, args, context) => {
             // console.log(context);
             if (context.user) {
-                const result = await User.findOne({ _id: context.user._id }).populate('trips');/*populate({
+                const result = await User.findOne({ _id: context.user._id }).populate('trips').populate({
                     path: 'trips',
                     populate: 'posts'
-                });*/
+                });
                 console.log('RESULT:\n');
                 console.log(result);
                 return result;
@@ -29,6 +29,12 @@ const resolvers = {
             const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt);
             return sortedPosts;
         },
+
+        getTrip: async (parent, { tripId }, context) => {
+            const trip = await Trip.findOne({ _id: tripId }).populate('posts');
+            console.log(trip);
+            return trip;
+        }
     },
 
     Mutation: {
@@ -56,11 +62,12 @@ const resolvers = {
         },
 
         // Add user's new trip
-        addTrip: async (parent, { userId, location }) => {
+        addTrip: async (parent, { location }, context) => {
+            console.log('Add Trip');
             const trip = await Trip.create({ location });
         
             const updatedUser = await User.findOneAndUpdate(
-                { _id: userId },
+                { _id: context.user._id },
                 {
                     $addToSet: {
                         trips: trip
@@ -71,15 +78,16 @@ const resolvers = {
                     runValidators: true,
                 }
             ).populate('trips');
+            console.log(updatedUser);
             return updatedUser;
         },
 
         // Delete user's trip
-        deleteTrip: async (parent, { userId, tripId }) => {
+        deleteTrip: async (parent, { tripId }, context) => {
             const result = await Trip.findOneAndDelete({ _id: tripId });
 
             const updatedUser = await User.findOneAndUpdate(
-                { _id: userId},
+                { _id: context.user._id},
                 { $pull: { trips: { _id: tripId } } },
                 { new: true }
             ).populate('trips');
@@ -89,12 +97,14 @@ const resolvers = {
 
         // Add post from certain trip
         addPost: async (parent, { postInfo }) => {
+            console.log('addPost');
             // Create post
             const post = await Post.create({
                 title: postInfo.title,
                 description: postInfo.description,
                 image: postInfo.image
             });
+            console.log(post);
 
             // Update that trip collection
             const updatedTrip = Trip.findOneAndUpdate(
@@ -105,6 +115,7 @@ const resolvers = {
                     runValidators: true,
                 }
             ).populate('posts');
+            console.log(updatedTrip);
 
             return updatedTrip;
         },

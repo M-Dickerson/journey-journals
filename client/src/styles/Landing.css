@@ -4,6 +4,7 @@ body {
     height: 100%;
     position: relative;
     background-size: cover;
+    padding-bottom: 50px; /*temporarily adding this to see the buttons that were hidden by footer*/  
 }
 .landing {
     display: flex;

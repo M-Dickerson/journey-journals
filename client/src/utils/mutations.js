@@ -24,3 +24,42 @@ export const ADD_USER = gql`
         }
     }
 `;
+
+export const ADD_TRIP = gql`
+    mutation addTrip($location: String!) {
+        addTrip(location: $location) {
+            _id
+            username
+            # trips {
+            #     _id
+            #     location
+            # }
+        }
+    }
+`;
+
+export const ADD_POST = gql`
+    mutation addPost($postInfo: AddPostInfo) {
+        addPost(postInfo: $postInfo) {
+            _id
+            location
+            posts {
+                title
+                description
+            }
+        }
+    }
+`;
+
+export const DELETE_TRIP = gql`
+    mutation DeleteTrip($tripId: String!) {
+        deleteTrip(tripId: $tripId) {
+            _id
+            username
+            trips {
+                _id
+                location
+            }
+        }
+    }
+`;
