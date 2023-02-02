@@ -1,12 +1,33 @@
 .travel, .comments p, .travelComment {
     padding-top: 2%;
 }
+/* Shrinks the entire container down */
+.travel.container {
+    width: 55%;
+}
+/* Image */
+img.travelImg {
+    width: 70%;
+    padding: 0;
+    border-radius: 10px;
+}
+div.row.row-cols-xl-12 {
+    justify-content: center;
+}
+/* Adds padding to entire card. Also contains pfp and right aligned text*/
+.travelPfp {
+    padding: 2%;
+}
+/* Comment section */
 .comments {
     padding-top: 1%;
 }
 .comments a {
     font-size: 20px;
     padding: 1%;
+}
+.test23 {
+    width: 25%;
 }
 .commentButton {
     margin: 1% 0;
