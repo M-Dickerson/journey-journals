@@ -96,7 +96,7 @@ const resolvers = {
         },
 
         // Add post from certain trip
-        addPost: async (parent, { postInfo }) => {
+        addPost: async (parent, { postInfo }, context) => {
             console.log('addPost');
             // Create post
             const post = await Post.create({
@@ -117,12 +117,43 @@ const resolvers = {
             ).populate('posts');
             console.log(updatedTrip);
 
+            // Update user
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: context.user._id },
+                {
+                    $addToSet: {
+                        posts: post
+                    }
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+            console.log(updatedUser);
+
             return updatedTrip;
         },
 
         // Delete post from certain trip
-        deletePost: async (parent, { postId }) => {
+        deletePost: async (parent, { postId }, context) => {
             console.log('Delete post');
+
+            // Update user
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: context.user._id },
+                {
+                    $pull: {
+                        posts: postId
+                    }
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+            console.log(updatedUser);
+
             return await Post.findOneAndDelete({ _id: postId });
         },
 
