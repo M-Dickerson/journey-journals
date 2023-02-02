@@ -65,6 +65,49 @@ export default function ProfilePage() {
         }
     }
 
+    const handleGoBack = () => {
+        setSeeTrips((prev) => !prev);
+    }
+
+    const handleSubmitTrip = async (event) => {
+        event.preventDefault();
+        console.log('Handle Submit Trip');
+        try {
+            console.log(newLocation);
+            const { data } = await addTrip({
+                variables: {
+                    location: newLocation
+                }
+            });
+            console.log(data);
+            // REPLACE WITH APOLLO CACHE LATER
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const handleSubmitPost = async (event) => {
+        event.preventDefault();
+        console.log('Handle Post Trip');
+        try {
+            const { data } = await addPost({
+                variables: {
+                    postInfo: {
+                        title: postTitle,
+                        description: postDescription,
+                        tripId: currentTrip
+                    }
+                }
+            });
+            console.log(data);
+            // REPLACE WITH APOLLO CACHE LATER
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <Container>
             <h2>Profile Page</h2>
@@ -116,6 +159,59 @@ export default function ProfilePage() {
                     )))
                 }
             </Card>
+
+            {seeTrips && <Button onClick={() => setShowModal(true)}>Add a New Trip</Button>}
+            {!seeTrips && <Button onClick={() => setShowPostModal(true)}>Add a New Post</Button>}
+            {!seeTrips && <Button onClick={handleGoBack}>Go Back</Button>}
+
+            {/* Set modal data up */}
+            <Modal
+                size='lg'
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                aria-labelledby='signup-modal'
+                centered>
+
+                <Modal.Header closeButton>
+                    <Modal.Title id='login-modal'>
+                        Add a New Trip
+                    </Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <form className="d-flex flex-column">
+                        <label htmlFor="trip-location">Location:</label>
+                        <input type='text' name="trip-location" onChange={(e) => setNewLocation(e.target.value)} />
+                        <button onClick={handleSubmitTrip}>Submit</button>
+                    </form>
+                </Modal.Body>
+            </Modal>
+
+            <Modal
+                size='lg'
+                show={showPostModal}
+                onHide={() => setShowPostModal(false)}
+                aria-labelledby='add-post-modal'
+                centered>
+
+                <Modal.Header closeButton>
+                    <Modal.Title id='login-modal'>
+                        Add a New Post
+                    </Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <form className="d-flex flex-column">
+                        <label htmlFor="title">Title:</label>
+                        <input type='text' name="title" onChange={(e) => setPostTitle(e.target.value)} />
+
+                        <label htmlFor="description">Description:</label>
+                        <textarea type="text" name="description" onChange={(e) => setPostDescription(e.target.value)} />
+
+                        <button onClick={handleSubmitPost}>Submit</button>
+                    </form>
+                </Modal.Body>
+            </Modal>
 
         </Container>
     );
