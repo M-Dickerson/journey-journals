@@ -33,7 +33,37 @@ export default function ProfilePage() {
         return <h2>LOADING...</h2>;
     }
 
+    const handleTripClick = async (tripId, event) => {
+        console.log('Handle Trip click');
+        console.log(event.target.id);
+        if (event.target.id === 'deleteTrip') {
+            console.log('delete trip');
+            try {
+                const { data } = await deleteTrip({
+                    variables: {
+                        tripId
+                    }
+                });
+                console.log(data);
+                // REPLACE WITH APOLLO CACHE LATER
+                window.location.reload();
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            setSeeTrips((prev) => !prev);
 
+            setCurrentTrip(tripId);
+            const { data } = await getTrip({
+                variables: {
+                    tripId
+                }
+            });
+
+            setTripPosts(data.getTrip.posts);
+            console.log(tripPosts);
+        }
+    }
 
     return (
         <Container>
@@ -62,6 +92,29 @@ export default function ProfilePage() {
                         <p>{profile.bio}</p>
                     </Col>
                 </Row>
+            </Card>
+
+            <Card>
+                {seeTrips && <h1>Trips</h1>}
+                {seeTrips &&
+                    profile.trips.map((trip) => (
+                        <Card key={trip._id} className="text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
+                            <h2>{trip.location}</h2>
+                            <i id="deleteTrip" className="fa-solid fa-square-minus"></i>
+                        </Card>
+                    ))
+                }
+
+                {!seeTrips && <h1>Posts</h1>}
+                {/* ITERATE OVER POSTS */}
+                {!seeTrips &&
+                    (tripPosts.map((post, i) => (
+                        <section key={i}>
+                            <h1>{post.title}</h1>
+                            <p>{post.description}</p>
+                        </section>
+                    )))
+                }
             </Card>
 
         </Container>
