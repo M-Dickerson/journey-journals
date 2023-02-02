@@ -63,3 +63,12 @@ export const DELETE_TRIP = gql`
         }
     }
 `;
+
+export const DELETE_POST = gql`
+    mutation DeletePost($postId: String!) {
+        deletePost(postId: $postId) {
+            _id
+            title
+        }
+    }
+`;

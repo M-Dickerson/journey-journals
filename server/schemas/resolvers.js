@@ -122,6 +122,7 @@ const resolvers = {
 
         // Delete post from certain trip
         deletePost: async (parent, { postId }) => {
+            console.log('Delete post');
             return await Post.findOneAndDelete({ _id: postId });
         },
 

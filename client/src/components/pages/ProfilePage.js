@@ -6,7 +6,7 @@ import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 import Auth from '../../utils/auth';
 import { GET_ME, GET_TRIP } from '../../utils/queries';
-import { ADD_TRIP, ADD_POST, DELETE_TRIP } from '../../utils/mutations';
+import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST } from '../../utils/mutations';
 
 export default function ProfilePage() {
     const [seeTrips, setSeeTrips] = useState(true);
@@ -27,6 +27,7 @@ export default function ProfilePage() {
     const [addTrip, { errorAddTrip }] = useMutation(ADD_TRIP);
     const [addPost, { errorAddPost }] = useMutation(ADD_POST);
     const [deleteTrip, { errorDeleteTrip }] = useMutation(DELETE_TRIP);
+    const [deletePost, { errorDeletePost }] = useMutation(DELETE_POST);
 
     // If data isn't here yet, say so
     if (loading) {
@@ -108,6 +109,22 @@ export default function ProfilePage() {
         }
     }
 
+    const handlePostDelete = async (postId) => {
+        console.log('handle post delete');
+        try {
+            const { data } = await deletePost({
+                variables: {
+                    postId
+                }
+            });
+            console.log(data);
+            // REPLACE WITH APOLLO CACHE LATER
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <Container>
             <h2>Profile Page</h2>
@@ -151,11 +168,14 @@ export default function ProfilePage() {
                 {!seeTrips && <h1>Posts</h1>}
                 {/* ITERATE OVER POSTS */}
                 {!seeTrips &&
-                    (tripPosts.map((post, i) => (
-                        <section key={i}>
-                            <h1>{post.title}</h1>
+                    (tripPosts.map((post) => (
+                        <Card key={post._id} className="d-flex flex-column justify-content-between">
+                            <section className="d-flex justify-content-between">
+                                <h2>{post.title}</h2>
+                                <i id="deletePost" className="fa-solid fa-square-minus" onClick={()=> {handlePostDelete(post._id)}}></i>
+                            </section>
                             <p>{post.description}</p>
-                        </section>
+                        </Card>
                     )))
                 }
             </Card>
