@@ -1,11 +1,4 @@
-import React from "react"
-// links for react bootstrap styling
-import "../../styles/TravelFeed.css";
-import { Container, Row, Card, Form, Button } from "react-bootstrap";
-
-export default function TravelFeed() {
-    return (
-        <Container className="travel">
+<Container className="travel">
             <Row>
                 <Card xl={5} lg={5}>
                     <h5>Username</h5>
@@ -32,5 +25,3 @@ export default function TravelFeed() {
                 </Card>
             </Row>
         </Container>
-    );
-}
