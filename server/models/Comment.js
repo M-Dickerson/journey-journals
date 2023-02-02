@@ -5,7 +5,10 @@ const commentSchema = new Schema(
     {
         text: {
             type: String,
-            required: true
+            required: true,
+            minlength: 1,
+            maxlength: 280,
+            trim: true
         },
         user: {
             type: Schema.Types.ObjectId,

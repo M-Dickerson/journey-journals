@@ -6,10 +6,12 @@ const postSchema = new Schema(
     {
         title: {
             type: String,
-            required: true
+            required: true,
+            trim: true,
         },
         description: {
-            type: String
+            type: String,
+            trim: true,
         },
         image: {
             type: String
