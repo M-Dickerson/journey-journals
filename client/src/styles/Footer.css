@@ -1,8 +1,18 @@
+html, body {
+    position: relative;
+    overflow: auto;
+}
+h5 {
+    color: white;
+    text-align: center;
+}
 .footer {
     width: 100%;
     height: 35px;
     bottom: 0px;
+    margin-top: 1%;
     text-align: center;
-    position: fixed;
+    position: relative;
     background-color: #B7DD79;
+    min-height:20px;
 }

@@ -1,7 +1,7 @@
 import React from "react"
 // links for react bootstrap styling
 import "../../styles/TravelFeed.css";
-import { Container, Row, Card, Carousel } from "react-bootstrap";
+import { Container, Row, Card, Carousel, Form, Button } from "react-bootstrap";
 
 export default function TravelFeed() {
     return (
@@ -48,9 +48,20 @@ export default function TravelFeed() {
                 </Carousel>
             </Row>
             <Row className="commContainer">
-                <Card className="comments">
-                    <a href="google.com" target="blank"><i class="fa-solid fa-heart"></i></a>
-                    <a href="google.com" target="blank"><i class="fa-solid fa-comment"></i></a>
+                <Card>
+                    <Form className="travelComment">
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                            <Form.Control as="textarea" rows={5} size="lg" type="text" placeholder="Your comment here"/>
+                        </Form.Group>
+                        <Button className="commentButton" as="input" type="submit" value="Submit" />{' '}
+                    </Form>
+                </Card>
+            </Row>
+            {/* TODO: Add dynamic post population here*/}
+            <Row className="comments">
+                <Card>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ornare aenean euismod elementum nisi. Pellentesque habitant morbi tristique senectus et netus. Venenatis a condimentum vitae sapien pellentesque habitant morbi tristique senectus. Risus ultricies tristique nulla aliquet. Quis vel eros donec ac odio. Semper feugiat nibh sed pulvinar proin gravida. Odio eu feugiat pretium nibh ipsum. Ligula ullamcorper malesuada proin libero nunc consequat interdum. Tincidunt eget nullam non nisi. Arcu cursus vitae congue mauris. Vel turpis nunc eget lorem dolor sed viverra ipsum nunc. Quis ipsum suspendisse ultrices gravida.</p>
+                    <a href="google.com" target="blank"><i class="fa-solid fa-trash"></i></a>
                 </Card>
             </Row>
         </Container>

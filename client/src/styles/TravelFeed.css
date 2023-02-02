@@ -1,14 +1,16 @@
-.travel {
-    padding-top: 2%;
-}
-.commContainer {
+.travel, .commContainer, .comments p, .travelComment {
     padding-top: 2%;
 }
 .comments {
-    display: flex!important;
-    flex-direction: row!important;
+    padding-top: 1%;
 }
 .comments a {
     font-size: 25px;
     padding: 1%;
+}
+.commentButton {
+    margin: 1% 0;
+    background-color: #E9E186!important;
+    border: none!important;
+    color: #000!important;
 }
