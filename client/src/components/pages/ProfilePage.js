@@ -179,7 +179,7 @@ export default function ProfilePage() {
                         {/* Render card for each trip */}
                         {seeTrips &&
                             profile.trips.map((trip) => (
-                                <Card key={trip._id} className="text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
+                                <Card key={trip._id} className="tTest text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
                                     <h2>{trip.location}</h2>
                                     <i id="deleteTrip" className="fa-solid fa-square-minus"></i>
                                 </Card>
@@ -190,8 +190,8 @@ export default function ProfilePage() {
                         {/* Render card for each post for the trip clicked on */}
                         {!seeTrips &&
                             (tripPosts.map((post) => (
-                                <Card key={post._id} className="d-flex flex-column justify-content-between">
-                                    <section className="d-flex justify-content-between">
+                                <Card key={post._id} className="tTest d-flex flex-column justify-content-between">
+                                    <section className="tTest d-flex justify-content-between">
                                         <h2>{post.title}</h2>
                                         <i id="deletePost" className="fa-solid fa-square-minus" onClick={() => { handlePostDelete(post._id) }}></i>
                                     </section>
@@ -226,7 +226,7 @@ export default function ProfilePage() {
                                 <form className="d-flex flex-column">
                                     <label htmlFor="trip-location">Location:</label>
                                     <input type='text' name="trip-location" onChange={(e) => setNewLocation(e.target.value)} />
-                                    <button className="tripButton" onClick={handleAddTrip}>Submit</button>
+                                    <Button className="tripButton" onClick={handleAddTrip}>Submit</Button>
                                 </form>
                             </Modal.Body>
                         </Modal>
@@ -253,7 +253,7 @@ export default function ProfilePage() {
                                     <label htmlFor="description">Description:</label>
                                     <textarea type="text" name="description" onChange={(e) => setPostDescription(e.target.value)} />
 
-                                    <button className="tripButton" onClick={handleAddPost}>Submit</button>
+                                    <Button className="tripButton" onClick={handleAddPost}>Submit</Button>
                                 </form>
                             </Modal.Body>
                         </Modal></Col>
