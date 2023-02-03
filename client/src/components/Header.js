@@ -30,8 +30,12 @@ export default function Header() {
     return (
         <div>
             <Navbar currentPage={currentPage} handlePageChange={handlePageChange} />
+<<<<<<< HEAD
             {renderPage()}
             <button onClick={toggleDarkMode}>Toggle Dark Mode</button>
+=======
+            {/* {renderPage()} */}
+>>>>>>> a8412e0a1a1ba21ec8143aa1cdcf9cf22e84bf9d
         </div>
     );
 }

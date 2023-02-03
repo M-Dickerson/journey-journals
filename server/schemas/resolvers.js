@@ -7,67 +7,80 @@ const resolvers = {
     Query: {
         // Get logged-in user info
         me: async (parent, args, context) => {
-            // console.log(context);
-            if (context.user) {
-                const result = await User.findOne({ _id: context.user._id }).populate('trips').populate({
+            if (context.user || args.username) {
+                const user = await User.findOne({ username: args.username || context.user.username }).populate('trips').populate({
                     path: 'trips',
                     populate: 'posts'
-                });
-                console.log('RESULT:\n');
-                console.log(result);
-                return result;
+                }).populate('posts').populate('followers');
+
+                return user;
             }
             throw new AuthenticationError('You need to be logged in!');
         },
 
-        // Returns either single post by ID or all posts from newest to oldest (for travel feed)
-        getPosts: async (parent, args) => {
-            if (args.postId) {
-                const post = await Post.find({ _id: args.postId });
-                return post;
-            }
-            const posts = await Post.find({});
+        // Get single user (to look at their profile page)
+        getSingleUser: async (parent, { username }, context) => {
+            const user = await User.findOne({ username }).populate('trips').populate('posts').populate('followers');
+
+            return user;
+        },
+
+        // Get all users in DB
+        getAllUsers: async (parent, args) => {
+            return await User.find({}).populate('trips').populate('posts').populate('followers');
+        },
+
+        // Get trips by single user (to populate trips list on profile page)
+        getTripsByUser: async (parent, args, context) => {
+            console.log(context);
+            const trips = await Trip.find({
+                username: /*args.username ||*/ context.user.username
+            }).populate('posts');
+            return trips;
+        },
+
+        // Get single trip by ID
+        getSingleTrip: async (parent, { tripId }, context) => {
+            const trip = await Trip.findOne({ _id: tripId }).populate('posts');
+            return trip;
+        },
+
+        // Get all posts (travel feed) & sort from newest to oldest
+        getAllPosts: async (parent, args) => {
+            const posts = await Post.find({}).populate('comments').populate('tripId');
             const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt);
             return sortedPosts;
         },
 
-        getTrip: async (parent, { tripId }, context) => {
-            const trip = await Trip.findOne({ _id: tripId }).populate('posts');
-            console.log(trip);
-            return trip;
+        // Get posts by single user (profile page)
+        getPostsByUser: async (parent, { username }) => {
+            const posts = await Post.find({ username }).populate('comments').populate('tripId');
+            return posts;
         },
 
-        sendEmail: async (parent, args, context) => {
-            // on context, we need to pass the logged in user so that we can add the username to the subject
-            // on args, we need to pass the email message and the recipientId
-            console.log(context);
-            if (args.recipientId && context.user) {
-                const recipient = await User.findOne({ _id: args.recipientId });
-                console.log('RESULT:\n');
-                console.log('recipient', recipient);
-
-                let transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: 'ryanmbelcher86@gmail.com',
-                        pass: process.env.EMAIL_PASSWORD,
-                    },
-                });
-
-                let info = await transporter.sendMail({
-                    from: 'Journey Journals',
-                    to: recipient.email,
-                    subject: `Message from: ${user.username}`,
-                    text: args.message,
-                    html: `<p>${args.message}<p>`
-                });
-
-                console.log("Message sent: %s", info.messageId);
-                res.status(200);
-                return result;
-            }
-            throw new AuthenticationError('You need to be logged in!');
+        // Get all posts in single trip (profile page)
+        getPostsByTrip: async (parent, { tripId }) => {
+            const posts = await Post.find({ tripId }).populate('comments').populate('tripId');
+            return posts;
         },
+
+        // Get single post by ID
+        getSinglePost: async (parent, { postId }) => {
+            const post = await Post.findOne({ _id: postId }).populate('comments').populate('tripId');
+            return post;
+        },
+
+        // Get comments based on postId (populate comments per post on travel feed)
+        getCommentsOnPost: async (parent, { postId }) => {
+            const post = await Post.findOne({ _id: postId }).populate('comments');
+            return post;
+        },
+
+        // Get user's followers
+        getUsersFollowers: async (parent, { username }) => {
+            const user = await User.findOne({ username }).populate('followers');
+            return user.followers;
+        }
     },
 
     Mutation: {
@@ -95,12 +108,16 @@ const resolvers = {
         },
 
         // Add user's new trip
-        addTrip: async (parent, { location }, context) => {
-            console.log('Add Trip');
-            const trip = await Trip.create({ location });
+        addTrip: async (parent, args, context) => {
+            // Create trip
+            const trip = await Trip.create({
+                location: args.location,
+                username: args.username || context.user.username
+            });
 
+            // Add trip to User's trips
             const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id },
+                { username: args.username || context.user.username },
                 {
                     $addToSet: {
                         trips: trip
@@ -111,48 +128,38 @@ const resolvers = {
                     runValidators: true,
                 }
             ).populate('trips');
-            console.log(updatedUser);
-            return updatedUser;
+            return trip;
         },
 
         // Delete user's trip
-        deleteTrip: async (parent, { tripId }, context) => {
-            const result = await Trip.findOneAndDelete({ _id: tripId });
+        deleteTrip: async (parent, args, context) => {
+            // Delete trip
+            const trip = await Trip.findOneAndDelete({ _id: args.tripId });
 
+            // Update User's trips field
             const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id },
-                { $pull: { trips: { _id: tripId } } },
+                { username: args.username || context.user.username },
+                { $pull: { trips: { _id: args.tripId } } },
                 { new: true }
             ).populate('trips');
 
-            return updatedUser;
+            return trip;
         },
 
         // Add post from certain trip
         addPost: async (parent, { postInfo }, context) => {
-            console.log('addPost');
             // Create post
             const post = await Post.create({
                 title: postInfo.title,
                 description: postInfo.description,
-                image: postInfo.image
+                image: postInfo.image,
+                username: postInfo.username || context.user.username,
+                tripId: postInfo.tripId
             });
-            console.log(post);
 
-            // Update that trip collection
-            const updatedTrip = Trip.findOneAndUpdate(
+            // Update Trip's posts field
+            const updatedTrip = await Trip.findOneAndUpdate(
                 { _id: postInfo.tripId },
-                { $addToSet: { posts: post } },
-                {
-                    new: true,
-                    runValidators: true,
-                }
-            ).populate('posts');
-            console.log(updatedTrip);
-
-            // Update user
-            const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id },
                 {
                     $addToSet: {
                         posts: post
@@ -163,21 +170,13 @@ const resolvers = {
                     runValidators: true,
                 }
             );
-            console.log(updatedUser);
 
-            return updatedTrip;
-        },
-
-        // Delete post from certain trip
-        deletePost: async (parent, { postId }, context) => {
-            console.log('Delete post');
-
-            // Update user
+            // Update User's posts field
             const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id },
+                { username: postInfo.username || context.user.username },
                 {
-                    $pull: {
-                        posts: postId
+                    $addToSet: {
+                        posts: post
                     }
                 },
                 {
@@ -185,27 +184,61 @@ const resolvers = {
                     runValidators: true,
                 }
             );
-            console.log(updatedUser);
 
-            return await Post.findOneAndDelete({ _id: postId });
+            return post;
+        },
+
+        // Delete post from certain trip
+        deletePost: async (parent, args, context) => {
+            // Delete post
+            const post = await Post.findOneAndDelete({ _id: args.postId });
+
+            // Update Trip's posts field
+            const updatedTrip = await Trip.findOneAndUpdate(
+                { _id: post.tripId._id },
+                {
+                    $pull: { posts: { _id: args.postId } },
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+
+            // Update User's posts field
+            const updatedUser = await User.findOneAndUpdate(
+                { username: args.username || context.user.username },
+                {
+                    $pull: { posts: { _id: args.postId } },
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+
+            return post;
         },
 
         // Add comment to a post
-        addComment: async (parent, { postId, text, userId }) => {
-            return await Post.findOneAndUpdate(
-                { _id: postId },
+        addComment: async (parent, args, context) => {
+            const post = await Post.findOneAndUpdate(
+                { _id: args.postId },
                 {
                     $addToSet: {
                         comments: {
-                            text,
-                            user: userId
+                            text: args.text,
+                            username: args.username || context.user.username,
+                            postId: args.postId
                         }
                     }
                 },
-            ).populate('comments').populate({
-                path: 'comments',
-                populate: 'user'
-            });
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('comments');
+            return post;
         },
 
         // Delete comment from post
@@ -214,9 +247,44 @@ const resolvers = {
                 { _id: postId },
                 { $pull: { comments: { _id: commentId } } },
                 { new: true }
-            );
-        }
+            ).populate('tripId');
+        },
     }
 }
 
 module.exports = resolvers;
+
+
+
+
+// sendEmail: async (parent, args, context) => {
+//     // on context, we need to pass the logged in user so that we can add the username to the subject
+//     // on args, we need to pass the email message and the recipientId
+//     console.log(context);
+//     if (args.recipientId && context.user) {
+//         const recipient = await User.findOne({ _id: args.recipientId });
+//         console.log('RESULT:\n');
+//         console.log('recipient', recipient);
+
+//         let transporter = nodemailer.createTransport({
+//             service: 'gmail',
+//             auth: {
+//                 user: 'ryanmbelcher86@gmail.com',
+//                 pass: process.env.EMAIL_PASSWORD,
+//             },
+//         });
+
+//         let info = await transporter.sendMail({
+//             from: 'Journey Journals',
+//             to: recipient.email,
+//             subject: `Message from: ${user.username}`,
+//             text: args.message,
+//             html: `<p>${args.message}<p>`
+//         });
+
+//         console.log("Message sent: %s", info.messageId);
+//         res.status(200);
+//         return result;
+//     }
+//     throw new AuthenticationError('You need to be logged in!');
+// },

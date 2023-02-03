@@ -1,6 +1,10 @@
 import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Landing from "./components/pages/Landing";
+import TravelFeed from "./components/pages/TravelFeed";
+import ProfilePage from "./components/pages/ProfilePage";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { DarkModeProvider } from "./context/DarkModeContext";
@@ -29,6 +33,7 @@ const client = new ApolloClient({
 function App() {
     return (
         <ApolloProvider client={client}>
+<<<<<<< HEAD
             <DarkModeProvider>
                 <div>
                     <Header />
@@ -36,6 +41,38 @@ function App() {
                 </div>
             </DarkModeProvider>
         </ApolloProvider >
+=======
+            <Router>
+                <div>
+                    <Header />
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={<Landing />}
+                        />
+                        <Route
+                            path="/travelfeed"
+                            element={<TravelFeed />}
+                        />
+                        <Route
+                            path="/me"
+                            element={<ProfilePage />}
+                        />
+                        <Route
+                            path="/profiles/:username"
+                            element={<ProfilePage />}
+                        />
+                        <Route
+                            path="/logout"
+                            element={<Landing />}
+                        />
+                        
+                    </Routes>
+                    <Footer />
+                </div>
+            </Router>
+        </ApolloProvider>
+>>>>>>> a8412e0a1a1ba21ec8143aa1cdcf9cf22e84bf9d
     );
 }
 

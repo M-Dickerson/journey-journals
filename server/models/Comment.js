@@ -10,9 +10,12 @@ const commentSchema = new Schema(
             maxlength: 280,
             trim: true
         },
-        user: {
+        username: {
+            type: String
+        },
+        postId: {
             type: Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'Post',
         },
         createdAt: {
             type: Date,

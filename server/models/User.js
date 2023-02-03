@@ -22,7 +22,10 @@ const userSchema = new Schema(
     },
     bio: {
       type: String,
-      default: 'No bio'
+      default: 'Insert your bio here!'
+    },
+    profileImage: {
+      type: String,
     },
     trips: [
       {

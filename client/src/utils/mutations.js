@@ -30,10 +30,11 @@ export const ADD_TRIP = gql`
         addTrip(location: $location) {
             _id
             username
-            # trips {
-            #     _id
-            #     location
-            # }
+            location
+            posts {
+                _id
+            }
+            postCount
         }
     }
 `;
@@ -42,24 +43,42 @@ export const ADD_POST = gql`
     mutation addPost($postInfo: AddPostInfo) {
         addPost(postInfo: $postInfo) {
             _id
-            location
-            posts {
-                title
-                description
+            title
+            description
+        }
+    }
+`;
+
+export const ADD_COMMENT = gql`
+    mutation addComment($text: String!, $username: String, $postId: String!) {
+        addComment(text: $text, username: $username, postId: $postId) {
+            _id
+            username
+            title
+            description
+            image
+            likes
+            comments {
+                _id
+                text
+                username
+                createdAt
             }
+            createdAt
         }
     }
 `;
 
 export const DELETE_TRIP = gql`
-    mutation DeleteTrip($tripId: String!) {
-        deleteTrip(tripId: $tripId) {
+    mutation deleteTrip($tripId: String!, $username: String) {
+        deleteTrip(tripId: $tripId, username: $username) {
             _id
             username
-            trips {
+            location
+            posts {
                 _id
-                location
             }
+            postCount
         }
     }
 `;
@@ -69,6 +88,29 @@ export const DELETE_POST = gql`
         deletePost(postId: $postId) {
             _id
             title
+        }
+    }
+`;
+
+export const DELETE_COMMENT = gql`
+    mutation deleteComment($commentId: String!, $postId: String!) {
+        deleteComment(commentId: $commentId, postId: $postId) {
+            _id
+            username
+            title
+            description
+            image
+            likes
+            comments {
+                _id
+                createdAt
+                text
+            }
+            createdAt
+            tripId {
+                _id
+                location
+            }
         }
     }
 `;
