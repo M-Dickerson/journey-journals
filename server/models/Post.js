@@ -11,6 +11,7 @@ const postSchema = new Schema(
         },
         description: {
             type: String,
+            required: true,
             trim: true,
         },
         image: {
@@ -25,6 +26,13 @@ const postSchema = new Schema(
             type: Date,
             default: Date.now,
             get: formatTimestamp
+        },
+        username: {
+            type: String
+        },
+        tripId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Trip'
         }
     },
     // Set this to use virtual below

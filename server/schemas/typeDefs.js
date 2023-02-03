@@ -3,10 +3,11 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
     type User {
         _id: ID!
-        username: String!
-        email: String!
-        password: String!
+        username: String
+        email: String
+        password: String
         bio: String
+        profileImage: String
         trips: [Trip]
         posts: [Post]
         followers: [User]
@@ -17,25 +18,30 @@ const typeDefs = gql`
 
     type Trip {
         _id: ID!
-        location: String!
+        location: String
         posts: [Post]
+        username: String
+        postCount: Int
     }
 
     type Post {
         _id: ID!
-        title: String!
-        description: String!
+        title: String
+        description: String
         image: String
         likes: Int
         comments: [Comment]
-        createdAt: String!
+        createdAt: String
+        username: String
+        tripId: Trip
     }
 
     type Comment {
         _id: ID!
-        text: String!
-        user: User
-        createdAt: String!
+        text: String
+        username: String
+        postId: Post
+        createdAt: String
     }
 
     type Auth {
@@ -44,17 +50,36 @@ const typeDefs = gql`
     }
 
     input AddPostInfo {
-        title: String!
-        description: String!
+        title: String
+        description: String
         image: String
         tripId: String
     }
 
     # Read operations 
     type Query {
+        # Get logged-in user (profile page)
         me: User
-        getPosts(postId: String): [Post]
-        getTrip(tripId: String!): Trip
+        # Get a single user (look at their profile page)
+        getSingleUser(username: String!): User
+        # Get all users
+        getAllUsers: [User]
+        # Get trips by single user (trips list on profile page)
+        getTripsByUser(username: String): [Trip] 
+        # Get single trip by ID
+        getSingleTrip(tripId: String): Trip 
+        # Get all posts (travel feed)
+        getAllPosts: [Post]
+        # Get posts by single user (profile page)
+        getPostsByUser(username: String!): [Post]
+        # Get all posts in single trip (profile page)
+        getPostsByTrip(tripId: String!): [Post]
+        # Get single post by ID
+        getSinglePost(postId: String!): Post
+        # Get comments based on postId (populate comments per post on travel feed)
+        getCommentsOnPost(postId: String!): Post
+        # Get user's followers
+        getUsersFollowers(username: String!): [User]
     }
 
     # Create, Update, Delete operations

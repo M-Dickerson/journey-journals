@@ -12,6 +12,9 @@ const tripSchema = new Schema(
                 ref: 'Post',
             },
         ],
+        username: {
+            type: String
+        }
     },
     // Set this to use virtual below
     {

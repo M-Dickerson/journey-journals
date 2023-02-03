@@ -6,40 +6,77 @@ const resolvers = {
     Query: {
         // Get logged-in user info
         me: async (parent, args, context) => {
-            // console.log(context);
             if (context.user) {
-                const result = await User.findOne({ _id: context.user._id }).populate('trips').populate({
+                const user = await User.findOne({ _id: context.user._id }).populate('trips').populate({
                     path: 'trips',
                     populate: 'posts'
-                });
-                console.log('RESULT:\n');
-                console.log(result);
-                return result;
+                }).populate('posts').populate('followers');
+                
+                return user;
             }
             throw new AuthenticationError('You need to be logged in!');
         },
 
-        // Returns either single post by ID or all posts from newest to oldest (for travel feed)
-        getPosts: async (parent, args) => {
-            if (args.postId) {
-                const post = await Post.find({ _id: args.postId });
-                return post;
-            }
-            const posts = await Post.find({});
+        // Get single user (to look at their profile page)
+        getSingleUser: async (parent, { username }, context) => {
+            const user = await User.findOne({ username }).populate('trips').populate('posts').populate('followers');
+
+            return user;
+        },
+
+        // Get all users in DB
+        getAllUsers: async (parent, args) => {
+            return await User.find({}).populate('trips').populate('posts').populate('followers');
+        },
+
+        // Get trips by single user (to populate trips list on profile page)
+        getTripsByUser: async (parent, { username }, context) => {
+            const trips = await Trip.find({ username }).populate('posts');
+            return trips;
+        },
+
+        // Get single trip by ID
+        getSingleTrip: async (parent, { tripId }, context) => {
+            const trip = await Trip.findOne({ _id: tripId }).populate('posts');
+            return trip;
+        },
+
+        // Get all posts (travel feed) & sort from newest to oldest
+        getAllPosts: async (parent, args) => {
+            const posts = await Post.find({}).populate('comments');
             const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt);
             return sortedPosts;
         },
 
-        getTrip: async (parent, { tripId }, context) => {
-            const trip = await Trip.findOne({ _id: tripId }).populate('posts');
-            console.log(trip);
-            return trip;
+        // Get posts by single user (profile page)
+        getPostsByUser: async (parent, { username }) => {
+            const posts = await Post.find({ username }).populate('comments').populate('tripId');
+            return posts;
         },
 
-        // Get all trips that user has
-        // getUsersTrips: async (parent, args, context) => {
-        //     const trips = await 
-        // }
+        // Get all posts in single trip (profile page)
+        getPostsByTrip: async (parent, { tripId }) => {
+            const posts = await Post.find({ tripId }).populate('comments').populate('tripId');
+            return posts;
+        },
+
+        // Get single post by ID
+        getSinglePost: async (parent, { postId }) => {
+            const post = await Post.findOne({ _id: postId }).populate('comments').populate('tripId');
+            return post;   
+        },
+
+        // Get comments based on postId (populate comments per post on travel feed)
+        getCommentsOnPost: async (parent, { postId }) => {
+            const post = await Post.findOne({ _id: postId }).populate('comments');
+            return post;
+        },
+
+        // Get user's followers
+        getUsersFollowers: async (parent, { username }) => {
+            const user = await User.findOne({ username }).populate('followers');
+            return user.followers;
+        }
     },
 
     Mutation: {
@@ -67,12 +104,12 @@ const resolvers = {
         },
 
         // Add user's new trip
-        addTrip: async (parent, { location }, context) => {
+        addTrip: async (parent, { location, userId }, context) => {
             console.log('Add Trip');
             const trip = await Trip.create({ location });
         
             const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id },
+                { _id: /*context.user._id*/ userId },
                 {
                     $addToSet: {
                         trips: trip
@@ -114,12 +151,14 @@ const resolvers = {
             // Update that trip collection
             const updatedTrip = Trip.findOneAndUpdate(
                 { _id: postInfo.tripId },
-                { $addToSet: { posts: post } },
+                { $addToSet: { posts: post._id } },
                 {
                     new: true,
                     runValidators: true,
                 }
             ).populate('posts');
+            console.log('\n\n');
+            console.log('TripID: ' + postInfo.tripId);
             console.log(updatedTrip);
 
             // Update user
