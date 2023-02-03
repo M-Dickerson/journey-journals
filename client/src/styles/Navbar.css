@@ -1,27 +1,27 @@
 * {
   font-family: 'Oswald', sans-serif;
 }
-.navCon {
-  display: flex;
-  width: 100%;
+/* Base navbar */
+.navbar {
+  background-color: #F65275;
 }
 .jj {
   width: 100%;
 }
-.navbar {
-  background-color: #F65275;
-}
-.something2 {
-  color: black!important;
-}
-a.nav-link {
-  color: #fff;
-  font-size: 1.5vh;
-}
-a.nav-link:hover {
-  color: #E9E186;
-}
 span.navbar-brand {
   color: #fff;
   font-size: 2vh;
+}
+/* Navbar links */
+.something2 {
+  color: black!important;
+}
+.navLinks {
+  color: #fff;
+  font-size: 1.5vh;
+  text-decoration: none;
+  padding-left: 6%;
+}
+.navLinks:hover {
+  color: #E9E186;
 }
