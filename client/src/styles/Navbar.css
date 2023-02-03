@@ -25,3 +25,6 @@ span.navbar-brand {
 .navLinks:hover {
   color: #E9E186;
 }
+.darkMode {
+  content: dark;
+}
