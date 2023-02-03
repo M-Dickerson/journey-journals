@@ -7,7 +7,7 @@ import ProfilePage from "./components/pages/ProfilePage";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { DarkModeProvider } from "./context/DarkModeContext";
+// import { DarkModeProvider } from "./context/DarkModeContext";
 
 const httpLink = createHttpLink({
     uri: '/graphql',

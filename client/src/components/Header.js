@@ -5,12 +5,12 @@ import TravelFeed from "./pages/TravelFeed";
 import ProfilePage from "./pages/ProfilePage";
 // link to navbar
 import Navbar from "./Navbar";
-import { DarkModeContext } from '../context/DarkModeContext';
+// import { DarkModeContext } from '../context/DarkModeContext';
 
 
 export default function Header() {
-    const { darkMode, toggleDarkMode } = useContext(DarkModeContext)
-    console.log(darkMode);
+    // const { darkMode, toggleDarkMode } = useContext(DarkModeContext)
+    // console.log(darkMode);
     const [currentPage, setPage] = useState("Landing");
 
     const renderPage = () => {

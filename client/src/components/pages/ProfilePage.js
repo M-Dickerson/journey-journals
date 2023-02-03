@@ -2,8 +2,10 @@ import React, { useState } from "react"
 import { Navigate, useParams } from 'react-router-dom';
 // links for react bootstrap styling
 import "../../styles/ProfilePage.css";
-import { Container, Row, Col, Card, Image, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Card, Image, Button, Modal, Tab, Nav } from "react-bootstrap";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
+
+import Contact from '../Contact';
 
 import Auth from '../../utils/auth';
 import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP/*, GET_TRIPS*/ } from '../../utils/queries';
@@ -23,6 +25,8 @@ export default function ProfilePage() {
     const [newLocation, setNewLocation] = useState('');
     const [postTitle, setPostTitle] = useState('');
     const [postDescription, setPostDescription] = useState('');
+
+    const [showModal, setShowModal] = useState('');
 
     const { username: userParam } = useParams();
     const { loading, data } = useQuery(!userParam ? GET_ME : GET_SINGLE_USER, {
@@ -172,6 +176,36 @@ export default function ProfilePage() {
                                 <Button className="travelButton" size="sm">
                                     Message
                                 </Button>
+                                <Modal
+                                    size='lg'
+                                    show={showModal}
+                                    onHide={() => setShowModal(false)}
+                                    aria-labelledby='signup-modal'
+                                    centered>
+
+                                    <Tab.Container defaultActiveKey='login'>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title id='login-modal'>
+                                                <Nav variant='pills'>
+                                                    <Nav.Item>
+                                                        <Nav.Link className="something2" eventKey='login'>Login</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item>
+                                                        <Nav.Link className="something2" eventKey='signup'>Sign Up</Nav.Link>
+                                                    </Nav.Item>
+                                                </Nav>
+                                            </Modal.Title>
+                                        </Modal.Header>
+
+                                        <Modal.Body>
+                                            <Tab.Content>
+                                                <Tab.Pane eventKey='login'>
+                                                    <Contact handleModalClose={() => setShowModal(false)} />
+                                                </Tab.Pane>
+                                            </Tab.Content>
+                                        </Modal.Body>
+                                    </Tab.Container>
+                                </Modal>
                             </>)
                         }
                     </Col>
