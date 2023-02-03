@@ -31,7 +31,7 @@ export default function ProfilePage() {
 
     const profile = data?.me || data?.getSingleUser || {};
     console.log(profile);
-    
+
     const [getPostsByTrip, { error: errorPosts, loading: loadingPosts, data: dataPosts }] = useLazyQuery(GET_POSTS_BY_TRIP);
     const { loading1, data1 } = useQuery(GET_TRIPS_BY_USER);
 
@@ -65,7 +65,7 @@ export default function ProfilePage() {
             }
             setShowPostModal(false);
             window.location.reload();
-        // Toggle seeTrips to false, set currentTrip, get posts from trip that was clicked on
+            // Toggle seeTrips to false, set currentTrip, get posts from trip that was clicked on
         } else {
             setSeeTrips((prev) => !prev);
             setCurrentTrip(tripId);
@@ -193,7 +193,7 @@ export default function ProfilePage() {
                                 <Card key={trip._id} className="tTest text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
                                     <h2>{trip.location}</h2>
                                     {!userParam && <i id="deleteTrip" className="fa-solid fa-square-minus"></i>}
-                                    
+
                                 </Card>
                             ))
                         }
@@ -216,7 +216,7 @@ export default function ProfilePage() {
                     <Col>
                         {/* If rendering trip cards, show add trip button */}
                         {!userParam && seeTrips && <Button className="tripButton" onClick={() => setShowTripModal(true)}>Add a New Trip</Button>}
-                        
+
                         {/* If rendering post cards, show add post and go back btns */}
                         {!userParam && !seeTrips && <Button className="tripButton" onClick={() => setShowPostModal(true)}>Add a New Post</Button>}
 
