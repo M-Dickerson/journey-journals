@@ -13,6 +13,13 @@ html, body {
     justify-content: center;
     align-items: center;
 }
+.content-light .footer {
+    background-color: #B7DD79;
+}
+.content-dark .footer {
+    background-color: #000;
+    color: #B7DD79;
+}
 .footerText {
     margin: 0%;
 }

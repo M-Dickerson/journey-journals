@@ -1,4 +1,5 @@
 import React from "react";
+import Content from "./components/Content"
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Landing from "./components/pages/Landing";
@@ -35,7 +36,8 @@ function App() {
             <Router>
                 <div>
                     <DarkModeProvider>
-                        <Header />
+                        < Content />
+                        {/* <Header />
                         <Routes>
                             <Route
                                 path="/"
@@ -59,7 +61,7 @@ function App() {
                             />
 
                         </Routes>
-                        <Footer />
+                        <Footer /> */}
                     </DarkModeProvider>
                 </div>
             </Router>
