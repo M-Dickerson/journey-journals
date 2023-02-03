@@ -12,30 +12,30 @@ function Content() {
     return (
         <div className={darkMode ? 'content-dark' : 'content-light'}>
             <Router>
-            <Header />
-            <Routes>
-                <Route
-                    path="/"
-                    element={<Landing />}
-                />
-                <Route
-                    path="/travelfeed"
-                    element={<TravelFeed />}
-                />
-                <Route
-                    path="/me"
-                    element={<ProfilePage />}
-                />
-                <Route
-                    path="/profiles/:username"
-                    element={<ProfilePage />}
-                />
-                <Route
-                    path="/logout"
-                    element={<Landing />}
-                />
-            </Routes>
-            <Footer />
+                <Header />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Landing />}
+                    />
+                    <Route
+                        path="/travelfeed"
+                        element={<TravelFeed />}
+                    />
+                    <Route
+                        path="/me"
+                        element={<ProfilePage />}
+                    />
+                    <Route
+                        path="/profiles/:username"
+                        element={<ProfilePage />}
+                    />
+                    <Route
+                        path="/logout"
+                        element={<Landing />}
+                    />
+                </Routes>
+                <Footer />
             </Router>
         </div>
     );

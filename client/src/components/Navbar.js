@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 // links for react bootstrap styling
 import "../styles/Navbar.css";
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
@@ -8,7 +8,7 @@ import LoginForm from './LoginForm';
 
 import Auth from '../utils/auth';
 
-function AppNavbar({ handlePageChange }) {
+function AppNavbar() {
     // Set modal display state
     const [showModal, setShowModal] = useState(false);
     // const darkMode = useContext(darkMode);
