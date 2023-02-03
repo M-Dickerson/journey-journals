@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Form, Button } from 'react';
 
 export default function Contact() {
     const [message, setMessage] = useState('');
@@ -10,7 +11,7 @@ export default function Contact() {
         const response = await fetch('/api/email',
             {
                 method: 'POST',
-                body: JSON.stringify({ name, email, message }),
+                body: JSON.stringify({ message }),
             });
 
         const body = response.json();
@@ -39,12 +40,11 @@ export default function Contact() {
     };
 
     return (
-        <div>
-            <h2>Send a Message!</h2>
-            <form>
-                <div>
-                    <label for='message'> Message </label>
-                    <input
+        <>
+            <Form>
+                <Form.Group>
+                    <Form.Label>Message</Form.Label>
+                    <Form.Control
                         value={message}
                         name='message'
                         id='message'
@@ -54,14 +54,15 @@ export default function Contact() {
                         cols={10}
                         placeholder='Message'
                     />
-                </div>
-                <button type='button' onClick={handleFormSubmit}>Submit</button>
-            </form>
-            {errorMessage && (
-                <div>
-                    <p>{errorMessage}</p>
-                </div>
-            )}
-        </div>
-    )
-}
+                </Form.Group>
+            </Form>
+            <Button
+                type='submit'
+                variant='success'>
+                Submit
+            </Button>
+        </>
+    );
+};
+
+
