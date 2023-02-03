@@ -3,12 +3,16 @@ html, body {
     overflow: auto;
 }
 .footer {
+    display: flex;
     width: 100%;
     height: 35px;
     bottom: 0px;
     margin-top: 1%;
-    text-align: center;
     position: fixed;
     background-color: #B7DD79;
-    min-height:20px;
+    justify-content: center;
+    align-items: center;
+}
+.footerText {
+    margin: 0%;
 }
