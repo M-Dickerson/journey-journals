@@ -154,7 +154,7 @@ export default function ProfilePage() {
             </Row> */}
             {/* Profile Card */}
             <Card className="pfp">
-                <Row>
+                <Row xs={12}>
                     <Col xl={6} sm={6} xs={6}>
                         <Image src="https://i.imgur.com/kC72c8e.jpg" alt="profile picture" roundedCircle thumbnail></Image>
                         <hr></hr>
@@ -184,8 +184,8 @@ export default function ProfilePage() {
 
             {/* Render card to display either all of user's trips or posts */}
             <Card className="trips">
-                <Row>
-                    <Col xl={12} sm={6} xs={6} >
+                <Row xs={12}>
+                    <Col xl={12} sm={6} xs={12} >
                         {seeTrips && <h1>{profile.username}'s Trips</h1>}
                         {/* Render card for each trip */}
                         {seeTrips &&

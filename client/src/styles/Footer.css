@@ -8,7 +8,7 @@ html, body {
     bottom: 0px;
     margin-top: 1%;
     text-align: center;
-    position: relative;
+    position: fixed;
     background-color: #B7DD79;
     min-height:20px;
 }
