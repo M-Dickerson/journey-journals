@@ -7,6 +7,19 @@ export default function Contact() {
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        console.log('form submitted');
+        const response = await fetch('/api/email',
+            {
+                method: 'POST',
+                body: JSON.stringify({ name, email, message }),
+            });
+
+        const body = response.json();
+        console.log(body);
+    }
+
     const handleInputChange = (e) => {
         const { target } = e;
         const inputType = target.name;
@@ -85,7 +98,7 @@ export default function Contact() {
                         placeholder='Message'
                     />
                 </div>
-                <button type='button'>Submit</button>
+                <button type='button' onClick={handleFormSubmit}>Submit</button>
             </form>
             {errorMessage && (
                 <div>

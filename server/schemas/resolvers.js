@@ -1,6 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Trip, Post } = require('../models');
 const { signToken } = require('../utils/auth');
+const nodemailer = require('nodemailer');
 
 const resolvers = {
     Query: {
@@ -34,7 +35,39 @@ const resolvers = {
             const trip = await Trip.findOne({ _id: tripId }).populate('posts');
             console.log(trip);
             return trip;
-        }
+        },
+
+        sendEmail: async (parent, args, context) => {
+            // on context, we need to pass the logged in user so that we can add the username to the subject
+            // on args, we need to pass the email message and the recipientId
+            console.log(context);
+            if (args.recipientId && context.user) {
+                const recipient = await User.findOne({ _id: args.recipientId });
+                console.log('RESULT:\n');
+                console.log('recipient', recipient);
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'ryanmbelcher86@gmail.com',
+                        pass: process.env.EMAIL_PASSWORD,
+                    },
+                });
+
+                let info = await transporter.sendMail({
+                    from: 'Journey Journals',
+                    to: recipient.email,
+                    subject: `Message from: ${user.username}`,
+                    text: args.message,
+                    html: `<p>${args.message}<p>`
+                });
+
+                console.log("Message sent: %s", info.messageId);
+                res.status(200);
+                return result;
+            }
+            throw new AuthenticationError('You need to be logged in!');
+        },
     },
 
     Mutation: {
@@ -65,7 +98,7 @@ const resolvers = {
         addTrip: async (parent, { location }, context) => {
             console.log('Add Trip');
             const trip = await Trip.create({ location });
-        
+
             const updatedUser = await User.findOneAndUpdate(
                 { _id: context.user._id },
                 {
@@ -87,7 +120,7 @@ const resolvers = {
             const result = await Trip.findOneAndDelete({ _id: tripId });
 
             const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id},
+                { _id: context.user._id },
                 { $pull: { trips: { _id: tripId } } },
                 { new: true }
             ).populate('trips');
