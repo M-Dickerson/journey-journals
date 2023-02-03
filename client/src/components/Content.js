@@ -11,6 +11,7 @@ function Content() {
     const { darkMode } = useContext(DarkModeContext);
     return (
         <div className={darkMode ? 'content-dark' : 'content-light'}>
+            <Router>
             <Header />
             <Routes>
                 <Route
@@ -35,6 +36,7 @@ function Content() {
                 />
             </Routes>
             <Footer />
+            </Router>
         </div>
     );
 }
