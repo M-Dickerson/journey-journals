@@ -1,9 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Card, Form, Col, Image, Button } from "react-bootstrap";
 import "../styles/TravelFeed.css";
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
+import { ADD_COMMENT, DELETE_COMMENT } from '../utils/mutations';
 
 const Post = ({ posts }) => {
     console.log(posts);
+    const [commentText, setCommentText] = useState('');
+    const [addComment, { error: errorAddComment } ] = useMutation(ADD_COMMENT);
+    const [deleteComment, { error: errorDelComment } ] = useMutation(DELETE_COMMENT);
+
+    const handleSubmitComment = async (postId) => {
+        console.log('Handle Submit Comment');
+
+        try {
+            const { data } = await addComment({
+                variables: {
+                    text: commentText,
+                    postId
+                }
+            });
+            console.log(data);
+
+            setCommentText('');
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleCommentDelete = async (commentId, postId) => {
+        console.log('Handle Delete Comment');
+
+        try {
+            const { data } = await deleteComment({
+                variables: {
+                    commentId,
+                    postId
+                }
+            });
+            console.log(data);
+
+            setCommentText('');
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     if (!posts.length) {
         return <h3>No Posts Yet</h3>;
     }
@@ -33,21 +75,27 @@ const Post = ({ posts }) => {
                                     </Card.Text>
                                 </Card.Body>
 
+                                {/* Comment Form */}
                                 <Form className="travelComment">
                                     <Form.Group controlId="exampleForm.ControlTextarea1">
-                                        <Form.Control as="textarea" rows={5} size="lg" type="text" placeholder="Your comment here" />
+                                        <Form.Control as="textarea" rows={5} size="lg" type="text" placeholder="Your comment here" value={commentText} 
+                                        onChange={(e) => setCommentText(e.target.value)}/>
                                     </Form.Group>
-                                    <Button className="commentButton" as="input" type="submit" value="Submit" />{' '}
+                                    <Button className="commentButton" as="input" type="submit" value="Submit" onClick={() => handleSubmitComment(post._id)} />{' '}
                                 </Form>
                             </Row>
                         </Row>
                     </Card>
 
                     <Row className="comments">
-                        <Card xl={10}>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ornare aenean euismod elementum nisi. Pellentesque habitant morbi tristique senectus et netus. Venenatis a condimentum vitae sapien pellentesque habitant morbi tristique senectus. Risus ultricies tristique nulla aliquet. Quis vel eros donec ac odio. Semper feugiat nibh sed pulvinar proin gravida. Odio eu feugiat pretium nibh ipsum. Ligula ullamcorper malesuada proin libero nunc consequat interdum. Tincidunt eget nullam non nisi. Arcu cursus vitae congue mauris. Vel turpis nunc eget lorem dolor sed viverra ipsum nunc. Quis ipsum suspendisse ultrices gravida.</p>
-                            <a href="google.com" target="blank"><i class="fa-solid fa-trash"></i></a>
-                        </Card>
+                        {post.comments.map((comment) => (
+                            <Card xl={10}>
+                                <p>{comment.username}</p>
+                                <p>{comment.createdAt}</p>
+                                <p>{comment.text}</p>
+                                <i id="deleteComment" className="fa-solid fa-trash" onClick={() => { handleCommentDelete(comment._id, post._id) }}></i>
+                            </Card>
+                        ))}
                     </Row>
                 </Container>
             ))}

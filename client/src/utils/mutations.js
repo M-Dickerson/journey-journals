@@ -49,6 +49,26 @@ export const ADD_POST = gql`
     }
 `;
 
+export const ADD_COMMENT = gql`
+    mutation addComment($text: String!, $username: String, $postId: String!) {
+        addComment(text: $text, username: $username, postId: $postId) {
+            _id
+            username
+            title
+            description
+            image
+            likes
+            comments {
+                _id
+                text
+                username
+                createdAt
+            }
+            createdAt
+        }
+    }
+`;
+
 export const DELETE_TRIP = gql`
     mutation DeleteTrip($tripId: String!) {
         deleteTrip(tripId: $tripId) {
@@ -67,6 +87,29 @@ export const DELETE_POST = gql`
         deletePost(postId: $postId) {
             _id
             title
+        }
+    }
+`;
+
+export const DELETE_COMMENT = gql`
+    mutation deleteComment($commentId: String!, $postId: String!) {
+        deleteComment(commentId: $commentId, postId: $postId) {
+            _id
+            username
+            title
+            description
+            image
+            likes
+            comments {
+                _id
+                createdAt
+                text
+            }
+            createdAt
+            tripId {
+                _id
+                location
+            }
         }
     }
 `;
