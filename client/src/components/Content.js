@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Landing from "../components/pages/Landing";
 import TravelFeed from "../components/pages/TravelFeed";
 import ProfilePage from "../components/pages/ProfilePage";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { DarkModeContext } from "../context/DarkModeContext";
 
 function Content() {

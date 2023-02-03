@@ -1,11 +1,5 @@
 import React from "react";
 import Content from "./components/Content"
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
-// import Landing from "./components/pages/Landing";
-// import TravelFeed from "./components/pages/TravelFeed";
-// import ProfilePage from "./components/pages/ProfilePage";
-// import {  } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { DarkModeProvider } from "./context/DarkModeContext";
