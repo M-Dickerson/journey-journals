@@ -43,7 +43,7 @@ const resolvers = {
 
         // Get all posts (travel feed) & sort from newest to oldest
         getAllPosts: async (parent, args) => {
-            const posts = await Post.find({}).populate('comments');
+            const posts = await Post.find({}).populate('comments').populate('tripId');
             const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt);
             return sortedPosts;
         },
@@ -104,12 +104,16 @@ const resolvers = {
         },
 
         // Add user's new trip
-        addTrip: async (parent, { location, userId }, context) => {
-            console.log('Add Trip');
-            const trip = await Trip.create({ location });
+        addTrip: async (parent, args, context) => {
+            // Create trip
+            const trip = await Trip.create({ 
+                location: args.location,
+                username: args.username || context.user.username 
+            });
         
+            // Add trip to User's trips
             const updatedUser = await User.findOneAndUpdate(
-                { _id: /*context.user._id*/ userId },
+                { username: args.username || context.user.username },
                 {
                     $addToSet: {
                         trips: trip
@@ -120,50 +124,38 @@ const resolvers = {
                     runValidators: true,
                 }
             ).populate('trips');
-            console.log(updatedUser);
             return trip;
         },
 
         // Delete user's trip
-        deleteTrip: async (parent, { tripId }, context) => {
-            const result = await Trip.findOneAndDelete({ _id: tripId });
+        deleteTrip: async (parent, args, context) => {
+            // Delete trip
+            const trip = await Trip.findOneAndDelete({ _id: args.tripId });
 
+            // Update User's trips field
             const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id},
-                { $pull: { trips: { _id: tripId } } },
+                { username: args.username || context.user.username },
+                { $pull: { trips: { _id: args.tripId } } },
                 { new: true }
             ).populate('trips');
 
-            return updatedUser;
+            return trip;
         },
 
         // Add post from certain trip
         addPost: async (parent, { postInfo }, context) => {
-            console.log('addPost');
             // Create post
             const post = await Post.create({
                 title: postInfo.title,
                 description: postInfo.description,
-                image: postInfo.image
+                image: postInfo.image,
+                username: postInfo.username || context.user.username,
+                tripId: postInfo.tripId
             });
-            console.log(post);
 
-            // Update that trip collection
-            const updatedTrip = Trip.findOneAndUpdate(
+            // Update Trip's posts field
+            const updatedTrip = await Trip.findOneAndUpdate(
                 { _id: postInfo.tripId },
-                { $addToSet: { posts: post._id } },
-                {
-                    new: true,
-                    runValidators: true,
-                }
-            ).populate('posts');
-            console.log('\n\n');
-            console.log('TripID: ' + postInfo.tripId);
-            console.log(updatedTrip);
-
-            // Update user
-            const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id },
                 {
                     $addToSet: {
                         posts: post
@@ -174,21 +166,13 @@ const resolvers = {
                     runValidators: true,
                 }
             );
-            console.log(updatedUser);
 
-            return post;
-        },
-
-        // Delete post from certain trip
-        deletePost: async (parent, { postId }, context) => {
-            console.log('Delete post');
-
-            // Update user
+            // Update User's posts field
             const updatedUser = await User.findOneAndUpdate(
-                { _id: context.user._id },
+                { username: postInfo.username || context.user.username },
                 {
-                    $pull: {
-                        posts: postId
+                    $addToSet: {
+                        posts: post
                     }
                 },
                 {
@@ -196,27 +180,61 @@ const resolvers = {
                     runValidators: true,
                 }
             );
-            console.log(updatedUser);
 
-            return await Post.findOneAndDelete({ _id: postId });
+            return post;
+        },
+
+        // Delete post from certain trip
+        deletePost: async (parent, args, context) => {
+            // Delete post
+            const post = await Post.findOneAndDelete({ _id: args.postId });
+
+            // Update Trip's posts field
+            const updatedTrip = await Trip.findOneAndUpdate(
+                { _id: post.tripId._id },
+                {
+                    $pull: { posts: { _id: args.postId } },
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+
+            // Update User's posts field
+            const updatedUser = await User.findOneAndUpdate(
+                { username: args.username || context.user.username },
+                {
+                    $pull: { posts: { _id: args.postId } },
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+
+            return post;
         },
 
         // Add comment to a post
-        addComment: async (parent, { postId, text, userId }) => {
-            return await Post.findOneAndUpdate(
-                { _id: postId },
+        addComment: async (parent, args, context) => {
+            const post = await Post.findOneAndUpdate(
+                { _id: args.postId },
                 {
                     $addToSet: {
                         comments: {
-                            text,
-                            user: userId
+                            text: args.text,
+                            username: args.username || context.user.username,
+                            postId: args.postId
                         }
                     }
                 },
-            ).populate('comments').populate({
-                path: 'comments',
-                populate: 'user'
-            });
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('comments');
+            return post;
         },
 
         // Delete comment from post
@@ -225,7 +243,7 @@ const resolvers = {
                 { _id: postId },
                 { $pull: { comments: { _id: commentId } } },
                 { new: true }
-            );
+            ).populate('tripId');
         }
     }
 }

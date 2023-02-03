@@ -53,6 +53,7 @@ const typeDefs = gql`
         title: String
         description: String
         image: String
+        username: String
         tripId: String
     }
 
@@ -86,11 +87,11 @@ const typeDefs = gql`
     type Mutation {
         login(email: String!, password: String!): Auth 
         addUser(username: String!, email: String!, password: String!): Auth
-        addTrip(location: String!): Trip
-        deleteTrip(tripId: String!): User
+        addTrip(location: String!, username: String): Trip
+        deleteTrip(tripId: String!, username: String): Trip
         addPost(postInfo: AddPostInfo): Post
-        deletePost(postId: String!): Post
-        addComment(postId: String!, text: String!, userId: String!): Post
+        deletePost(postId: String!, username: String): Post
+        addComment(text: String!, username: String, postId: String!): Post
         deleteComment(commentId: String!, postId: String!): Post
     }
 `;
