@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // links for react bootstrap styling
 import "../styles/Navbar.css";
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import SignupForm from './SignupForm';
 import LoginForm from './LoginForm';
 
@@ -15,19 +16,35 @@ function AppNavbar({ handlePageChange }) {
         <>
             <Navbar>
                 <Container className="navCon">
-                    <Navbar.Brand className="jj">Journey Journals</Navbar.Brand>
+                    {!Auth.loggedIn() ? (
+                        <Navbar.Brand className="jj">Journey Journals</Navbar.Brand>
+                    ): (
+                        <Navbar.Brand className="jj">{Auth.getProfile().data.username}'s Journey Journals</Navbar.Brand>
+                    )}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             {/* If logged in, render all accessible tabs in navbar */}
                             {Auth.loggedIn() ? (
                                 <>
-                                    <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>TravelFeed</Nav.Link>
+                                    <Link to="/travelfeed">
+                                        TravelFeed
+                                    </Link>
+
+                                    <Link to="/me">
+                                        MyProfilePage
+                                    </Link>
+
+                                    <Link to="/logout" onClick={Auth.logout}>
+                                        Logout
+                                    </Link>
+                                
+                                    {/* <Nav.Link href="#TravelFeed" onClick={() => handlePageChange("TravelFeed")}>TravelFeed</Nav.Link>
                                     <Nav.Link href="#ProfilePage" onClick={() => handlePageChange("ProfilePage")}>ProfilePage</Nav.Link>
-                                    <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
+                                    <Nav.Link onClick={Auth.logout}>Logout</Nav.Link> */}
                                 </>
                             ) : (
-                                <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
+                                <Link to="/" onClick={() => setShowModal(true)}>Login/Sign Up</Link>
                             )}
                         </Nav>
                     </Navbar.Collapse>
