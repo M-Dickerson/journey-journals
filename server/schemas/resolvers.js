@@ -247,7 +247,7 @@ const resolvers = {
                 { $pull: { comments: { _id: commentId } } },
                 { new: true }
             ).populate('tripId');
-        }
+        },
     }
 }
 

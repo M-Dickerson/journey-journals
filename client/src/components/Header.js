@@ -26,7 +26,7 @@ export default function Header() {
     return (
         <div>
             <Navbar currentPage={currentPage} handlePageChange={handlePageChange} />
-            {renderPage()}
+            {/* {renderPage()} */}
         </div>
     );
 }

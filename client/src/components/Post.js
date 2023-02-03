@@ -3,6 +3,7 @@ import { Container, Row, Card, Form, Col, Image, Button } from "react-bootstrap"
 import "../styles/TravelFeed.css";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import { ADD_COMMENT, DELETE_COMMENT } from '../utils/mutations';
+import Auth from '../utils/auth';
 
 const Post = ({ posts }) => {
     console.log(posts);
@@ -10,7 +11,8 @@ const Post = ({ posts }) => {
     const [addComment, { error: errorAddComment } ] = useMutation(ADD_COMMENT);
     const [deleteComment, { error: errorDelComment } ] = useMutation(DELETE_COMMENT);
 
-    const handleSubmitComment = async (postId) => {
+    const handleSubmitComment = async (postId, event) => {
+        event.preventDefault();
         console.log('Handle Submit Comment');
 
         try {
@@ -81,7 +83,7 @@ const Post = ({ posts }) => {
                                         <Form.Control as="textarea" rows={5} size="lg" type="text" placeholder="Your comment here" value={commentText} 
                                         onChange={(e) => setCommentText(e.target.value)}/>
                                     </Form.Group>
-                                    <Button className="commentButton" as="input" type="submit" value="Submit" onClick={() => handleSubmitComment(post._id)} />{' '}
+                                    <Button className="commentButton" as="input" type="submit" value="Submit" onClick={(event) => handleSubmitComment(post._id, event)} />{' '}
                                 </Form>
                             </Row>
                         </Row>
@@ -93,7 +95,8 @@ const Post = ({ posts }) => {
                                 <p>{comment.username}</p>
                                 <p>{comment.createdAt}</p>
                                 <p>{comment.text}</p>
-                                <i id="deleteComment" className="fa-solid fa-trash" onClick={() => { handleCommentDelete(comment._id, post._id) }}></i>
+                                {/* Only show trash can on comments that logged-in user made */}
+                                {Auth.getProfile().data.username === comment.username && <i id="deleteComment" className="fa-solid fa-trash" onClick={() => { handleCommentDelete(comment._id, post._id) }}></i>}
                             </Card>
                         ))}
                     </Row>

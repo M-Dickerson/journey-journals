@@ -1,6 +1,10 @@
 import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Landing from "./components/pages/Landing";
+import TravelFeed from "./components/pages/TravelFeed";
+import ProfilePage from "./components/pages/ProfilePage";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
@@ -28,10 +32,34 @@ const client = new ApolloClient({
 function App() {
     return (
         <ApolloProvider client={client}>
-            <div>
-                <Header />
-                <Footer />
-            </div>
+            <Router>
+                <div>
+                    <Header />
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={<Landing />}
+                        />
+                        <Route
+                            path="/travelfeed"
+                            element={<TravelFeed />}
+                        />
+                        <Route
+                            path="/me"
+                            element={<ProfilePage />}
+                        />
+                        <Route
+                            path="/logout"
+                            element={<Landing />}
+                        />
+                        {/* <Route
+                            path="/profiles/:username"
+                            element={<Profile />}
+                        /> */}
+                    </Routes>
+                    <Footer />
+                </div>
+            </Router>
         </ApolloProvider>
     );
 }
