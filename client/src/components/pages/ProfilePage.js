@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Navigate, useParams } from 'react-router-dom';
+import Axios from 'axios';
 // links for react bootstrap styling
 import "../../styles/ProfilePage.css";
 import { Container, Row, Col, Card, Image, Button, Modal } from "react-bootstrap";
@@ -23,6 +24,7 @@ export default function ProfilePage() {
     const [newLocation, setNewLocation] = useState('');
     const [postTitle, setPostTitle] = useState('');
     const [postDescription, setPostDescription] = useState('');
+    const [imageSelected, setImageSelected] = useState('');
 
     const { username: userParam } = useParams();
     const { loading, data } = useQuery(!userParam ? GET_ME : GET_SINGLE_USER, {
@@ -147,8 +149,30 @@ export default function ProfilePage() {
         }
     }
 
+    
+    // const uploadImage = () => {
+    //     console.log(imageSelected);
+    //     // fetch axios
+    //     const formData = new FormData();
+    //     formData.append('file', imageSelected);
+    //     formData.append('upload_present', 'fmzvmxkg');
+
+    //     Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData)
+    //         .then((response) => {
+    //             console.log(response);
+    //         });
+    // };
+
+
+
     return (
-        <Container className="profile" xs={12}>
+        <Container className="profile">
+
+            {/* <input type="file" onChange={(event) => {setImageSelected(event.target.files[0])}}/>
+            <button onClick={uploadImage}>Upload Image</button> */}
+            {/* <Row>
+                <h2>Profile Page</h2>
+            </Row> */}
             {/* Profile Card */}
             <Card className="pfp">
                 <Row>
