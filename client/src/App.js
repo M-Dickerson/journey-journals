@@ -33,15 +33,6 @@ const client = new ApolloClient({
 function App() {
     return (
         <ApolloProvider client={client}>
-<<<<<<< HEAD
-            <DarkModeProvider>
-                <div>
-                    <Header />
-                    <Footer />
-                </div>
-            </DarkModeProvider>
-        </ApolloProvider >
-=======
             <Router>
                 <div>
                     <Header />
@@ -66,13 +57,12 @@ function App() {
                             path="/logout"
                             element={<Landing />}
                         />
-                        
+
                     </Routes>
                     <Footer />
                 </div>
             </Router>
         </ApolloProvider>
->>>>>>> a8412e0a1a1ba21ec8143aa1cdcf9cf22e84bf9d
     );
 }
 
