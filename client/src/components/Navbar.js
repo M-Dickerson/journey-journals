@@ -11,7 +11,6 @@ import Auth from '../utils/auth';
 function AppNavbar() {
     // Set modal display state
     const [showModal, setShowModal] = useState(false);
-    // const darkMode = useContext(darkMode);
 
     return (
         <>

@@ -27,40 +27,12 @@ const client = new ApolloClient({
 function App() {
     return (
         <ApolloProvider client={client}>
-            {/* <Router> */}
                 <div>
                     <DarkModeProvider>
-                        < Content />
-                        {/* <Header />
-                        <Routes>
-                            <Route
-                                path="/"
-                                element={<Landing />}
-                            />
-                            <Route
-                                path="/travelfeed"
-                                element={<TravelFeed />}
-                            />
-                            <Route
-                                path="/me"
-                                element={<ProfilePage />}
-                            />
-                            <Route
-                                path="/profiles/:username"
-                                element={<ProfilePage />}
-                            />
-                            <Route
-                                path="/logout"
-                                element={<Landing />}
-                            />
-
-                        </Routes>
-                        <Footer /> */}
+                        <Content />
                     </DarkModeProvider>
                 </div>
-            {/* </Router> */}
         </ApolloProvider>
     );
 }
-
 export default App;
