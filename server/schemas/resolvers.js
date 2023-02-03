@@ -82,11 +82,8 @@ const resolvers = {
         },
 
         getEmailUser: async (parent, args, context) => {
-            // on context, we need to pass the logged in user so that we can add the username to the subject
-            // on args, we need to pass the email message and the recipientId
-            console.log('this get email resolver fired');
+
             console.log(args);
-            console.log('context', context)
 
             if (args.username) {
                 console.log('You got here');
