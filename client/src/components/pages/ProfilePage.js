@@ -173,7 +173,7 @@ export default function ProfilePage() {
                                 <Button className="travelButton" size="sm">
                                     Block
                                 </Button>
-                                <Button className="travelButton" size="sm">
+                                <Button className="travelButton" size="sm" onClick={() => setShowModal(true)} >
                                     Message
                                 </Button>
                                 <Modal
@@ -186,14 +186,14 @@ export default function ProfilePage() {
                                     <Tab.Container defaultActiveKey='login'>
                                         <Modal.Header closeButton>
                                             <Modal.Title id='login-modal'>
-                                                <Nav variant='pills'>
+                                                {/* <Nav variant='pills'>
                                                     <Nav.Item>
                                                         <Nav.Link className="something2" eventKey='login'>Login</Nav.Link>
                                                     </Nav.Item>
                                                     <Nav.Item>
                                                         <Nav.Link className="something2" eventKey='signup'>Sign Up</Nav.Link>
                                                     </Nav.Item>
-                                                </Nav>
+                                                </Nav> */}
                                             </Modal.Title>
                                         </Modal.Header>
 
@@ -363,6 +363,6 @@ export default function ProfilePage() {
                     </form>
                 </Modal.Body>
             </Modal> */}
-        </Container>
+        </Container >
     );
 }

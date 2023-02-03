@@ -43,15 +43,15 @@ export default function Contact() {
         <>
             <Form>
                 <Form.Group>
-                    <Form.Label>Message</Form.Label>
+                    <Form.Label>Send a Message</Form.Label>
                     <Form.Control
+                        as='textarea'
+                        rows={5}
                         value={message}
                         name='message'
                         id='message'
                         onBlur={handleOnBlur}
                         onChange={handleInputChange}
-                        rows={10}
-                        cols={10}
                         placeholder='Message'
                     />
                 </Form.Group>
@@ -59,7 +59,7 @@ export default function Contact() {
             <Button
                 type='submit'
                 variant='success'>
-                Submit
+                Send
             </Button>
         </>
     );
