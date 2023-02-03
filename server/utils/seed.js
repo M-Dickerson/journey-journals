@@ -11,21 +11,18 @@ connection.once('open', async () => {
     await Post.deleteMany({});
 
     // Insert mock user data
-    const users = [
-        {
-            username: 'Jane',
-            email: 'jane@gmail.com',
-            password: 'jane12345',
-            bio: 'I love nature!',
-        },
-        {
-            username: 'Sal',
-            email: 'sal@gmail.com',
-            password: 'sal12345',
-        }
-    ];
-    await User.collection.insertMany(users);
-
+    await User.create({
+        username: 'Jane',
+        email: 'jane@gmail.com',
+        password: 'jane12345',
+        bio: 'I love nature!',
+    });
+    await User.create({
+        username: 'Sal',
+        email: 'sal@gmail.com',
+        password: 'sal12345',
+    });
+    
     // Insert mock trip data
     const trips = [
         {

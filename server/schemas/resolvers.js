@@ -6,8 +6,8 @@ const resolvers = {
     Query: {
         // Get logged-in user info
         me: async (parent, args, context) => {
-            if (context.user) {
-                const user = await User.findOne({ _id: context.user._id }).populate('trips').populate({
+            if (context.user || args.username) {
+                const user = await User.findOne({ username: args.username || context.user.username }).populate('trips').populate({
                     path: 'trips',
                     populate: 'posts'
                 }).populate('posts').populate('followers');
@@ -30,8 +30,11 @@ const resolvers = {
         },
 
         // Get trips by single user (to populate trips list on profile page)
-        getTripsByUser: async (parent, { username }, context) => {
-            const trips = await Trip.find({ username }).populate('posts');
+        getTripsByUser: async (parent, args, context) => {
+            console.log(context);
+            const trips = await Trip.find({ 
+                username: /*args.username ||*/ context.user.username
+            }).populate('posts');
             return trips;
         },
 

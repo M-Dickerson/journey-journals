@@ -29,10 +29,12 @@ export const ADD_TRIP = gql`
     mutation addTrip($location: String!) {
         addTrip(location: $location) {
             _id
+            username
             location
             posts {
                 _id
             }
+            postCount
         }
     }
 `;

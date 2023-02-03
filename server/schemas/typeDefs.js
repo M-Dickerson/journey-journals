@@ -60,7 +60,7 @@ const typeDefs = gql`
     # Read operations 
     type Query {
         # Get logged-in user (profile page)
-        me: User
+        me(username: String): User
         # Get a single user (look at their profile page)
         getSingleUser(username: String!): User
         # Get all users
