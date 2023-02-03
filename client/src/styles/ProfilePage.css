@@ -30,3 +30,11 @@
     margin: 2% 2% 0 0;
     width: fit-content;
 }
+@media screen and (max-width: 400px){
+    .pfp {
+        width: 100%;
+    }
+    .trips {
+        width: 100%;
+    }
+}

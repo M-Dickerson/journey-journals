@@ -1,4 +1,5 @@
 import React from "react";
+import Content from "./components/Content"
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Landing from "./components/pages/Landing";
@@ -29,14 +30,14 @@ const client = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
 });
-
 function App() {
     return (
         <ApolloProvider client={client}>
             <Router>
                 <div>
                     <DarkModeProvider>
-                        <Header />
+                        < Content />
+                        {/* <Header />
                         <Routes>
                             <Route
                                 path="/"
@@ -60,7 +61,7 @@ function App() {
                             />
 
                         </Routes>
-                        <Footer />
+                        <Footer /> */}
                     </DarkModeProvider>
                 </div>
             </Router>
