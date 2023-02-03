@@ -7,6 +7,7 @@ import ProfilePage from "./components/pages/ProfilePage";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 const httpLink = createHttpLink({
     uri: '/graphql',
@@ -34,31 +35,33 @@ function App() {
         <ApolloProvider client={client}>
             <Router>
                 <div>
-                    <Header />
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={<Landing />}
-                        />
-                        <Route
-                            path="/travelfeed"
-                            element={<TravelFeed />}
-                        />
-                        <Route
-                            path="/me"
-                            element={<ProfilePage />}
-                        />
-                        <Route
-                            path="/profiles/:username"
-                            element={<ProfilePage />}
-                        />
-                        <Route
-                            path="/logout"
-                            element={<Landing />}
-                        />
-                        
-                    </Routes>
-                    <Footer />
+                    <DarkModeProvider>
+                        <Header />
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={<Landing />}
+                            />
+                            <Route
+                                path="/travelfeed"
+                                element={<TravelFeed />}
+                            />
+                            <Route
+                                path="/me"
+                                element={<ProfilePage />}
+                            />
+                            <Route
+                                path="/profiles/:username"
+                                element={<ProfilePage />}
+                            />
+                            <Route
+                                path="/logout"
+                                element={<Landing />}
+                            />
+
+                        </Routes>
+                        <Footer />
+                    </DarkModeProvider>
                 </div>
             </Router>
         </ApolloProvider>
