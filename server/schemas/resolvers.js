@@ -32,7 +32,6 @@ const resolvers = {
 
         // Get trips by single user (to populate trips list on profile page)
         getTripsByUser: async (parent, args, context) => {
-            console.log(context);
             const trips = await Trip.find({
                 username: /*args.username ||*/ context.user.username
             }).populate('posts');
@@ -80,7 +79,43 @@ const resolvers = {
         getUsersFollowers: async (parent, { username }) => {
             const user = await User.findOne({ username }).populate('followers');
             return user.followers;
-        }
+        },
+
+        getEmailUser: async (parent, args, context) => {
+            // on context, we need to pass the logged in user so that we can add the username to the subject
+            // on args, we need to pass the email message and the recipientId
+            console.log('this get email resolver fired');
+            console.log(args);
+            console.log('context', context)
+
+            if (args.username) {
+                console.log('You got here');
+                const recipient = await User.findOne({ username: args.username });
+                console.log('RESULT:\n');
+                console.log('recipient', recipient);
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'ryanmbelcher86@gmail.com',
+                        pass: process.env.EMAIL_PASSWORD,
+                    },
+                });
+
+                let info = await transporter.sendMail({
+                    from: 'Journey Journals',
+                    to: recipient.email,
+                    subject: `Message from`,
+                    text: args.message,
+                    html: `<p>${args.message}<p>`
+                });
+
+                console.log("Message sent: %s", info.messageId);
+                res.status(200);
+                return result;
+            }
+            throw new AuthenticationError('You need to be logged in!');
+        },
     },
 
     Mutation: {
@@ -256,35 +291,3 @@ module.exports = resolvers;
 
 
 
-
-// sendEmail: async (parent, args, context) => {
-//     // on context, we need to pass the logged in user so that we can add the username to the subject
-//     // on args, we need to pass the email message and the recipientId
-//     console.log(context);
-//     if (args.recipientId && context.user) {
-//         const recipient = await User.findOne({ _id: args.recipientId });
-//         console.log('RESULT:\n');
-//         console.log('recipient', recipient);
-
-//         let transporter = nodemailer.createTransport({
-//             service: 'gmail',
-//             auth: {
-//                 user: 'ryanmbelcher86@gmail.com',
-//                 pass: process.env.EMAIL_PASSWORD,
-//             },
-//         });
-
-//         let info = await transporter.sendMail({
-//             from: 'Journey Journals',
-//             to: recipient.email,
-//             subject: `Message from: ${user.username}`,
-//             text: args.message,
-//             html: `<p>${args.message}<p>`
-//         });
-
-//         console.log("Message sent: %s", info.messageId);
-//         res.status(200);
-//         return result;
-//     }
-//     throw new AuthenticationError('You need to be logged in!');
-// },

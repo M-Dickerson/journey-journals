@@ -1,22 +1,28 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { GET_EMAIL_USER } from '../utils/queries';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
-export default function Contact() {
+export default function Contact({ recipientUsername }) {
+    console.log(recipientUsername);
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [getEmail, { loading, error, data }] = useLazyQuery(GET_EMAIL_USER);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        console.log('form submitted');
-        const response = await fetch('/api/email',
-            {
-                method: 'POST',
-                body: JSON.stringify({ message }),
-            });
-
-        const body = response.json();
-        console.log(body);
+        if (errorMessage) {
+            return;
+        } else {
+            getEmail({ variables: { username: recipientUsername, message }, });
+        }
     }
+
+
+
+    // console.warn('loading', loading);
+    // console.warn('data', data);
+
 
     const handleInputChange = (e) => {
         const { target } = e;
@@ -36,7 +42,6 @@ export default function Contact() {
             return
         }
 
-        setMessage('');
     };
 
     return (
@@ -56,9 +61,13 @@ export default function Contact() {
                     />
                 </Form.Group>
             </Form>
+            {errorMessage}
             <Button
                 type='submit'
-                variant='success'>
+                variant='success'
+                onClick={handleFormSubmit}
+            >
+
                 Send
             </Button>
         </>

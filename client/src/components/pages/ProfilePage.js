@@ -200,7 +200,7 @@ export default function ProfilePage() {
                                         <Modal.Body>
                                             <Tab.Content>
                                                 <Tab.Pane eventKey='login'>
-                                                    <Contact handleModalClose={() => setShowModal(false)} />
+                                                    <Contact handleModalClose={() => setShowModal(false)} recipientUsername={profile.username} />
                                                 </Tab.Pane>
                                             </Tab.Content>
                                         </Modal.Body>
