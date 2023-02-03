@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Card, Form, Col, Image, Button } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 import "../styles/TravelFeed.css";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import { ADD_COMMENT, DELETE_COMMENT } from '../utils/mutations';
@@ -63,7 +64,14 @@ const Post = ({ posts }) => {
                             </Col>
 
                             <Col xl={6} sm={6} xs={6}>
-                                <h5 className="travelText">{post.username}</h5>
+                                {Auth.getProfile().data.username === post.username && 
+                                    (<Link to={`/me`}><h5 className="travelText">{post.username}</h5></Link>
+                                    )}
+
+                                {Auth.getProfile().data.username !== post.username &&
+                                    (<Link to={`/profiles/${post.username}`}><h5 className="travelText">{post.username}</h5></Link>
+                                    )}
+
                                 <p className="travelText">{post.createdAt}</p>
                             </Col>
 

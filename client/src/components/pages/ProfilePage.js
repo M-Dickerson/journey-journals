@@ -1,11 +1,12 @@
 import React, { useState } from "react"
+import { Navigate, useParams } from 'react-router-dom';
 // links for react bootstrap styling
 import "../../styles/ProfilePage.css";
 import { Container, Row, Col, Card, Image, Button, Modal } from "react-bootstrap";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 import Auth from '../../utils/auth';
-import { GET_ME, GET_TRIP, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP/*, GET_TRIPS*/ } from '../../utils/queries';
+import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP/*, GET_TRIPS*/ } from '../../utils/queries';
 import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST } from '../../utils/mutations';
 
 export default function ProfilePage() {
@@ -23,117 +24,22 @@ export default function ProfilePage() {
     const [postTitle, setPostTitle] = useState('');
     const [postDescription, setPostDescription] = useState('');
 
-    // GET_ME query to get info about user/profile
-    const { loading, data } = useQuery(GET_ME);
-    const profile = data?.me;
+    const { username: userParam } = useParams();
+    const { loading, data } = useQuery(!userParam ? GET_ME : GET_SINGLE_USER, {
+        variables: { username: userParam },
+    });
+
+    const profile = data?.me || data?.getSingleUser || {};
     console.log(profile);
-    // GET_TRIP query to get specific trip info
-    const [getTrip, { loadingGetTrip, errorGetTrip, dataGetTrip }] = useLazyQuery(GET_TRIP);
+    
     const [getPostsByTrip, { error: errorPosts, loading: loadingPosts, data: dataPosts }] = useLazyQuery(GET_POSTS_BY_TRIP);
     const { loading1, data1 } = useQuery(GET_TRIPS_BY_USER);
 
     // Mutations to add/delete trip & post 
-    const [addTrip, { error: errorAddTrip }] = useMutation(ADD_TRIP)/*, {
-        update(cache, { data: { addTrip } }) {
-            try {
-
-              const { getTripsByUser } = cache.readQuery({ query: GET_TRIPS_BY_USER });
-            //   console.log(getTripsByUser);
-      
-              cache.writeQuery({
-                query: GET_TRIPS_BY_USER,
-                data: { getTripsByUser: [...getTripsByUser, addTrip] },
-              });
-              setCurrentTrip('');
-            } catch (e) {
-              console.error(e);
-            }
-          },
-        });*/
-
-
-    //             const { me } = cache.readQuery({ query: GET_ME });
-    //             console.log(me);
-    //             cache.writeQuery({
-    //                 query: GET_ME,
-
-    //                 data: { me: { 
-    //                     ...me,
-    //                     trips: [...me.trips, addTrip] 
-    //                 } },
-    //             });
-                
-    //         } catch (e) {
-    //             console.error(e);
-    //         }
-    //     },
-    // });
-
-    const [addPost, { error: errorAddPost }] = useMutation(ADD_POST)/*, {
-        update(cache, { data: { addPost } }) {
-            try {
-                const { me } = cache.readQuery({ query: GET_ME });
-                console.log('ME:');
-                // console.log(me.trips.length);
-                const tripIndex = me.trips.findIndex(trip => trip._id === currentTrip);
-                console.log('tripIndex: ' + tripIndex);
-                cache.writeQuery({
-                    query: GET_ME,
-
-                    data: { me: { 
-                        ...me,
-                        trips: [
-                            ...me.trips,
-                            me.trips[tripIndex].posts[[me.trips[tripIndex].posts.length][addPost]]
-                            // posts: [
-                            //     ...me.trips.posts
-                            // ],
-                            // me.trips[tripIndex].posts: addPost
-                        ] 
-                    } }
-                });
-                
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    });*/
-    
-    const [deleteTrip, { error: errorDeleteTrip }] = useMutation(DELETE_TRIP);/*, {
-        update(cache, { data: { deleteTrip } }) {
-            try {
-                const { me } = cache.readQuery({ query: GET_ME });
-
-                cache.writeQuery({
-                    query: GET_ME,
-
-                    data: { me: { 
-                        ...me
-                    } },
-                });
-            } catch (e) {
-                console.error(e);
-            }
-        },
-    });*/
-
-    const [deletePost, { error: errorDeletePost }] = useMutation(DELETE_POST);/*, {
-        update(cache, { data: { deletePost } }) {
-            try {
-                const { me } = cache.readQuery({ query: GET_ME });
-
-                cache.writeQuery({
-                    query: GET_ME,
-
-                    data: { me: { 
-                        ...me
-                    } },
-                });
-            } catch (e) {
-                console.error(e);
-            }
-        },
-    });*/
+    const [addTrip, { error: errorAddTrip }] = useMutation(ADD_TRIP);
+    const [addPost, { error: errorAddPost }] = useMutation(ADD_POST);
+    const [deleteTrip, { error: errorDeleteTrip }] = useMutation(DELETE_TRIP);
+    const [deletePost, { error: errorDeletePost }] = useMutation(DELETE_POST);
 
     // If data isn't here yet, say so
     if (loading) {
@@ -157,6 +63,8 @@ export default function ProfilePage() {
             } catch (err) {
                 console.log(err);
             }
+            setShowPostModal(false);
+            window.location.reload();
         // Toggle seeTrips to false, set currentTrip, get posts from trip that was clicked on
         } else {
             setSeeTrips((prev) => !prev);
@@ -250,18 +158,22 @@ export default function ProfilePage() {
                     <Col xl={6} sm={6} xs={6}>
                         <Image src="https://i.imgur.com/kC72c8e.jpg" alt="profile picture" roundedCircle thumbnail></Image>
                         <hr></hr>
-                        <h5>Followers: {profile.followerCount}</h5>
-                        <h5>Posts: {profile.postCount}</h5>
                         <h5>Trips: {profile.tripCount}</h5>
-                        <Button className="travelButton" size="sm">
-                            Follow
-                        </Button>
-                        <Button className="travelButton" size="sm">
-                            Block
-                        </Button>
-                        <Button className="travelButton" size="sm">
-                            Message
-                        </Button>
+                        <h5>Posts: {profile.postCount}</h5>
+                        <h5>Followers: {profile.followerCount}</h5>
+                        {userParam &&
+                            (<>
+                                <Button className="travelButton" size="sm">
+                                    Follow
+                                </Button>
+                                <Button className="travelButton" size="sm">
+                                    Block
+                                </Button>
+                                <Button className="travelButton" size="sm">
+                                    Message
+                                </Button>
+                            </>)
+                        }
                     </Col>
                     <Col xl={6} sm={6} xs={6} >
                         <h3 className="travelText">{profile.username}</h3>
@@ -280,7 +192,8 @@ export default function ProfilePage() {
                             profile.trips.map((trip) => (
                                 <Card key={trip._id} className="tTest text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
                                     <h2>{trip.location}</h2>
-                                    <i id="deleteTrip" className="fa-solid fa-square-minus"></i>
+                                    {!userParam && <i id="deleteTrip" className="fa-solid fa-square-minus"></i>}
+                                    
                                 </Card>
                             ))
                         }
@@ -292,7 +205,7 @@ export default function ProfilePage() {
                                 <Card key={post._id} className="tTest d-flex flex-column justify-content-between">
                                     <section className="tTest d-flex justify-content-between">
                                         <h2>{post.title}</h2>
-                                        <i id="deletePost" className="fa-solid fa-square-minus" onClick={() => { handlePostDelete(post._id) }}></i>
+                                        {!userParam && <i id="deletePost" className="fa-solid fa-square-minus" onClick={() => { handlePostDelete(post._id) }}></i>}
                                     </section>
                                     <p>{post.description}</p>
                                     <p>{post.createdAt}</p>
@@ -302,9 +215,11 @@ export default function ProfilePage() {
                     </Col>
                     <Col>
                         {/* If rendering trip cards, show add trip button */}
-                        {seeTrips && <Button className="tripButton" onClick={() => setShowTripModal(true)}>Add a New Trip</Button>}
+                        {!userParam && seeTrips && <Button className="tripButton" onClick={() => setShowTripModal(true)}>Add a New Trip</Button>}
+                        
                         {/* If rendering post cards, show add post and go back btns */}
-                        {!seeTrips && <Button className="tripButton" onClick={() => setShowPostModal(true)}>Add a New Post</Button>}
+                        {!userParam && !seeTrips && <Button className="tripButton" onClick={() => setShowPostModal(true)}>Add a New Post</Button>}
+
                         {!seeTrips && <Button className="tripButton" onClick={handleGoBack}>Go Back</Button>}
 
                         {/* Modal form to add new trip */}

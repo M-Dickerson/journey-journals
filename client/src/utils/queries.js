@@ -30,6 +30,31 @@ export const GET_ME = gql`
     }
 `;
 
+export const GET_SINGLE_USER = gql`
+    query getSingleUser($username: String!) {
+        getSingleUser(username: $username) {
+            _id
+            username
+            email
+            bio
+            profileImage
+            trips {
+                _id
+                location
+            }
+            tripCount
+            posts {
+                _id
+            }
+            postCount
+            followers {
+                _id
+            }
+            followerCount
+        }
+    }
+`;
+
 
 export const GET_TRIP = gql`
     query getTrip($tripId: String!) {

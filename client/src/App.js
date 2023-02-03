@@ -49,13 +49,14 @@ function App() {
                             element={<ProfilePage />}
                         />
                         <Route
+                            path="/profiles/:username"
+                            element={<ProfilePage />}
+                        />
+                        <Route
                             path="/logout"
                             element={<Landing />}
                         />
-                        {/* <Route
-                            path="/profiles/:username"
-                            element={<Profile />}
-                        /> */}
+                        
                     </Routes>
                     <Footer />
                 </div>

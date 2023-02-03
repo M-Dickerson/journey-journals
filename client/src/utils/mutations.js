@@ -70,14 +70,15 @@ export const ADD_COMMENT = gql`
 `;
 
 export const DELETE_TRIP = gql`
-    mutation DeleteTrip($tripId: String!) {
-        deleteTrip(tripId: $tripId) {
+    mutation deleteTrip($tripId: String!, $username: String) {
+        deleteTrip(tripId: $tripId, username: $username) {
             _id
             username
-            trips {
+            location
+            posts {
                 _id
-                location
             }
+            postCount
         }
     }
 `;
