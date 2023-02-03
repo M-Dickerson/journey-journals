@@ -1,0 +1,11 @@
+.signlogButton {
+    background-color: #F68D2E!important;
+    border: none !important;
+    margin-top: 2%;
+}
+.nav-link.active {
+    background-color: #F65275!important;
+}
+.testing {
+    color: #9CDBD9!important;
+}
