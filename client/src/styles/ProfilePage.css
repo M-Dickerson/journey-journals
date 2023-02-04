@@ -35,3 +35,15 @@
         width: 100%;
     }
 }
+/* DARK MODE */
+.content-dark .pfp {
+    background-color: black;
+    color: white;
+}
+.content-dark .trips, .content-dark .tTest {
+    background-color: black;
+    color: white;
+}
+/* .content-dark .tTest {
+    color: black;
+} */

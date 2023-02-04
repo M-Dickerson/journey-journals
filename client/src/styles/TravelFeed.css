@@ -1,3 +1,4 @@
+/* Adds padding to the top of the cards */
 .travel, .comments p, .travelComment {
     padding-top: 2%;
 }
@@ -22,19 +23,10 @@ img.travelImg {
 .travelCon {
     padding: 2%;
 }
-.content-dark .travelCon {
-    background-color: black;
-}
-.content-dark .travelText, .travelOther {
-    color: white;
-}
 .travelText {
     text-align: right;
 }
 /* Comment section */
-.content-dark .commentDark {
-    background-color: black;
-}
 .comments {
     padding-top: 1%;
     width: 100%;
@@ -48,4 +40,9 @@ img.travelImg {
     background-color: #E9E186!important;
     border: none!important;
     color: #000!important;
+}
+/* DARK MODE */
+.content-dark .travelCon, .content-dark .commentDark {
+    background-color: black;
+    color: white;
 }
