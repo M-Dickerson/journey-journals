@@ -26,6 +26,9 @@ img.travelImg {
 .travelText {
     text-align: right;
 }
+.secondTravel {
+    color: #000;
+}
 /* Comment section */
 .comments {
     padding-top: 1%;
@@ -45,9 +48,21 @@ img.travelImg {
     margin-bottom: 2%;
     padding: 1%;
 }
+/* MOBILE RESPONSIVENESS */
+@media screen and (max-width: 540px){
+    .travel.container {
+        width: 100%;
+    }
+    .testPfp {
+        width: 80%;
+    }
+}
 /* DARK MODE */
 .content-dark .travelCon, .content-dark .commentDark {
     background-color: black;
+    color: white;
+}
+.content-dark .secondTravel {
     color: white;
 }
 .content-dark .commentDark, .content-dark .tTest {
