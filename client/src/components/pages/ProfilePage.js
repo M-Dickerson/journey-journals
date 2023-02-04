@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Navigate, useParams } from 'react-router-dom';
+import Axios from 'axios';
 // links for react bootstrap styling
 import "../../styles/ProfilePage.css";
 import { Container, Row, Col, Card, Image, Button, Modal, Tab, Nav } from "react-bootstrap";
@@ -25,6 +26,7 @@ export default function ProfilePage() {
     const [newLocation, setNewLocation] = useState('');
     const [postTitle, setPostTitle] = useState('');
     const [postDescription, setPostDescription] = useState('');
+    const [imageSelected, setImageSelected] = useState('');
 
     const [showModal, setShowModal] = useState('');
 
@@ -151,8 +153,27 @@ export default function ProfilePage() {
         }
     }
 
+    
+    // const uploadImage = () => {
+    //     console.log(imageSelected);
+    //     // fetch axios
+    //     const formData = new FormData();
+    //     formData.append('file', imageSelected);
+    //     formData.append('upload_present', 'fmzvmxkg');
+
+    //     Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData)
+    //         .then((response) => {
+    //             console.log(response);
+    //         });
+    // };
+
+
+
     return (
         <Container className="profile">
+
+            {/* <input type="file" onChange={(event) => {setImageSelected(event.target.files[0])}}/>
+            <button onClick={uploadImage}>Upload Image</button> */}
             {/* <Row>
                 <h2>Profile Page</h2>
             </Row> */}
@@ -219,7 +240,7 @@ export default function ProfilePage() {
             {/* Render card to display either all of user's trips or posts */}
             <Card className="trips">
                 <Row>
-                    <Col xl={12} sm={6} xs={6} >
+                    <Col xl={12}>
                         {seeTrips && <h1>{profile.username}'s Trips</h1>}
                         {/* Render card for each trip */}
                         {seeTrips &&

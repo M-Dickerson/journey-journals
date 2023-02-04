@@ -22,3 +22,8 @@ body {
     background-size: 50%;
     border-radius: 10px;
 }
+/* Dark mode toggle */
+.darkButton {
+    background-color: #E9E186!important;
+    border: none!important;
+}

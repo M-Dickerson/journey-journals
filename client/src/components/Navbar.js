@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // links for react bootstrap styling
 import "../styles/Navbar.css";
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
@@ -11,6 +11,7 @@ import Auth from '../utils/auth';
 function AppNavbar({ handlePageChange }) {
     // Set modal display state
     const [showModal, setShowModal] = useState(false);
+    // const darkMode = useContext(darkMode);
 
     return (
         <>
@@ -27,15 +28,15 @@ function AppNavbar({ handlePageChange }) {
                             {/* If logged in, render all accessible tabs in navbar */}
                             {Auth.loggedIn() ? (
                                 <>
-                                    <Link to="/travelfeed">
-                                        TravelFeed
+                                    <Link className=" navLinks" to="/travelfeed">
+                                        Feed
                                     </Link>
 
-                                    <Link to="/me">
-                                        MyProfilePage
+                                    <Link className=" navLinks" to="/me">
+                                        Profile
                                     </Link>
 
-                                    <Link to="/logout" onClick={Auth.logout}>
+                                    <Link className=" navLinks" to="/logout" onClick={Auth.logout}>
                                         Logout
                                     </Link>
 
@@ -44,7 +45,7 @@ function AppNavbar({ handlePageChange }) {
                                     <Nav.Link onClick={Auth.logout}>Logout</Nav.Link> */}
                                 </>
                             ) : (
-                                <Link to="/" onClick={() => setShowModal(true)}>Login/Sign Up</Link>
+                                <Link className=" navLinks" to="/" onClick={() => setShowModal(true)}>Login</Link>
                             )}
                         </Nav>
                     </Navbar.Collapse>

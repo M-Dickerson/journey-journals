@@ -1,13 +1,14 @@
 import React from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Landing from "./components/pages/Landing";
-import TravelFeed from "./components/pages/TravelFeed";
-import ProfilePage from "./components/pages/ProfilePage";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Content from "./components/Content"
+// import Header from "./components/Header";
+// import Footer from "./components/Footer";
+// import Landing from "./components/pages/Landing";
+// import TravelFeed from "./components/pages/TravelFeed";
+// import ProfilePage from "./components/pages/ProfilePage";
+// import {  } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-// import { DarkModeProvider } from "./context/DarkModeContext";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 const httpLink = createHttpLink({
     uri: '/graphql',
@@ -29,51 +30,16 @@ const client = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
 });
-
 function App() {
     return (
         <ApolloProvider client={client}>
-            <Router>
-                <div>
-                    <Header />
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={<Landing />}
-                        />
-                        <Route
-                            path="/travelfeed"
-                            element={<TravelFeed />}
-                        />
-                        <Route
-                            path="/me"
-                            element={<ProfilePage />}
-                        />
-                        <Route
-                            path="/profiles/:username"
-                            element={<ProfilePage />}
-                        />
-                        <Route
-                            path="/logout"
-                            element={<Landing />}
-                        />
-
-                    </Routes>
-                    <Footer />
-                </div>
-            </Router>
+            <div>
+                <DarkModeProvider>
+                    < Content />
+                </DarkModeProvider>
+            </div>
         </ApolloProvider>
     );
 }
-
-// function Content() {
-//     const { darkMode } = useContext();
-//     return (
-//         <div className={darkMode ? 'content-dark' : 'content-light'}>
-//             <Header />
-//             <Footer />
-//         </div>
-//     );
-// }
 
 export default App;
