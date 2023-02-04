@@ -87,11 +87,16 @@ const resolvers = {
             console.log('the args', args);
             console.log('the context', context);
 
+            if (!context.user) {
+                throw new AuthenticationError('You need to be logged in!');
+            }
+
             if (args.username) {
                 console.log('You got here');
                 const recipient = await User.findOne({ username: args.username });
                 console.log('RESULT:\n');
                 console.log('recipient', recipient);
+                console.log('user username', context.user.username);
 
                 let transporter = nodemailer.createTransport({
                     service: 'gmail',
@@ -110,10 +115,7 @@ const resolvers = {
                 });
 
                 console.log("Message sent: %s", info.messageId);
-                res.status(200);
-                return result;
             }
-            throw new AuthenticationError('You need to be logged in!');
         },
     },
 

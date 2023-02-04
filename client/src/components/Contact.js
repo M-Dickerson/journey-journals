@@ -7,14 +7,19 @@ export default function Contact({ recipientUsername }) {
     console.log(recipientUsername);
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [getEmail, { loading, error, data }] = useLazyQuery(GET_EMAIL_USER);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [getEmail] = useLazyQuery(GET_EMAIL_USER);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         if (errorMessage) {
             return;
-        } else {
-            getEmail({ variables: { username: recipientUsername, message }, });
+        }
+        const { data, error } = await getEmail({ variables: { username: recipientUsername, message }, });
+        if (data && !error) {
+            setSuccessMessage('Message sent!');
+        } else if (error) {
+            setErrorMessage('Unable to send message.');
         }
     }
 
@@ -55,15 +60,15 @@ export default function Contact({ recipientUsername }) {
                     />
                 </Form.Group>
             </Form>
-            {errorMessage}
             <Button
                 type='submit'
                 variant='success'
                 onClick={handleFormSubmit}
             >
-
                 Send
             </Button>
+            {errorMessage}
+            {successMessage}
         </>
     );
 };
