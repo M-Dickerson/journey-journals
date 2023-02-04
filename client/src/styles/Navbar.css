@@ -1,7 +1,7 @@
 * {
   font-family: 'Oswald', sans-serif;
 }
-/* Base navbar */
+/* Base navbar*/
 .navbar {
   background-color: #F65275;
 }
@@ -10,21 +10,40 @@
 }
 span.navbar-brand {
   color: #fff;
-  font-size: 2vh;
+  font-size: 2rem;
 }
-/* Navbar links */
+/* Navbar links*/
 .something2 {
   color: black!important;
 }
 .navLinks {
   color: #fff;
-  font-size: 1.5vh;
+  font-size: 1.5rem;
   text-decoration: none;
   padding-left: 6%;
 }
 .navLinks:hover {
   color: #E9E186;
 }
-.darkMode {
-  content: dark;
+/* MOBILE RESPONSIVENESS */
+@media screen and (max-width: 540px){
+  .navLinks {
+    padding: 2%;
+  }
+  span.navbar-brand {
+    font-size: medium;
+  }
+  .navLinks {
+    font-size: medium;
+  }
+}
+/* DARK MODE */
+.content-dark span.navbar-brand {
+  color: #F65275;
+}
+.content-dark .navLinks {
+  color: #F65275;
+}
+.content-dark .navbar {
+  background-color: black;
 }

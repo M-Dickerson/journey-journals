@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Landing from "../components/pages/Landing";
 import TravelFeed from "../components/pages/TravelFeed";
 import ProfilePage from "../components/pages/ProfilePage";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { DarkModeContext } from "../context/DarkModeContext";
 
 function Content() {
@@ -12,30 +12,30 @@ function Content() {
     return (
         <div className={darkMode ? 'content-dark' : 'content-light'}>
             <Router>
-            <Header />
-            <Routes>
-                <Route
-                    path="/"
-                    element={<Landing />}
-                />
-                <Route
-                    path="/travelfeed"
-                    element={<TravelFeed />}
-                />
-                <Route
-                    path="/me"
-                    element={<ProfilePage />}
-                />
-                <Route
-                    path="/profiles/:username"
-                    element={<ProfilePage />}
-                />
-                <Route
-                    path="/logout"
-                    element={<Landing />}
-                />
-            </Routes>
-            <Footer />
+                <Header />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Landing />}
+                    />
+                    <Route
+                        path="/travelfeed"
+                        element={<TravelFeed />}
+                    />
+                    <Route
+                        path="/me"
+                        element={<ProfilePage />}
+                    />
+                    <Route
+                        path="/profiles/:username"
+                        element={<ProfilePage />}
+                    />
+                    <Route
+                        path="/logout"
+                        element={<Landing />}
+                    />
+                </Routes>
+                <Footer />
             </Router>
         </div>
     );
