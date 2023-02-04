@@ -275,6 +275,25 @@ const resolvers = {
             return post;
         },
 
+        editPost: async (parent, args, context) => {
+            const updatedPost = await Post.findOneAndUpdate(
+                { _id: args.postId },
+                { $set: 
+                    {
+                        title: args.title,
+                        description: args.description,
+                        image: args.postImage
+                    }  
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+
+            return updatedPost;
+        },
+
         // Add comment to a post
         addComment: async (parent, args, context) => {
             const post = await Post.findOneAndUpdate(

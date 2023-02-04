@@ -153,3 +153,15 @@ export const DELETE_COMMENT = gql`
         }
     }
 `;
+
+export const EDIT_POST = gql`
+    mutation editPost($postId: String, $title: String, $description: String, $postImage: String) {
+        editPost(postId: $postId, title: $title, description: $description, postImage: $postImage) {
+            _id
+            title
+            description
+            image
+            username
+        }
+    }
+`;

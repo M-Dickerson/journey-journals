@@ -56,7 +56,7 @@ const Post = ({ posts }) => {
     return (
         <>
             {posts.map((post) => (
-                <Container key={post._id}className="travel">
+                <Container key={post._id} className="travel">
                     <Card className="travelCon">
                         <Row className="image2">
                             <Col xl={6} sm={6} xs={6}>

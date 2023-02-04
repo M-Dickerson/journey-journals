@@ -8,7 +8,7 @@ import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 import Auth from '../../utils/auth';
 import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP, GET_SINGLE_TRIP} from '../../utils/queries';
-import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST, EDIT_PROFILE, ADD_FOLLOWER, REMOVE_FOLLOWER} from '../../utils/mutations';
+import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST, EDIT_POST, EDIT_PROFILE, ADD_FOLLOWER, REMOVE_FOLLOWER} from '../../utils/mutations';
 
 export default function ProfilePage() {
     // seeTrips is true when rendering trips, false when rendering posts
@@ -22,12 +22,14 @@ export default function ProfilePage() {
     const [showTripModal, setShowTripModal] = useState(false);
     const [showPostModal, setShowPostModal] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
+    const [showEditPostModal, setShowEditPostModal] = useState(false);
     // Keep track of input fields
     const [newLocation, setNewLocation] = useState('');
     const [postTitle, setPostTitle] = useState('');
     const [postDescription, setPostDescription] = useState('');
     const [imageSelected, setImageSelected] = useState('');
     const [formProfile, setFormProfile] = useState({ bio: '', profileImage: '' });
+    const [formPost, setFormPost] = useState({ title: '', description: '', postImage: '' });
     const [postImageSelected, setPostImageSelected] = useState('');
 
     const { username: userParam } = useParams();
@@ -50,6 +52,7 @@ export default function ProfilePage() {
     const [editProfile, { error: errorEditProfile }] = useMutation(EDIT_PROFILE);
     const[addFollower, { error: errorAddFollower } ] = useMutation(ADD_FOLLOWER);
     const[removeFollower, { error: errorRemoveFollower } ] = useMutation(REMOVE_FOLLOWER);
+    const[editPost, _ ] = useMutation(EDIT_POST);
 
     // If data isn't here yet, say so
     if (loading) {
@@ -218,6 +221,51 @@ export default function ProfilePage() {
         }
     };
 
+    // Update state based on edit profile form input changes
+    const handlePostChange = (event) => {
+        const { name, value } = event.target;
+
+        setFormPost({
+            ...formPost,
+            [name]: value,
+        });
+    };
+
+    // Submit form to edit profile
+    const submitEditPost = async (postId, event) => {
+        event.preventDefault();
+        console.log('HERE!');
+
+        let response;
+        // If user selected image file from computer, post to cloudinary, retrieve URL and store in formProfile state variable
+        if (imageSelected) {
+            const formData = new FormData();
+            formData.append('file', imageSelected);
+            formData.append('upload_preset', 'fmzvmxkg');
+    
+            response = await Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData);
+
+            setImageSelected('');
+        }
+
+        // Update bio and profile image for this user
+        try {
+            const { data } = await editPost({
+                variables: {
+                    postId,
+                    title: formPost.title,
+                    description: formPost.description,
+                    postImage: response.data.url
+                }
+            });
+            console.log(data);
+            setShowEditPostModal(false);
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const followUser = async () => {
         const { data } = await addFollower({
             variables: {
@@ -302,17 +350,53 @@ export default function ProfilePage() {
                         {/* Render card for each post for the trip clicked on */}
                         {!seeTrips &&
                             (tripPosts.map((post) => (
-                                <Card style={{width: "75%"}} key={post._id} className="tTest d-flex flex-column justify-content-between">
+                                <Card style={{ width: "75%" }} key={post._id} className="tTest d-flex flex-column justify-content-between">
                                     <section className="tTest d-flex justify-content-between">
                                         <h2>{post.title}</h2>
-                                        {!userParam && <i id="deletePost" className="fa-solid fa-square-minus" onClick={() => { handlePostDelete(post._id) }}></i>}
+                                        {!userParam &&
+                                            <section>
+                                                <i className="fa-solid fa-pen-to-square" style={{ padding: "10px" }} onClick={() => setShowEditPostModal(true)}></i>
+                                                <i id="deletePost" className="fa-solid fa-square-minus" onClick={() => { handlePostDelete(post._id) }}></i>
+                                            </section>}
                                     </section>
                                     <p>{post.description}</p>
                                     <p>{post.createdAt}</p>
-                                    <section style={{width: "80%"}}>
+                                    <section style={{ width: "80%" }}>
                                         {post.image && (<Image src={post.image} alt="post-image" thumbnail></Image>)}
                                     </section>
-                                    
+
+                                    {/* Modal to show edit post form */}
+                                    <Modal
+                                        size='md'
+                                        show={showEditPostModal}
+                                        onHide={() => setShowEditPostModal(false)}
+                                        aria-labelledby='edit-post-modal'
+                                        centered>
+
+                                        <Modal.Header closeButton>
+                                            <Modal.Title id='edit-post-modal'>
+                                                Edit Post
+                                            </Modal.Title>
+                                        </Modal.Header>
+
+                                        <Modal.Body>
+                                            <form className="d-flex flex-column">
+                                                <label htmlFor="title">Update Title:</label>
+                                                <input type='text' name="title" value={formPost.title} onChange={handlePostChange} />
+
+                                                <label htmlFor="description">Update Description:</label>
+                                                <textarea rows="5" type='text' name="description" value={formPost.description} onChange={handlePostChange} />
+
+                                                <br></br>
+                                                <label htmlFor="postImg">Update Image:</label>
+                                                <input type="file" name="postImg" onChange={(event) => { setImageSelected(event.target.files[0]) }} />
+
+                                                <br></br>
+                                                <Button className="tripButton" onClick={(event)=> submitEditPost(post._id, event)}>Update Post</Button>
+                                            </form>
+                                        </Modal.Body>
+                                    </Modal>
+
                                 </Card>
                             )))
                         }
@@ -410,6 +494,7 @@ export default function ProfilePage() {
                     </form>
                 </Modal.Body> 
             </Modal>
+
         </Container>
     );
 }
