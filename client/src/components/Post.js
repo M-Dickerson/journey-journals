@@ -58,15 +58,9 @@ const Post = ({ posts }) => {
             {posts.map((post) => (
                 <Container key={post._id} className="travel">
                     <Card className="travelCon">
-<<<<<<< HEAD
-                        <Row className="image2" xs={12}>
-                            <Col xl={6} sm={6} xs={4}>
-                                <Image className="testPfp" src="https://i.imgur.com/kC72c8e.jpg" alt="profile picture" roundedCircle thumbnail></Image>
-=======
                         <Row className="image2">
                             <Col xl={6} sm={6} xs={6}>
                                 <Image className="testPfp" src={post.userId.profileImage}/*"https://i.imgur.com/kC72c8e.jpg"*/ alt="profile picture" roundedCircle thumbnail></Image>
->>>>>>> ecf27ebcdd05e24da03753ac40ee777258b7def5
                             </Col>
 
                             <Col xl={6} sm={6} xs={8}>
