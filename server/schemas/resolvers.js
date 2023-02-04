@@ -84,7 +84,8 @@ const resolvers = {
         // Nodemailer email functionality
         getEmailUser: async (parent, args, context) => {
 
-            console.log(args);
+            console.log('the args', args);
+            console.log('the context', context);
 
             if (args.username) {
                 console.log('You got here');
@@ -103,7 +104,7 @@ const resolvers = {
                 let info = await transporter.sendMail({
                     from: 'Journey Journals',
                     to: recipient.email,
-                    subject: `Message from`,
+                    subject: `Message from ${context.user.username}`,
                     text: args.message,
                     html: `<p>${args.message}<p>`
                 });
