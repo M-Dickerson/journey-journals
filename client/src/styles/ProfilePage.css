@@ -48,11 +48,7 @@
     }
 }
 /* DARK MODE */
-.content-dark .pfp {
-    background-color: black;
-    color: white;
-}
-.content-dark .trips, .content-dark .tTest {
+.content-dark .trips, .content-dark .tTest, .content-dark .pfp {
     background-color: black;
     color: white;
 }

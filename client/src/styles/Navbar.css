@@ -10,16 +10,15 @@
 }
 span.navbar-brand {
   color: #fff;
-  font-size: 2vh;
+  font-size: 2rem;
 }
-
 /* Navbar links*/
 .something2 {
   color: black!important;
 }
 .navLinks {
   color: #fff;
-  font-size: 1.5vh;
+  font-size: 1.5rem;
   text-decoration: none;
   padding-left: 6%;
 }
@@ -27,9 +26,15 @@ span.navbar-brand {
   color: #E9E186;
 }
 /* MOBILE RESPONSIVENESS */
-@media screen and (max-width: 500px){
+@media screen and (max-width: 540px){
   .navLinks {
     padding: 2%;
+  }
+  span.navbar-brand {
+    font-size: medium;
+  }
+  .navLinks {
+    font-size: medium;
   }
 }
 /* DARK MODE */

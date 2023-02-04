@@ -9,8 +9,8 @@ import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import Contact from '../Contact';
 
 import Auth from '../../utils/auth';
-import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP, GET_SINGLE_TRIP} from '../../utils/queries';
-import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST, EDIT_POST, EDIT_PROFILE, ADD_FOLLOWER, REMOVE_FOLLOWER} from '../../utils/mutations';
+import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP, GET_SINGLE_TRIP } from '../../utils/queries';
+import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST, EDIT_POST, EDIT_PROFILE, ADD_FOLLOWER, REMOVE_FOLLOWER } from '../../utils/mutations';
 
 export default function ProfilePage() {
     // seeTrips is true when rendering trips, false when rendering posts
@@ -46,7 +46,7 @@ export default function ProfilePage() {
 
     const [getPostsByTrip, { error: errorPosts, loading: loadingPosts, data: dataPosts }] = useLazyQuery(GET_POSTS_BY_TRIP);
     const { loading1, data1 } = useQuery(GET_TRIPS_BY_USER);
-    const [getSingleTrip, { error: errorTrip, loading: loadingTrip, data: dataTrip } ] = useLazyQuery(GET_SINGLE_TRIP);
+    const [getSingleTrip, { error: errorTrip, loading: loadingTrip, data: dataTrip }] = useLazyQuery(GET_SINGLE_TRIP);
 
     // Mutations to add/delete trip & post, edit profile 
     const [addTrip, { error: errorAddTrip }] = useMutation(ADD_TRIP);
@@ -54,9 +54,9 @@ export default function ProfilePage() {
     const [deleteTrip, { error: errorDeleteTrip }] = useMutation(DELETE_TRIP);
     const [deletePost, { error: errorDeletePost }] = useMutation(DELETE_POST);
     const [editProfile, { error: errorEditProfile }] = useMutation(EDIT_PROFILE);
-    const[addFollower, { error: errorAddFollower } ] = useMutation(ADD_FOLLOWER);
-    const[removeFollower, { error: errorRemoveFollower } ] = useMutation(REMOVE_FOLLOWER);
-    const[editPost, _ ] = useMutation(EDIT_POST);
+    const [addFollower, { error: errorAddFollower }] = useMutation(ADD_FOLLOWER);
+    const [removeFollower, { error: errorRemoveFollower }] = useMutation(REMOVE_FOLLOWER);
+    const [editPost, _] = useMutation(EDIT_POST);
 
     // If data isn't here yet, say so
     if (loading) {
@@ -88,7 +88,7 @@ export default function ProfilePage() {
                 variables: { tripId }
             });
             setCurrentTripLocation(dataTrip.getSingleTrip.location);
-            
+
             const { data } = await getPostsByTrip({
                 variables: {
                     tripId
@@ -132,7 +132,7 @@ export default function ProfilePage() {
             const formData = new FormData();
             formData.append('file', postImageSelected);
             formData.append('upload_preset', 'fmzvmxkg');
-    
+
             response = await Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData);
             console.log('POST IMAGE URL: ' + response.data.url);
         }
@@ -193,10 +193,10 @@ export default function ProfilePage() {
             const formData = new FormData();
             formData.append('file', imageSelected);
             formData.append('upload_preset', 'fmzvmxkg');
-    
+
             response = await Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData);
             console.log('PROFILE IMAGE URL: ' + response.data.url);
-            
+
             setFormProfile({
                 ...formProfile,
                 profileImage: response.data.url,
@@ -207,7 +207,7 @@ export default function ProfilePage() {
         try {
             const { data } = await editProfile({
                 variables: {
-                    bio: formProfile.bio || profile.bio, 
+                    bio: formProfile.bio || profile.bio,
                     profileImage: response?.data.url || profile.profileImage
                 }
             });
@@ -238,7 +238,7 @@ export default function ProfilePage() {
             const formData = new FormData();
             formData.append('file', imageSelected);
             formData.append('upload_preset', 'fmzvmxkg');
-    
+
             response = await Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData);
 
             setImageSelected('');
@@ -290,7 +290,7 @@ export default function ProfilePage() {
                         <hr></hr>
                         <h5><i className="fa-solid fa-suitcase"></i>  Trips: {profile.tripCount}</h5>
                         <h5><i className="fa-solid fa-image"></i>  Posts: {profile.postCount}</h5>
-                        <h5><i className="fa-solid fa-user-group" style={{fontSize: '1rem'}}></i>  Followers: {profile.followerCount}</h5>
+                        <h5><i className="fa-solid fa-user-group" style={{ fontSize: '1rem' }}></i>  Followers: {profile.followerCount}</h5>
                         {/* List out followers */}
                         <ul>
                             {profile.followers.map((follower) => (
@@ -320,19 +320,6 @@ export default function ProfilePage() {
                                     centered>
 
                                     <Tab.Container defaultActiveKey='login'>
-                                        <Modal.Header closeButton>
-                                            <Modal.Title id='login-modal'>
-                                                {/* <Nav variant='pills'>
-                                                    <Nav.Item>
-                                                        <Nav.Link className="something2" eventKey='login'>Login</Nav.Link>
-                                                    </Nav.Item>
-                                                    <Nav.Item>
-                                                        <Nav.Link className="something2" eventKey='signup'>Sign Up</Nav.Link>
-                                                    </Nav.Item>
-                                                </Nav> */}
-                                            </Modal.Title>
-                                        </Modal.Header>
-
                                         <Modal.Body>
                                             <Tab.Content>
                                                 <Tab.Pane eventKey='login'>
@@ -344,7 +331,6 @@ export default function ProfilePage() {
                                 </Modal>
                             </>)
                         }
-                        
 
                     </Col>
                     <Col xl={6} sm={6} xs={6} >
@@ -416,7 +402,7 @@ export default function ProfilePage() {
                                                 <input type="file" name="postImg" onChange={(event) => { setImageSelected(event.target.files[0]) }} />
 
                                                 <br></br>
-                                                <Button className="tripButton" onClick={(event)=> submitEditPost(post._id, event)}>Update Post</Button>
+                                                <Button className="tripButton" onClick={(event) => submitEditPost(post._id, event)}>Update Post</Button>
                                             </form>
                                         </Modal.Body>
                                     </Modal>
@@ -435,10 +421,11 @@ export default function ProfilePage() {
                         {!seeTrips && <Button className="tripButton" onClick={handleGoBack}>Go Back</Button>}
 
                         {/* Modal form to add new trip */}
-                        <Modal
+                        <Modal className="modalTest"
                             size='lg'
                             show={showTripModal}
                             onHide={() => setShowTripModal(false)}
+                            dialogClassName="modalTest"
                             aria-labelledby='add-trip-modal'
                             centered>
 
@@ -480,7 +467,7 @@ export default function ProfilePage() {
                                     <textarea type="text" name="description" onChange={(e) => setPostDescription(e.target.value)} />
 
                                     <label htmlFor="postImg">Image:</label>
-                                    <input type="file" name="postImg" onChange={(event) => {setPostImageSelected(event.target.files[0])}} />
+                                    <input type="file" name="postImg" onChange={(event) => { setPostImageSelected(event.target.files[0]) }} />
 
                                     <Button className="tripButton" onClick={handleAddPost}>Submit</Button>
                                 </form>
@@ -511,12 +498,12 @@ export default function ProfilePage() {
 
                         <br></br>
                         <label htmlFor="profileImg">Update Profile Image:</label>
-                        <input type="file" name="profileImg" onChange={(event) => {setImageSelected(event.target.files[0])}} />
-        
+                        <input type="file" name="profileImg" onChange={(event) => { setImageSelected(event.target.files[0]) }} />
+
                         <br></br>
                         <Button className="tripButton" onClick={submitEditProfile}>Update Profile</Button>
                     </form>
-                </Modal.Body> 
+                </Modal.Body>
             </Modal>
         </Container>
     );
