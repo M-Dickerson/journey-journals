@@ -56,11 +56,11 @@ const Post = ({ posts }) => {
     return (
         <>
             {posts.map((post) => (
-                <Container key={post._id}className="travel">
+                <Container key={post._id} className="travel">
                     <Card className="travelCon">
                         <Row className="image2">
                             <Col xl={6} sm={6} xs={6}>
-                                <Image className="testPfp" src="https://i.imgur.com/kC72c8e.jpg" alt="profile picture" roundedCircle thumbnail></Image>
+                                <Image className="testPfp" src={post.userId.profileImage}/*"https://i.imgur.com/kC72c8e.jpg"*/ alt="profile picture" roundedCircle thumbnail></Image>
                             </Col>
 
                             <Col xl={6} sm={6} xs={6}>
@@ -76,8 +76,12 @@ const Post = ({ posts }) => {
                             </Col>
 
                             <Row xl={12} className="image2">
-                                <Card.Title>{post.title}</Card.Title>
-                                <Card.Img className="travelImg" variant="top" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1421&q=80" />
+                                <Card.Title>
+                                    <h2>{post.tripId.location}</h2> 
+                                    <hr></hr>
+                                    <h3>{post.title}</h3>
+                                </Card.Title>
+                                <Card.Img className="travelImg" variant="top" src=/*"https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1421&q=80"*/{post.image} />
 
                                 <Card.Body>
                                     <Card.Text>

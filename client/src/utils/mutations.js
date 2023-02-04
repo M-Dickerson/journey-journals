@@ -25,6 +25,45 @@ export const ADD_USER = gql`
     }
 `;
 
+export const EDIT_PROFILE = gql`
+    mutation editProfile($bio: String, $profileImage: String, $username: String) {
+        editProfile(bio: $bio, profileImage: $profileImage, username: $username) {
+            _id
+            username
+            bio
+            profileImage
+        }
+    }
+`;
+
+export const ADD_FOLLOWER = gql`
+    mutation addFollower($userId: String, $followUsername: String) {
+        addFollower(userId: $userId, followUsername: $followUsername) {
+            _id
+            username
+            followers {
+                _id
+                username
+            }
+            followerCount
+        }
+    }
+`;
+
+export const REMOVE_FOLLOWER = gql`
+    mutation removeFollower($userId: String, $blockUsername: String) {
+        removeFollower(userId: $userId, blockUsername: $blockUsername) {
+            _id
+            username
+            followers {
+                _id
+                username
+            }
+            followerCount
+        }
+    }
+`;
+
 export const ADD_TRIP = gql`
     mutation addTrip($location: String!) {
         addTrip(location: $location) {
@@ -111,6 +150,18 @@ export const DELETE_COMMENT = gql`
                 _id
                 location
             }
+        }
+    }
+`;
+
+export const EDIT_POST = gql`
+    mutation editPost($postId: String, $title: String, $description: String, $postImage: String) {
+        editPost(postId: $postId, title: $title, description: $description, postImage: $postImage) {
+            _id
+            title
+            description
+            image
+            username
         }
     }
 `;

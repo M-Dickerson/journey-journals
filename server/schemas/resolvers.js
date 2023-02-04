@@ -32,8 +32,8 @@ const resolvers = {
 
         // Get trips by single user (to populate trips list on profile page)
         getTripsByUser: async (parent, args, context) => {
-            const trips = await Trip.find({
-                username: /*args.username ||*/ context.user.username
+            const trips = await Trip.find({ 
+                username: context.user.username
             }).populate('posts');
             return trips;
         },
@@ -46,8 +46,8 @@ const resolvers = {
 
         // Get all posts (travel feed) & sort from newest to oldest
         getAllPosts: async (parent, args) => {
-            const posts = await Post.find({}).populate('comments').populate('tripId');
-            const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt);
+            const posts = await Post.find({}).populate('comments').populate('tripId').populate('userId');
+            const sortedPosts = posts.sort((a, b) => a.createdAt - b.createdAt);
             return sortedPosts;
         },
 
@@ -143,6 +143,59 @@ const resolvers = {
             return { token, user };
         },
 
+        // Edit logged-in user's profile bio and image
+        editProfile: async (parent, args, context) => {
+            const updatedUser = await User.findOneAndUpdate(
+                { username: args.username || context.user.username },
+                { $set: 
+                    {
+                        bio: args.bio,
+                        profileImage: args.profileImage
+                    } 
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+
+            return updatedUser;
+        },
+
+        // Update user with another user as their follower
+        addFollower: async (parent, args, context) => {
+            const updatedUser = await User.findOneAndUpdate(
+                { username: args.followUsername },
+                {
+                    $addToSet: {
+                        followers: args.userId || context.user._id
+                    }
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('followers');
+            return updatedUser;
+        },
+
+        // Remove user/follower from user
+        removeFollower: async (parent, args, context) => {
+            const updatedUser = await User.findOneAndUpdate(
+                { username: args.blockUsername },
+                {
+                    $pull: {
+                        followers: args.userId || context.user._id
+                    }
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('followers');
+            return updatedUser;
+        },
+
         // Add user's new trip
         addTrip: async (parent, args, context) => {
             // Create trip
@@ -190,6 +243,7 @@ const resolvers = {
                 description: postInfo.description,
                 image: postInfo.image,
                 username: postInfo.username || context.user.username,
+                userId: postInfo.userId || context.user._id,
                 tripId: postInfo.tripId
             });
 
@@ -254,6 +308,26 @@ const resolvers = {
             );
 
             return post;
+        },
+
+        editPost: async (parent, args, context) => {
+            const updatedPost = await Post.findOneAndUpdate(
+                { _id: args.postId },
+                { $set: 
+                    {
+                        title: args.title,
+                        description: args.description,
+                        image: args.postImage,
+                        userId: context.user._id
+                    }  
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('userId');
+
+            return updatedPost;
         },
 
         // Add comment to a post
