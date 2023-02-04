@@ -23,6 +23,7 @@
 }
 .trips {
     padding: 2%;
+    width: 40%;
 }
 .tripButton {
     background-color: #9CDBD9!important;
@@ -31,13 +32,19 @@
     margin: 2% 2% 0 0;
     width: fit-content;
 }
+
 /* MOBILE RESPONSIVENESS */
 @media screen and (max-width: 500px){
-    .pfp {
-        width: 100%;
+    .profile.container {
+        display: flex;
+        flex-direction: column;
     }
     .trips {
         width: 100%;
+    }
+    .pfp {
+        width: 100%;
+        margin-bottom: 2%;
     }
 }
 /* DARK MODE */

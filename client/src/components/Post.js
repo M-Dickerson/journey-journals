@@ -60,10 +60,10 @@ const Post = ({ posts }) => {
                     <Card className="travelCon">
                         <Row className="image2">
                             <Col xl={6} sm={6} xs={6}>
-                                <Image className="testPfp" src={post.userId.profileImage}/*"https://i.imgur.com/kC72c8e.jpg"*/ alt="profile picture" roundedCircle thumbnail></Image>
+                                <Image className="testPfp" src={post.userId.profileImage} alt="profile picture" roundedCircle thumbnail></Image>
                             </Col>
 
-                            <Col xl={6} sm={6} xs={8}>
+                            <Col xl={6} sm={6} xs={5}>
                                 {Auth.getProfile().data.username === post.username && 
                                     (<Link to={`/me`}><h5 className="travelText secondTravel">{post.username}</h5></Link>
                                     )}
@@ -81,7 +81,7 @@ const Post = ({ posts }) => {
                                     <hr></hr>
                                     <h3>{post.title}</h3>
                                 </Card.Title>
-                                <Card.Img className="travelImg" variant="top" src=/*"https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1421&q=80"*/{post.image} />
+                                <Card.Img className="travelImg" variant="top" src={post.image} />
 
                                 <Card.Body>
                                     <Card.Text className="travelOther">
@@ -111,18 +111,6 @@ const Post = ({ posts }) => {
                             </Card>
                         ))}
                     </Card>
-
-                    {/* <Row className="comments">
-                        {post.comments.map((comment) => (
-                            <Card xl={10} className="commentDark">
-                                <p className='travelOther'>{comment.username}</p>
-                                <p className='travelOther'>{comment.createdAt}</p>
-                                <p className='travelOther'>{comment.text}</p>
-                                Only show trash can on comments that logged-in user made
-                                {Auth.getProfile().data.username === comment.username && <i id="deleteComment" className="fa-solid fa-trash" onClick={() => { handleCommentDelete(comment._id, post._id) }}></i>}
-                            </Card>
-                        ))}
-                    </Row> */}
                 </Container>
             ))}
         </>

@@ -3,7 +3,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import Axios from 'axios';
 // links for react bootstrap styling
 import "../../styles/ProfilePage.css";
-import { Container, Row, Col, Card, Image, Button, Modal, Tab, Nav } from "react-bootstrap";
+import { Container, Row, Col, Card, Image, Button, Modal, Tab } from "react-bootstrap";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 import Contact from '../Contact';
@@ -280,12 +280,10 @@ export default function ProfilePage() {
 
     return (
         <Container className="profile">
-            
             {/* Profile Card */}
             <Card className="pfp">
                 <Row>
                     <Col xl={6} sm={6} xs={6}>
-                        
                         {/* Display placeholder profile image if no prof img stored in DB */}
                         <Image src={profile.profileImage} alt="profile picture" roundedCircle thumbnail></Image>
 
@@ -376,7 +374,7 @@ export default function ProfilePage() {
                         {/* Render card for each post for the trip clicked on */}
                         {!seeTrips &&
                             (tripPosts.map((post) => (
-                                <Card style={{ width: "75%" }} key={post._id} className="tTest d-flex flex-column justify-content-between">
+                                <Card key={post._id} className="tTest d-flex flex-column justify-content-between">
                                     <section className="tTest d-flex justify-content-between">
                                         <h2>{post.title}</h2>
                                         {!userParam &&
@@ -520,7 +518,6 @@ export default function ProfilePage() {
                     </form>
                 </Modal.Body> 
             </Modal>
-
         </Container>
     );
 }
