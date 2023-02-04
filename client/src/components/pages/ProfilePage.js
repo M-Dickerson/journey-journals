@@ -61,11 +61,8 @@ export default function ProfilePage() {
 
     // Either show associated posts or delete trip
     const handleTripClick = async (tripId, event) => {
-        console.log('Handle trip click');
-
         // Delete trip if user clicked on delete icon on the trip card
         if (event.target.id === 'deleteTrip') {
-            console.log('delete trip');
             try {
                 const { data } = await deleteTrip({
                     variables: {
@@ -107,7 +104,6 @@ export default function ProfilePage() {
     // Submit form to add a new trip
     const handleAddTrip = async (event) => {
         event.preventDefault();
-        console.log('Handle add trip');
 
         try {
             const { data } = await addTrip({
@@ -125,7 +121,6 @@ export default function ProfilePage() {
     // Submit form to add a new post for a trip
     const handleAddPost = async (event) => {
         event.preventDefault();
-        console.log('Handle add post');
 
         let response;
         // If user selected image file from computer, post to cloudinary, retrieve URL
@@ -160,8 +155,6 @@ export default function ProfilePage() {
 
     // Delete post if user clicks on delete icon on post
     const handlePostDelete = async (postId) => {
-        console.log('handle post delete');
-
         try {
             const { data } = await deletePost({
                 variables: {
@@ -234,7 +227,6 @@ export default function ProfilePage() {
     // Submit form to edit profile
     const submitEditPost = async (postId, event) => {
         event.preventDefault();
-        console.log('HERE!');
 
         let response;
         // If user selected image file from computer, post to cloudinary, retrieve URL and store in formProfile state variable

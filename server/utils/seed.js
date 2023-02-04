@@ -36,26 +36,22 @@ connection.once('open', async () => {
     ];
     await Trip.collection.insertMany(trips);
 
-
     // Insert mock post data
     const janeTrips = await Trip.find({ username: 'Jane' });
-    const posts = [
-        {
-            title: 'Day 1: Hot Springs',
-            description: 'They were so cool!',
-            username: 'Jane',
-            tripId: janeTrips[0]._id,
-            userId: userJane._id
-        },
-        {
-            title: 'Day 2: Old Faithful',
-            description: 'Amazing!',
-            username: 'Jane',
-            tripId: janeTrips[0]._id,
-            userId: userJane._id
-        }
-    ];
-    await Post.collection.insertMany(posts);
+    const post1 = await Post.create({
+        title: 'Day 1: Hot Springs',
+        description: 'They were so cool!',
+        username: 'Jane',
+        tripId: janeTrips[0]._id,
+        userId: userJane._id
+    });
+    const post2 = await Post.create({
+        title: 'Day 2: Old Faithful',
+        description: 'Amazing!',
+        username: 'Jane',
+        tripId: janeTrips[0]._id,
+        userId: userJane._id
+    });
     const janePosts = await Post.find({});
 
     // Update User trips and posts fields

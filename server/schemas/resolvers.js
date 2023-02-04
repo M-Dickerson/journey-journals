@@ -31,7 +31,6 @@ const resolvers = {
 
         // Get trips by single user (to populate trips list on profile page)
         getTripsByUser: async (parent, args, context) => {
-            console.log(context);
             const trips = await Trip.find({ 
                 username: /*args.username ||*/ context.user.username
             }).populate('posts');
@@ -48,8 +47,6 @@ const resolvers = {
         getAllPosts: async (parent, args) => {
             const posts = await Post.find({}).populate('comments').populate('tripId').populate('userId');
             const sortedPosts = posts.sort((a, b) => a.createdAt - b.createdAt);
-            console.log('SORTED POSTS:');
-            console.log(sortedPosts);
             return sortedPosts;
         },
 
@@ -282,14 +279,15 @@ const resolvers = {
                     {
                         title: args.title,
                         description: args.description,
-                        image: args.postImage
+                        image: args.postImage,
+                        userId: context.user._id
                     }  
                 },
                 {
                     new: true,
                     runValidators: true,
                 }
-            );
+            ).populate('userId');
 
             return updatedPost;
         },

@@ -110,7 +110,6 @@ export const GET_ALL_POSTS = gql`
                 createdAt
                 }
             createdAt
-            # created_at
             userId {
                 _id
                 username
