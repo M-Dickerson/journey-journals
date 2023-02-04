@@ -53,7 +53,7 @@ The app is deployed on [heroku]().
 ![express](https://img.shields.io/badge/express-v4.17.1-brightgreen)
 ![graphql](https://img.shields.io/badge/graphql-v16.3.0-blueviolet)
 ![jwt](https://img.shields.io/badge/jwt-v8.5.1-blue)
-![mongoose](https://img.shields.io/badge/mongoose-v5.9.1o-green)
+![mongoose](https://img.shields.io/badge/mongoose-v5.9.10-green)
 ![nodemailer](https://img.shields.io/badge/nodemailer-v6.9.1-yellowgreen)
 ![react](https://img.shields.io/badge/react-v17.0.2-orange)
 ![react bootstrap](https://img.shields.io/badge/react_bootstrap-v2.7.2-red)
