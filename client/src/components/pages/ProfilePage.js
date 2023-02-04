@@ -3,8 +3,10 @@ import { Navigate, useParams } from 'react-router-dom';
 import Axios from 'axios';
 // links for react bootstrap styling
 import "../../styles/ProfilePage.css";
-import { Container, Row, Col, Card, Image, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Card, Image, Button, Modal, Tab, Nav } from "react-bootstrap";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
+
+import Contact from '../Contact';
 
 import Auth from '../../utils/auth';
 import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP/*, GET_TRIPS*/ } from '../../utils/queries';
@@ -26,6 +28,8 @@ export default function ProfilePage() {
     const [postDescription, setPostDescription] = useState('');
     const [imageSelected, setImageSelected] = useState('');
 
+    const [showModal, setShowModal] = useState('');
+
     const { username: userParam } = useParams();
     const { loading, data } = useQuery(!userParam ? GET_ME : GET_SINGLE_USER, {
         variables: { username: userParam },
@@ -33,7 +37,7 @@ export default function ProfilePage() {
 
     const profile = data?.me || data?.getSingleUser || {};
     console.log(profile);
-    
+
     const [getPostsByTrip, { error: errorPosts, loading: loadingPosts, data: dataPosts }] = useLazyQuery(GET_POSTS_BY_TRIP);
     const { loading1, data1 } = useQuery(GET_TRIPS_BY_USER);
 
@@ -67,7 +71,7 @@ export default function ProfilePage() {
             }
             setShowPostModal(false);
             window.location.reload();
-        // Toggle seeTrips to false, set currentTrip, get posts from trip that was clicked on
+            // Toggle seeTrips to false, set currentTrip, get posts from trip that was clicked on
         } else {
             setSeeTrips((prev) => !prev);
             setCurrentTrip(tripId);
@@ -190,9 +194,39 @@ export default function ProfilePage() {
                                 <Button className="travelButton" size="sm">
                                     Block
                                 </Button>
-                                <Button className="travelButton" size="sm">
+                                <Button className="travelButton" size="sm" onClick={() => setShowModal(true)} >
                                     Message
                                 </Button>
+                                <Modal
+                                    size='lg'
+                                    show={showModal}
+                                    onHide={() => setShowModal(false)}
+                                    aria-labelledby='signup-modal'
+                                    centered>
+
+                                    <Tab.Container defaultActiveKey='login'>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title id='login-modal'>
+                                                {/* <Nav variant='pills'>
+                                                    <Nav.Item>
+                                                        <Nav.Link className="something2" eventKey='login'>Login</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item>
+                                                        <Nav.Link className="something2" eventKey='signup'>Sign Up</Nav.Link>
+                                                    </Nav.Item>
+                                                </Nav> */}
+                                            </Modal.Title>
+                                        </Modal.Header>
+
+                                        <Modal.Body>
+                                            <Tab.Content>
+                                                <Tab.Pane eventKey='login'>
+                                                    <Contact handleModalClose={() => setShowModal(false)} recipientUsername={profile.username} />
+                                                </Tab.Pane>
+                                            </Tab.Content>
+                                        </Modal.Body>
+                                    </Tab.Container>
+                                </Modal>
                             </>)
                         }
                     </Col>
@@ -214,7 +248,7 @@ export default function ProfilePage() {
                                 <Card key={trip._id} className="tTest text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
                                     <h2>{trip.location}</h2>
                                     {!userParam && <i id="deleteTrip" className="fa-solid fa-square-minus"></i>}
-                                    
+
                                 </Card>
                             ))
                         }
@@ -237,7 +271,7 @@ export default function ProfilePage() {
                     <Col>
                         {/* If rendering trip cards, show add trip button */}
                         {!userParam && seeTrips && <Button className="tripButton" onClick={() => setShowTripModal(true)}>Add a New Trip</Button>}
-                        
+
                         {/* If rendering post cards, show add post and go back btns */}
                         {!userParam && !seeTrips && <Button className="tripButton" onClick={() => setShowPostModal(true)}>Add a New Post</Button>}
 
@@ -350,6 +384,6 @@ export default function ProfilePage() {
                     </form>
                 </Modal.Body>
             </Modal> */}
-        </Container>
+        </Container >
     );
 }
