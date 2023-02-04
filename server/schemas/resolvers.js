@@ -106,6 +106,25 @@ const resolvers = {
             return { token, user };
         },
 
+        // Edit logged-in user's profile bio and image
+        editProfile: async (parent, args, context) => {
+            const updatedUser = await User.findOneAndUpdate(
+                { username: args.username || context.user.username },
+                { $set: 
+                    {
+                        bio: args.bio,
+                        profileImage: args.profileImage
+                    } 
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+
+            return updatedUser;
+        },
+
         // Add user's new trip
         addTrip: async (parent, args, context) => {
             // Create trip

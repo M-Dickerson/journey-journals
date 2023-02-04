@@ -30,3 +30,11 @@
     margin: 2% 2% 0 0;
     width: fit-content;
 }
+
+#edit-profile {
+    float: right;
+    float: bottom;
+    position: absolute;
+    right: 2.5%;
+    bottom: 5%;
+}

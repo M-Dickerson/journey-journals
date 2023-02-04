@@ -25,6 +25,17 @@ export const ADD_USER = gql`
     }
 `;
 
+export const EDIT_PROFILE = gql`
+    mutation editProfile($bio: String, $profileImage: String, $username: String) {
+        editProfile(bio: $bio, profileImage: $profileImage, username: $username) {
+            _id
+            username
+            bio
+            profileImage
+        }
+    }
+`;
+
 export const ADD_TRIP = gql`
     mutation addTrip($location: String!) {
         addTrip(location: $location) {
