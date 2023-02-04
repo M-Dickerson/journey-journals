@@ -7,7 +7,7 @@ import { Container, Row, Col, Card, Image, Button, Modal } from "react-bootstrap
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 import Auth from '../../utils/auth';
-import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP/*, GET_TRIPS*/ } from '../../utils/queries';
+import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP, GET_SINGLE_TRIP} from '../../utils/queries';
 import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST, EDIT_PROFILE } from '../../utils/mutations';
 
 export default function ProfilePage() {
@@ -15,6 +15,7 @@ export default function ProfilePage() {
     const [seeTrips, setSeeTrips] = useState(true);
     // currentTrip = tripId that user clicked on
     const [currentTrip, setCurrentTrip] = useState('');
+    const [currentTripLocation, setCurrentTripLocation] = useState('');
     // tripPosts = array of posts associated with trip that user clicked on
     const [tripPosts, setTripPosts] = useState([]);
     // Below two are for whether to show modal form to add trip or add post
@@ -27,6 +28,7 @@ export default function ProfilePage() {
     const [postDescription, setPostDescription] = useState('');
     const [imageSelected, setImageSelected] = useState('');
     const [formProfile, setFormProfile] = useState({ bio: '', profileImage: '' });
+    const [postImageSelected, setPostImageSelected] = useState('');
 
     const { username: userParam } = useParams();
     const { loading, data } = useQuery(!userParam ? GET_ME : GET_SINGLE_USER, {
@@ -37,6 +39,7 @@ export default function ProfilePage() {
     
     const [getPostsByTrip, { error: errorPosts, loading: loadingPosts, data: dataPosts }] = useLazyQuery(GET_POSTS_BY_TRIP);
     const { loading1, data1 } = useQuery(GET_TRIPS_BY_USER);
+    const [getSingleTrip, { error: errorTrip, loading: loadingTrip, data: dataTrip } ] = useLazyQuery(GET_SINGLE_TRIP);
 
     // Mutations to add/delete trip & post, edit profile 
     const [addTrip, { error: errorAddTrip }] = useMutation(ADD_TRIP);
@@ -73,6 +76,12 @@ export default function ProfilePage() {
         } else {
             setSeeTrips((prev) => !prev);
             setCurrentTrip(tripId);
+
+            const { data: dataTrip } = await getSingleTrip({
+                variables: { tripId }
+            });
+            setCurrentTripLocation(dataTrip.getSingleTrip.location);
+            
             const { data } = await getPostsByTrip({
                 variables: {
                     tripId
@@ -112,19 +121,29 @@ export default function ProfilePage() {
         event.preventDefault();
         console.log('Handle add post');
 
+        let response;
+        // If user selected image file from computer, post to cloudinary, retrieve URL
+        if (postImageSelected) {
+            const formData = new FormData();
+            formData.append('file', postImageSelected);
+            formData.append('upload_preset', 'fmzvmxkg');
+    
+            response = await Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData);
+            console.log('POST IMAGE URL: ' + response.data.url);
+        }
+
         try {
             const { data } = await addPost({
                 variables: {
                     postInfo: {
                         title: postTitle,
                         description: postDescription,
-                        image: "",
+                        image: response.data.url,
                         tripId: currentTrip
                     }
                 }
             });
             console.log(data);
-            // REPLACE WITH APOLLO CACHE LATER
             setShowPostModal(false);
             window.location.reload();
 
@@ -186,7 +205,7 @@ export default function ProfilePage() {
             const { data } = await editProfile({
                 variables: {
                     bio: formProfile.bio || profile.bio, 
-                    profileImage: response.data.url || profile.profileImage
+                    profileImage: response?.data.url || profile.profileImage
                 }
             });
             console.log(data);
@@ -205,12 +224,15 @@ export default function ProfilePage() {
                     <Col xl={6} sm={6} xs={6}>
                         
                         {/* Display placeholder profile image if no prof img stored in DB */}
-                        {profile.profileImage ? (<Image src={profile.profileImage} alt="profile picture" roundedCircle thumbnail></Image>) : (<Image src="https://res.cloudinary.com/dqax39nha/image/upload/v1675468564/bwy3xkgvnkc9rmumy1j8.png" alt="profile picture" roundedCircle thumbnail></Image>)}
+                        <Image src={profile.profileImage} alt="profile picture" roundedCircle thumbnail></Image>
 
                         <hr></hr>
                         <h5>Trips: {profile.tripCount}</h5>
                         <h5>Posts: {profile.postCount}</h5>
                         <h5>Followers: {profile.followerCount}</h5>
+                        {/* Only show Edit Profile button if viewing your own profile page */}
+                        {!userParam && <Button id="edit-profile" className="tripButton" onClick={() => setShowProfileModal(true)}>Edit Profile <i className="fa-solid fa-user-pen"></i></Button>}
+
                         {userParam &&
                             (<>
                                 <Button className="travelButton" size="sm">
@@ -228,8 +250,6 @@ export default function ProfilePage() {
                     <Col xl={6} sm={6} xs={6} >
                         <h3 className="travelText">{profile.username}</h3>
                         <p className="travelText">{profile.bio}</p>
-                        {/* Only show Edit Profile button if viewing your own profile page */}
-                        {!userParam && <Button id="edit-profile" className="tripButton" onClick={() => setShowProfileModal(true)}>Edit Profile <i className="fa-solid fa-user-pen"></i></Button>}
                     </Col>
                 </Row>
             </Card>
@@ -250,17 +270,21 @@ export default function ProfilePage() {
                             ))
                         }
 
-                        {!seeTrips && <h1>Posts</h1>}
+                        {!seeTrips && <h1>{currentTripLocation} Posts</h1>}
                         {/* Render card for each post for the trip clicked on */}
                         {!seeTrips &&
                             (tripPosts.map((post) => (
-                                <Card key={post._id} className="tTest d-flex flex-column justify-content-between">
+                                <Card style={{width: "75%"}} key={post._id} className="tTest d-flex flex-column justify-content-between">
                                     <section className="tTest d-flex justify-content-between">
                                         <h2>{post.title}</h2>
                                         {!userParam && <i id="deletePost" className="fa-solid fa-square-minus" onClick={() => { handlePostDelete(post._id) }}></i>}
                                     </section>
                                     <p>{post.description}</p>
                                     <p>{post.createdAt}</p>
+                                    <section style={{width: "80%"}}>
+                                        {post.image && (<Image src={post.image} alt="post-image" thumbnail></Image>)}
+                                    </section>
+                                    
                                 </Card>
                             )))
                         }
@@ -319,10 +343,14 @@ export default function ProfilePage() {
                                     <label htmlFor="description">Description:</label>
                                     <textarea type="text" name="description" onChange={(e) => setPostDescription(e.target.value)} />
 
+                                    <label htmlFor="postImg">Image:</label>
+                                    <input type="file" name="postImg" onChange={(event) => {setPostImageSelected(event.target.files[0])}} />
+
                                     <Button className="tripButton" onClick={handleAddPost}>Submit</Button>
                                 </form>
                             </Modal.Body>
-                        </Modal></Col>
+                        </Modal>
+                    </Col>
                 </Row>
             </Card>
 

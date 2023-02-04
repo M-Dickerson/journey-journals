@@ -46,7 +46,7 @@ const resolvers = {
 
         // Get all posts (travel feed) & sort from newest to oldest
         getAllPosts: async (parent, args) => {
-            const posts = await Post.find({}).populate('comments').populate('tripId');
+            const posts = await Post.find({}).populate('comments').populate('tripId').populate('userId');
             const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt);
             return sortedPosts;
         },
@@ -172,6 +172,7 @@ const resolvers = {
                 description: postInfo.description,
                 image: postInfo.image,
                 username: postInfo.username || context.user.username,
+                userId: postInfo.userId || context.user._id,
                 tripId: postInfo.tripId
             });
 

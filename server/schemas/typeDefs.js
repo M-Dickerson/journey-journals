@@ -33,6 +33,7 @@ const typeDefs = gql`
         comments: [Comment]
         createdAt: String
         username: String
+        userId: User
         tripId: Trip
     }
 
@@ -54,6 +55,7 @@ const typeDefs = gql`
         description: String
         image: String
         username: String
+        userId: String
         tripId: String
     }
 

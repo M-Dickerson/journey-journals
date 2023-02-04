@@ -11,13 +11,13 @@ connection.once('open', async () => {
     await Post.deleteMany({});
 
     // Insert mock user data
-    await User.create({
+    const userJane = await User.create({
         username: 'Jane',
         email: 'jane@gmail.com',
         password: 'jane12345',
         bio: 'I love nature!',
     });
-    await User.create({
+    const userSal = await User.create({
         username: 'Sal',
         email: 'sal@gmail.com',
         password: 'sal12345',
@@ -44,13 +44,15 @@ connection.once('open', async () => {
             title: 'Day 1: Hot Springs',
             description: 'They were so cool!',
             username: 'Jane',
-            tripId: janeTrips[0]._id
+            tripId: janeTrips[0]._id,
+            userId: userJane._id
         },
         {
             title: 'Day 2: Old Faithful',
             description: 'Amazing!',
             username: 'Jane',
-            tripId: janeTrips[0]._id
+            tripId: janeTrips[0]._id,
+            userId: userJane._id
         }
     ];
     await Post.collection.insertMany(posts);
