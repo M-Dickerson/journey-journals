@@ -81,6 +81,7 @@ const resolvers = {
             return user.followers;
         },
 
+        // Nodemailer email functionality
         getEmailUser: async (parent, args, context) => {
 
             console.log(args);

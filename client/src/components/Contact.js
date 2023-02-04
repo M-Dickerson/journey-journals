@@ -18,12 +18,6 @@ export default function Contact({ recipientUsername }) {
         }
     }
 
-
-
-    // console.warn('loading', loading);
-    // console.warn('data', data);
-
-
     const handleInputChange = (e) => {
         const { target } = e;
         const inputType = target.name;
@@ -73,5 +67,3 @@ export default function Contact({ recipientUsername }) {
         </>
     );
 };
-
-

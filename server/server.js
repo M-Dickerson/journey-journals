@@ -27,28 +27,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
-app.post('/api/email', async (req, res) => {
-  console.log(req.data);
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'ryanmbelcher86@gmail.com',
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-
-  let info = await transporter.sendMail({
-    from: 'Journey Journals',
-    to: 'ryananddomi@gmail.com',
-    subject: 'Message from:',
-    text: 'Hello World?',
-    html: '<p>Hello World?<p>'
-  });
-
-  console.log("Message sent: %s", info.messageId);
-  res.status(200);
-});
-
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async (typeDefs, resolvers) => {
   await server.start();
