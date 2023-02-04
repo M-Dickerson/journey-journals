@@ -24,6 +24,9 @@ body {
 }
 /* Dark mode toggle */
 .darkButton {
-    background-color: #E9E186!important;
+    background-color: #E9E186;
     border: none!important;
+}
+.content-dark .darkButton {
+    background-color: black;
 }

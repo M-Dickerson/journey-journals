@@ -13,11 +13,11 @@ html, body {
     justify-content: center;
     align-items: center;
 }
-/* Footer dark mode */
+.footerText {
+    margin: 0%;
+}
+/* DARK MODE */
 .content-dark .footer {
     background-color: #000;
     color: #B7DD79;
-}
-.footerText {
-    margin: 0%;
 }

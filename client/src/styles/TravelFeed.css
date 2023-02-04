@@ -41,8 +41,17 @@ img.travelImg {
     border: none!important;
     color: #000!important;
 }
+.commentDark {
+    margin-bottom: 2%;
+    padding: 1%;
+}
 /* DARK MODE */
 .content-dark .travelCon, .content-dark .commentDark {
     background-color: black;
     color: white;
+}
+.content-dark .commentDark, .content-dark .tTest {
+    border: white;
+    border-width: 1px;
+    border-style: solid;
 }

@@ -1,17 +1,12 @@
+/* Profile section */
 .profile {
     display: flex;
     padding-top: 2%;
     justify-content: space-around;
 }
+/* Shrinks the profile card */
 .pfp {
     width: 50%;
-    padding: 2%;
-}
-.tTest {
-    padding: 1%;
-    margin-bottom: 2%;
-}
-.trips {
     padding: 2%;
 }
 .travelButton {
@@ -20,6 +15,15 @@
     border: none !important;
     margin-right: 2%;
 }
+/* Trip section */
+/* Adds spacing to trips */
+.tTest {
+    padding: 1%;
+    margin-bottom: 2%;
+}
+.trips {
+    padding: 2%;
+}
 .tripButton {
     background-color: #9CDBD9!important;
     color: black!important;
@@ -27,6 +31,7 @@
     margin: 2% 2% 0 0;
     width: fit-content;
 }
+/* MOBILE RESPONSIVENESS */
 @media screen and (max-width: 400px){
     .pfp {
         width: 100%;
@@ -44,6 +49,3 @@
     background-color: black;
     color: white;
 }
-/* .content-dark .tTest {
-    color: black;
-} */
