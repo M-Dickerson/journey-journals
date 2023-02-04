@@ -49,6 +49,7 @@ export const GET_SINGLE_USER = gql`
             postCount
             followers {
                 _id
+                username
             }
             followerCount
         }
@@ -56,22 +57,18 @@ export const GET_SINGLE_USER = gql`
 `;
 
 
-export const GET_TRIP = gql`
-    query getTrip($tripId: String!) {
-        getTrip(tripId: $tripId) {
+export const GET_SINGLE_TRIP = gql`
+    query getSingleTrip($tripId: String!) {
+        getSingleTrip(tripId: $tripId) {
             _id
+            username
             location
             posts {
                 _id
                 title
-                comments {
-                    text
-                }
-                likes
-                image
                 description
-                createdAt
             }
+            postCount
         }
     }
 `;
@@ -113,6 +110,11 @@ export const GET_ALL_POSTS = gql`
                 createdAt
                 }
             createdAt
+            userId {
+                _id
+                username
+                profileImage
+            }
         }
     }
 `;
@@ -134,6 +136,17 @@ export const GET_POSTS_BY_TRIP = gql`
             comments {
                 _id
             }
+        }
+    }
+`;
+
+
+export const GET_EMAIL_USER = gql`
+    query getEmailUser($username: String!, $message: String!) {
+        getEmailUser(username: $username, message: $message) {
+            _id
+            username
+            email
         }
     }
 `;

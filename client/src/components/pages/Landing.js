@@ -8,7 +8,8 @@ export default function Landing() {
         <Container>
             <Row className="landing">
                 <Col xl={5} sm={4} xs={9} className="landing1">
-                    <p className="landingT">Hi there! Welcome to your destination! </p>
+                    <h2 className="landingT">Hi there! Welcome to your destination! </h2>
+                    <h2>Login / sign up to get started!</h2>
                 </Col>
                 <Col xl={3} sm={5} xs={7} className="landing2">
                     <Card style={{ width: '25vh' }}>

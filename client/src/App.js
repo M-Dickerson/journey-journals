@@ -27,11 +27,19 @@ const client = new ApolloClient({
 function App() {
     return (
         <ApolloProvider client={client}>
+<<<<<<< HEAD
                 <div>
                     <DarkModeProvider>
                         <Content />
                     </DarkModeProvider>
                 </div>
+=======
+            <div>
+                <DarkModeProvider>
+                    < Content />
+                </DarkModeProvider>
+            </div>
+>>>>>>> ecf27ebcdd05e24da03753ac40ee777258b7def5
         </ApolloProvider>
     );
 }

@@ -33,6 +33,10 @@ const postSchema = new Schema(
         tripId: {
             type: Schema.Types.ObjectId,
             ref: 'Trip'
+        },
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         }
     },
     // Set this to use virtual below
@@ -41,7 +45,10 @@ const postSchema = new Schema(
             virtuals: true,
             getters: true
         },
-        id: false
+        id: false,
+        timestamps: {
+            createdAt: 'created_at'
+        }
     }
 );
 

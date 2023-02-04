@@ -11,7 +11,7 @@ import { DarkModeContext } from '../context/DarkModeContext';
 export default function Header() {
     const { toggleDarkMode, darkMode } = useContext(DarkModeContext)
     console.log(darkMode)
-    
+
     const [currentPage, setPage] = useState("Landing");
 
     const renderPage = () => {
