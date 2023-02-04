@@ -8,7 +8,7 @@ import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 import Auth from '../../utils/auth';
 import { GET_ME, GET_SINGLE_USER, GET_TRIPS_BY_USER, GET_POSTS_BY_TRIP, GET_SINGLE_TRIP} from '../../utils/queries';
-import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST, EDIT_PROFILE } from '../../utils/mutations';
+import { ADD_TRIP, ADD_POST, DELETE_TRIP, DELETE_POST, EDIT_PROFILE, ADD_FOLLOWER, REMOVE_FOLLOWER} from '../../utils/mutations';
 
 export default function ProfilePage() {
     // seeTrips is true when rendering trips, false when rendering posts
@@ -36,6 +36,7 @@ export default function ProfilePage() {
     });
 
     const profile = data?.me || data?.getSingleUser || {};
+    console.log(profile);
     
     const [getPostsByTrip, { error: errorPosts, loading: loadingPosts, data: dataPosts }] = useLazyQuery(GET_POSTS_BY_TRIP);
     const { loading1, data1 } = useQuery(GET_TRIPS_BY_USER);
@@ -47,6 +48,8 @@ export default function ProfilePage() {
     const [deleteTrip, { error: errorDeleteTrip }] = useMutation(DELETE_TRIP);
     const [deletePost, { error: errorDeletePost }] = useMutation(DELETE_POST);
     const [editProfile, { error: errorEditProfile }] = useMutation(EDIT_PROFILE);
+    const[addFollower, { error: errorAddFollower } ] = useMutation(ADD_FOLLOWER);
+    const[removeFollower, { error: errorRemoveFollower } ] = useMutation(REMOVE_FOLLOWER);
 
     // If data isn't here yet, say so
     if (loading) {
@@ -215,6 +218,22 @@ export default function ProfilePage() {
         }
     };
 
+    const followUser = async () => {
+        const { data } = await addFollower({
+            variables: {
+                followUsername: userParam
+            }
+        });
+    };
+
+    const blockUser = async () => {
+        const { data } = await removeFollower({
+            variables: {
+                blockUsername: userParam
+            }
+        });
+    };
+
     return (
         <Container className="profile">
             
@@ -227,18 +246,25 @@ export default function ProfilePage() {
                         <Image src={profile.profileImage} alt="profile picture" roundedCircle thumbnail></Image>
 
                         <hr></hr>
-                        <h5>Trips: {profile.tripCount}</h5>
-                        <h5>Posts: {profile.postCount}</h5>
-                        <h5>Followers: {profile.followerCount}</h5>
+                        <h5><i className="fa-solid fa-suitcase"></i>  Trips: {profile.tripCount}</h5>
+                        <h5><i className="fa-solid fa-image"></i>  Posts: {profile.postCount}</h5>
+                        <h5><i className="fa-solid fa-user-group" style={{fontSize: '1rem'}}></i>  Followers: {profile.followerCount}</h5>
+                        {/* List out followers */}
+                        <ul>
+                            {profile.followers.map((follower) => (
+                                <li key={follower._id}>{follower.username}</li>
+                            ))}
+                        </ul>
+
                         {/* Only show Edit Profile button if viewing your own profile page */}
                         {!userParam && <Button id="edit-profile" className="tripButton" onClick={() => setShowProfileModal(true)}>Edit Profile <i className="fa-solid fa-user-pen"></i></Button>}
 
                         {userParam &&
                             (<>
-                                <Button className="travelButton" size="sm">
+                                <Button className="travelButton" size="sm" onClick={followUser}>
                                     Follow
                                 </Button>
-                                <Button className="travelButton" size="sm">
+                                <Button className="travelButton" size="sm" onClick={blockUser}>
                                     Block
                                 </Button>
                                 <Button className="travelButton" size="sm">
@@ -246,6 +272,8 @@ export default function ProfilePage() {
                                 </Button>
                             </>)
                         }
+                        
+
                     </Col>
                     <Col xl={6} sm={6} xs={6} >
                         <h3 className="travelText">{profile.username}</h3>

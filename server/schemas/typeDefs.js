@@ -32,6 +32,7 @@ const typeDefs = gql`
         likes: Int
         comments: [Comment]
         createdAt: String
+        # created_at: String
         username: String
         userId: User
         tripId: Trip
@@ -90,6 +91,8 @@ const typeDefs = gql`
         login(email: String!, password: String!): Auth 
         addUser(username: String!, email: String!, password: String!): Auth
         editProfile(username: String, bio: String, profileImage: String): User
+        addFollower(followUsername: String, userId: String): User
+        removeFollower(blockUsername: String, userId: String): User
         addTrip(location: String!, username: String): Trip
         deleteTrip(tripId: String!, username: String): Trip
         addPost(postInfo: AddPostInfo): Post

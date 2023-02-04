@@ -36,6 +36,34 @@ export const EDIT_PROFILE = gql`
     }
 `;
 
+export const ADD_FOLLOWER = gql`
+    mutation addFollower($userId: String, $followUsername: String) {
+        addFollower(userId: $userId, followUsername: $followUsername) {
+            _id
+            username
+            followers {
+                _id
+                username
+            }
+            followerCount
+        }
+    }
+`;
+
+export const REMOVE_FOLLOWER = gql`
+    mutation removeFollower($userId: String, $blockUsername: String) {
+        removeFollower(userId: $userId, blockUsername: $blockUsername) {
+            _id
+            username
+            followers {
+                _id
+                username
+            }
+            followerCount
+        }
+    }
+`;
+
 export const ADD_TRIP = gql`
     mutation addTrip($location: String!) {
         addTrip(location: $location) {

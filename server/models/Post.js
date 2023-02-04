@@ -45,7 +45,10 @@ const postSchema = new Schema(
             virtuals: true,
             getters: true
         },
-        id: false
+        id: false,
+        timestamps: {
+            createdAt: 'created_at'
+        }
     }
 );
 

@@ -49,6 +49,7 @@ export const GET_SINGLE_USER = gql`
             postCount
             followers {
                 _id
+                username
             }
             followerCount
         }
@@ -109,6 +110,7 @@ export const GET_ALL_POSTS = gql`
                 createdAt
                 }
             createdAt
+            # created_at
             userId {
                 _id
                 username

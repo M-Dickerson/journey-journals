@@ -47,7 +47,9 @@ const resolvers = {
         // Get all posts (travel feed) & sort from newest to oldest
         getAllPosts: async (parent, args) => {
             const posts = await Post.find({}).populate('comments').populate('tripId').populate('userId');
-            const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt);
+            const sortedPosts = posts.sort((a, b) => a.createdAt - b.createdAt);
+            console.log('SORTED POSTS:');
+            console.log(sortedPosts);
             return sortedPosts;
         },
 
@@ -122,6 +124,40 @@ const resolvers = {
                 }
             );
 
+            return updatedUser;
+        },
+
+        // Update user with another user as their follower
+        addFollower: async (parent, args, context) => {
+            const updatedUser = await User.findOneAndUpdate(
+                { username: args.followUsername },
+                {
+                    $addToSet: {
+                        followers: args.userId || context.user._id
+                    }
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('followers');
+            return updatedUser;
+        },
+
+        // Remove user/follower from user
+        removeFollower: async (parent, args, context) => {
+            const updatedUser = await User.findOneAndUpdate(
+                { username: args.blockUsername },
+                {
+                    $pull: {
+                        followers: args.userId || context.user._id
+                    }
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            ).populate('followers');
             return updatedUser;
         },
 
