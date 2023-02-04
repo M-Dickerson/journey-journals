@@ -84,6 +84,8 @@ const typeDefs = gql`
         getCommentsOnPost(postId: String!): Post
         # Get user's followers
         getUsersFollowers(username: String!): [User]
+        # Get for nodemailer
+        getEmailUser(username: String!, message: String!): [User]
     }
 
     # Create, Update, Delete operations

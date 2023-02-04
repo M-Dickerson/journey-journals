@@ -139,3 +139,14 @@ export const GET_POSTS_BY_TRIP = gql`
         }
     }
 `;
+
+
+export const GET_EMAIL_USER = gql`
+    query getEmailUser($username: String!, $message: String!) {
+        getEmailUser(username: $username, message: $message) {
+            _id
+            username
+            email
+        }
+    }
+`;

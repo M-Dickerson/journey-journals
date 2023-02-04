@@ -1,6 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Trip, Post } = require('../models');
 const { signToken } = require('../utils/auth');
+const nodemailer = require('nodemailer');
 
 const resolvers = {
     Query: {
@@ -11,7 +12,7 @@ const resolvers = {
                     path: 'trips',
                     populate: 'posts'
                 }).populate('posts').populate('followers');
-                
+
                 return user;
             }
             throw new AuthenticationError('You need to be logged in!');
@@ -32,7 +33,7 @@ const resolvers = {
         // Get trips by single user (to populate trips list on profile page)
         getTripsByUser: async (parent, args, context) => {
             const trips = await Trip.find({ 
-                username: /*args.username ||*/ context.user.username
+                username: context.user.username
             }).populate('posts');
             return trips;
         },
@@ -65,7 +66,7 @@ const resolvers = {
         // Get single post by ID
         getSinglePost: async (parent, { postId }) => {
             const post = await Post.findOne({ _id: postId }).populate('comments').populate('tripId');
-            return post;   
+            return post;
         },
 
         // Get comments based on postId (populate comments per post on travel feed)
@@ -78,7 +79,44 @@ const resolvers = {
         getUsersFollowers: async (parent, { username }) => {
             const user = await User.findOne({ username }).populate('followers');
             return user.followers;
-        }
+        },
+
+        // Nodemailer email functionality
+        getEmailUser: async (parent, args, context) => {
+
+            console.log('the args', args);
+            console.log('the context', context);
+
+            if (!context.user) {
+                throw new AuthenticationError('You need to be logged in!');
+            }
+
+            if (args.username) {
+                console.log('You got here');
+                const recipient = await User.findOne({ username: args.username });
+                console.log('RESULT:\n');
+                console.log('recipient', recipient);
+                console.log('user username', context.user.username);
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'ryanmbelcher86@gmail.com',
+                        pass: process.env.EMAIL_PASSWORD,
+                    },
+                });
+
+                let info = await transporter.sendMail({
+                    from: 'Journey Journals',
+                    to: recipient.email,
+                    subject: `Message from ${context.user.username}`,
+                    text: args.message,
+                    html: `<p>${args.message}<p>`
+                });
+
+                console.log("Message sent: %s", info.messageId);
+            }
+        },
     },
 
     Mutation: {
@@ -161,11 +199,11 @@ const resolvers = {
         // Add user's new trip
         addTrip: async (parent, args, context) => {
             // Create trip
-            const trip = await Trip.create({ 
+            const trip = await Trip.create({
                 location: args.location,
-                username: args.username || context.user.username 
+                username: args.username || context.user.username
             });
-        
+
             // Add trip to User's trips
             const updatedUser = await User.findOneAndUpdate(
                 { username: args.username || context.user.username },
@@ -325,3 +363,6 @@ const resolvers = {
 }
 
 module.exports = resolvers;
+
+
+
