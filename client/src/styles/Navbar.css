@@ -15,6 +15,9 @@ span.navbar-brand {
   color: #fff;
   font-size: 2vh;
 }
+.content-dark span.navbar-brand {
+  color: #F65275;
+}
 /* Navbar links including dark mode*/
 .something2 {
   color: black!important;

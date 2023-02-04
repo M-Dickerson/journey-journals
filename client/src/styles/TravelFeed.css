@@ -22,9 +22,22 @@ img.travelImg {
 .travelCon {
     padding: 2%;
 }
+.content-dark .travelCon {
+    background-color: black;
+}
+.content-dark .travelText, .travelOther {
+    color: white;
+}
+.travelText {
+    text-align: right;
+}
 /* Comment section */
+.content-dark .commentDark {
+    background-color: black;
+}
 .comments {
     padding-top: 1%;
+    width: 100%;
 }
 .comments a {
     font-size: 20px;
