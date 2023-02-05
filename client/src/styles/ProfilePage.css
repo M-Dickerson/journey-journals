@@ -53,3 +53,9 @@
     background-color: black;
     color: white;
 }
+
+/* Show that trip cards are clickable */
+.tripCard:hover {
+    border: solid #F65275 2px;
+    cursor: pointer;
+}

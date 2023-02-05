@@ -42,7 +42,6 @@ export default function ProfilePage() {
     });
 
     const profile = data?.me || data?.getSingleUser || {};
-    console.log(profile);
 
     const [getPostsByTrip, { error: errorPosts, loading: loadingPosts, data: dataPosts }] = useLazyQuery(GET_POSTS_BY_TRIP);
     const { loading1, data1 } = useQuery(GET_TRIPS_BY_USER);
@@ -73,7 +72,6 @@ export default function ProfilePage() {
                         tripId
                     }
                 });
-                console.log(data);
             } catch (err) {
                 console.log(err);
             }
@@ -94,9 +92,7 @@ export default function ProfilePage() {
                     tripId
                 }
             });
-            console.log(data);
             setTripPosts(data.getPostsByTrip);
-            console.log(tripPosts);
         }
     }
 
@@ -134,7 +130,6 @@ export default function ProfilePage() {
             formData.append('upload_preset', 'fmzvmxkg');
 
             response = await Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData);
-            console.log('POST IMAGE URL: ' + response.data.url);
         }
 
         try {
@@ -148,7 +143,6 @@ export default function ProfilePage() {
                     }
                 }
             });
-            console.log(data);
             setShowPostModal(false);
             window.location.reload();
 
@@ -165,8 +159,6 @@ export default function ProfilePage() {
                     postId
                 }
             });
-            console.log(data);
-            // REPLACE WITH APOLLO CACHE LATER
             window.location.reload();
         } catch (err) {
             console.log(err);
@@ -195,7 +187,6 @@ export default function ProfilePage() {
             formData.append('upload_preset', 'fmzvmxkg');
 
             response = await Axios.post('https://api.cloudinary.com/v1_1/dqax39nha/image/upload', formData);
-            console.log('PROFILE IMAGE URL: ' + response.data.url);
 
             setFormProfile({
                 ...formProfile,
@@ -211,7 +202,6 @@ export default function ProfilePage() {
                     profileImage: response?.data.url || profile.profileImage
                 }
             });
-            console.log(data);
             setShowProfileModal(false);
         } catch (err) {
             console.log(err);
@@ -229,7 +219,7 @@ export default function ProfilePage() {
     };
 
     // Submit form to edit profile
-    const submitEditPost = async (postId, event) => {
+    const submitEditPost = async (postId, postImage, event) => {
         event.preventDefault();
 
         let response;
@@ -251,10 +241,9 @@ export default function ProfilePage() {
                     postId,
                     title: formPost.title,
                     description: formPost.description,
-                    postImage: response.data.url
+                    postImage: response?.data.url || postImage
                 }
             });
-            console.log(data);
             setShowEditPostModal(false);
             window.location.reload();
         } catch (err) {
@@ -348,7 +337,7 @@ export default function ProfilePage() {
                         {/* Render card for each trip */}
                         {seeTrips &&
                             profile.trips.map((trip) => (
-                                <Card key={trip._id} className="tTest text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
+                                <Card key={trip._id} className="tTest tripCard text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
                                     <h2>{trip.location}</h2>
                                     {!userParam && <i id="deleteTrip" className="fa-solid fa-square-minus"></i>}
 
@@ -402,7 +391,7 @@ export default function ProfilePage() {
                                                 <input type="file" name="postImg" onChange={(event) => { setImageSelected(event.target.files[0]) }} />
 
                                                 <br></br>
-                                                <Button className="tripButton" onClick={(event) => submitEditPost(post._id, event)}>Update Post</Button>
+                                                <Button className="tripButton" onClick={(event) => submitEditPost(post._id, post.image, event)}>Update Post</Button>
                                             </form>
                                         </Modal.Body>
                                     </Modal>

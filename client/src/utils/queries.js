@@ -95,7 +95,11 @@ export const GET_ALL_POSTS = gql`
             title
             description
             image
-            likes
+            likes {
+                _id
+                username
+            }
+            likesCount
             tripId {
                 _id
                 location
@@ -108,7 +112,8 @@ export const GET_ALL_POSTS = gql`
                     _id
                 }
                 createdAt
-                }
+            }
+            commentCount
             createdAt
             userId {
                 _id
@@ -127,7 +132,10 @@ export const GET_POSTS_BY_TRIP = gql`
             title
             description
             image
-            likes
+            likes {
+                _id
+            }
+            likesCount
             createdAt
             tripId {
                 _id

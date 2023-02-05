@@ -96,7 +96,9 @@ export const ADD_COMMENT = gql`
             title
             description
             image
-            likes
+            likes {
+                _id
+            }
             comments {
                 _id
                 text
@@ -139,7 +141,9 @@ export const DELETE_COMMENT = gql`
             title
             description
             image
-            likes
+            likes {
+                _id
+            }
             comments {
                 _id
                 createdAt
@@ -162,6 +166,26 @@ export const EDIT_POST = gql`
             description
             image
             username
+        }
+    }
+`;
+
+export const TOGGLE_LIKE_POST = gql`
+    mutation toggleLikePost($postId: String, $userId: String) {
+        toggleLikePost(postId: $postId, userId: $userId) {
+            _id
+            username
+            likes {
+                _id
+                username
+            }
+            likesCount
+            userId {
+                _id
+            }
+            tripId {
+                _id
+            }
         }
     }
 `;
