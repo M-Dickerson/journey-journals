@@ -30,6 +30,9 @@ span.navbar-brand {
   .navLinks {
     padding: 2%;
   }
+  .jj {
+    width: 0%;
+  }
   span.navbar-brand {
     font-size: medium;
   }
@@ -44,6 +47,10 @@ span.navbar-brand {
 .content-dark .navLinks {
   color: #F65275;
 }
+.content-dark .navLinks:hover {
+  color: #E9E186;
+}
 .content-dark .navbar {
   background-color: black;
 }
+

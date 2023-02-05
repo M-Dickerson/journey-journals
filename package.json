@@ -1,7 +1,7 @@
 {
-  "name": "book-search-engine",
+  "name": "journey-journals",
   "version": "1.0.0",
-  "description": "",
+  "description": "An app that allows travelers to post about and share their adventures with others!",
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
