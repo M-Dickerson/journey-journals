@@ -8,6 +8,7 @@
 .pfp {
     width: 50%;
     padding: 2%;
+    height: fit-content!important;
 }
 .travelButton {
     background-color: #9CDBD9!important;
