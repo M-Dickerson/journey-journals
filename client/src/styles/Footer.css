@@ -3,12 +3,23 @@ html, body {
     overflow: auto;
 }
 .footer {
+    display: flex;
     width: 100%;
     height: 35px;
     bottom: 0px;
     margin-top: 1%;
-    text-align: center;
-    position: relative;
+    position: fixed;
     background-color: #B7DD79;
-    min-height:20px;
+    justify-content: center;
+    align-items: center;
+}
+.content-light .footer {
+    background-color: #B7DD79;
+}
+.content-dark .footer {
+    background-color: #000;
+    color: #B7DD79;
+}
+.footerText {
+    margin: 0%;
 }

@@ -25,21 +25,31 @@ As a person who loves to travel, I want to be able to post information about my 
 
 ## Installation
 
-You can visit our website by going [here](). Once you get to the page, just sign up by clicking on 'Sign Up' at the top right of the page. Once signed up, you will be able to see what trips others have taken and share your own travel adventures with others.  
+You can visit our website by going [here](https://hidden-reef-01487.herokuapp.com/). Once you get to the page, just sign up by clicking on 'Sign Up' at the top right of the page. Once signed up, you will be able to see what trips others have taken and share your own travel adventures with others.  
 
 
 ## Usage
 
+Upon visiting our app you will see a screen welcoming you to the app and encouraging you to log in or sign up. 
+![homepage](assets/images/homepage_screenshot.png)
 
+Here is the login/sign up modal.
+![login](assets/images/login_screenshot.png) ![signup](assets/images/signup_screenshot.png)
 
-    ![alt text](assets/images/screenshot.png)
- 
+Once you have signed up/logged in, you will see the travel feed where user posts will show.
+![travel feed](assets/images//travel_feed_screenshot.png)
+
+You can go to the profile page to see what trips a fellow traveler has taken and follow or message them.
+![profile page](assets/images//profile_page_screenshot.png)
+
+This is the profile page once you have toggled on the dark mode.
+![profile page with dark mode](assets/images//profile_page_dark_screenshot.png) 
 
 ## Links
 
 The repo for this app can be found [here](https://github.com/M-Dickerson/journey-journals).
 
-The app is deployed on [heroku]().
+The app is deployed on [heroku](https://hidden-reef-01487.herokuapp.com/).
 
 
 ## Technologies
@@ -48,15 +58,16 @@ The app is deployed on [heroku]().
 ![axios](https://img.shields.io/badge/axios-v1.2.3-blue)
 ![bootstrap](https://img.shields.io/badge/bootstrap-v5.2.3-green)
 ![bcrypt](https://img.shields.io/badge/bcrypt-v4.0.1-yellowgreen)
-![dayjs](https://img.shields.io/badge/dayjs-v1.11.7-orange)
-![dotenv](https://img.shields.io/badge/dotenv-v16.0.3-red)
-![express](https://img.shields.io/badge/express-v4.17.1-brightgreen)
-![graphql](https://img.shields.io/badge/graphql-v16.3.0-blueviolet)
-![jwt](https://img.shields.io/badge/jwt-v8.5.1-blue)
-![mongoose](https://img.shields.io/badge/mongoose-v5.9.10-green)
-![nodemailer](https://img.shields.io/badge/nodemailer-v6.9.1-yellowgreen)
-![react](https://img.shields.io/badge/react-v17.0.2-orange)
-![react bootstrap](https://img.shields.io/badge/react_bootstrap-v2.7.2-red)
+![cloudinary](https://img.shields.io/badge/cloudinary-v1.8.1-orange)
+![dayjs](https://img.shields.io/badge/dayjs-v1.11.7-red)
+![dotenv](https://img.shields.io/badge/dotenv-v16.0.3-brightgreen)
+![express](https://img.shields.io/badge/express-v4.17.1-blueviolet)
+![graphql](https://img.shields.io/badge/graphql-v16.3.0-blue)
+![jwt](https://img.shields.io/badge/jwt-v8.5.1-green)
+![mongoose](https://img.shields.io/badge/mongoose-v5.9.10-yellowgreen)
+![nodemailer](https://img.shields.io/badge/nodemailer-v6.9.1-orange)
+![react](https://img.shields.io/badge/react-v17.0.2-ted)
+![react bootstrap](https://img.shields.io/badge/react_bootstrap-v2.7.2-brightgreen)
 
 
 ## Credits

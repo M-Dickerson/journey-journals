@@ -3,14 +3,15 @@ import React, { useState, useContext } from "react";
 import Landing from "./pages/Landing";
 import TravelFeed from "./pages/TravelFeed";
 import ProfilePage from "./pages/ProfilePage";
+import { Button } from "react-bootstrap";
 // link to navbar
 import Navbar from "./Navbar";
-// import { DarkModeContext } from '../context/DarkModeContext';
-
+import { DarkModeContext } from '../context/DarkModeContext';
 
 export default function Header() {
-    // const { darkMode, toggleDarkMode } = useContext(DarkModeContext)
-    // console.log(darkMode);
+    const { toggleDarkMode, darkMode } = useContext(DarkModeContext)
+    console.log(darkMode)
+
     const [currentPage, setPage] = useState("Landing");
 
     const renderPage = () => {
@@ -31,6 +32,7 @@ export default function Header() {
         <div>
             <Navbar currentPage={currentPage} handlePageChange={handlePageChange} />
             {/* {renderPage()} */}
+            <Button className="darkButton" onClick={toggleDarkMode}>Feeling Dark?</Button>
         </div>
     );
 }
