@@ -24,7 +24,6 @@ const Post = ({ posts }) => {
                 }
             });
             console.log(data);
-
             setCommentText('');
         } catch (err) {
             console.log(err);
@@ -42,8 +41,9 @@ const Post = ({ posts }) => {
                 }
             });
             console.log(data);
-
             setCommentText('');
+            // Reload page to show that comment count has decreased by 1
+            window.location.reload();
         } catch (err) {
             console.log(err);
         }
@@ -95,7 +95,13 @@ const Post = ({ posts }) => {
                                         <Form.Control as="textarea" rows={5} size="lg" type="text" placeholder="Your comment here" value={commentText} 
                                         onChange={(e) => setCommentText(e.target.value)}/>
                                     </Form.Group>
-                                    <Button className="commentButton" as="input" type="submit" value="Submit" onClick={(event) => handleSubmitComment(post._id, event)} />{' '}
+
+                                    <section className="d-flex justify-content-between">
+                                        <Button className="commentButton" as="input" type="submit" value="Submit" onClick={(event) => handleSubmitComment(post._id, event)} />{' '}
+                                        <section className="d-flex">
+                                            <h5 className="fs-4"><i className="fa-solid fa-comment pt-2 px-1 fs-4"></i> {post.commentCount}</h5>
+                                        </section>
+                                    </section>
                                 </Form>
                             </Row>
                         </Row>

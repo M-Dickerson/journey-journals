@@ -108,7 +108,8 @@ export const GET_ALL_POSTS = gql`
                     _id
                 }
                 createdAt
-                }
+            }
+            commentCount
             createdAt
             userId {
                 _id

@@ -57,6 +57,11 @@ function formatTimestamp (time) {
     return dayjs(time).format('MMM D, YYYY [at] h:mm A');
 }
 
+// Number of post's comments
+postSchema.virtual('commentCount').get(function () {
+    return this.comments.length;
+});
+
 const Post = model('Post', postSchema);
 
 module.exports = Post;
