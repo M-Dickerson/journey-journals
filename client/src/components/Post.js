@@ -121,7 +121,7 @@ const Post = ({ posts }) => {
 
                                             {/* Render red heart icon to show logged-in user has already liked this post, render black heart otherwise */}
                                             {post.likes.find(user => user._id === Auth.getProfile().data._id) ? 
-                                                (<h5 className="fs-4" onClick={(event) => handleLikePost(post._id, event)}> <i className="fa-solid fa-heart pt-2 px-1 fs-4" style={{color:"red"}}></i> {post.likesCount}</h5>) 
+                                                (<h5 className="fs-4" onClick={(event) => handleLikePost(post._id, event)}> <i className="fa-solid fa-heart pt-2 px-1 fs-4" style={{color:"#F65275"}}></i> {post.likesCount}</h5>) 
                                                 : (<h5 className="fs-4" onClick={(event) => handleLikePost(post._id, event)}> <i className="fa-solid fa-heart pt-2 px-1 fs-4"></i> {post.likesCount}</h5>)
                                             }
                                                 
