@@ -54,7 +54,6 @@ const Post = ({ posts }) => {
                     postId
                 }
             });
-            window.location.reload();
 
         } catch (err) {
             console.error(err);
