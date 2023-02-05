@@ -17,10 +17,12 @@ const postSchema = new Schema(
         image: {
             type: String
         },
-        likes: {
-            type: Number,
-            default: 0 
-        },
+        likes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ],
         comments: [commentSchema],
         createdAt: {
             type: Date,
@@ -60,6 +62,11 @@ function formatTimestamp (time) {
 // Number of post's comments
 postSchema.virtual('commentCount').get(function () {
     return this.comments.length;
+});
+
+// Number of post's likes
+postSchema.virtual('likesCount').get(function () {
+    return this.likes.length;
 });
 
 const Post = model('Post', postSchema);

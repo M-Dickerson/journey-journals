@@ -46,7 +46,7 @@ const resolvers = {
 
         // Get all posts (travel feed) & sort from newest to oldest
         getAllPosts: async (parent, args) => {
-            const posts = await Post.find({}).populate('comments').populate('tripId').populate('userId');
+            const posts = await Post.find({}).populate('comments').populate('tripId').populate('userId').populate('likes');
             const sortedPosts = posts.sort((a, b) => a.createdAt - b.createdAt);
             return sortedPosts;
         },
@@ -359,6 +359,37 @@ const resolvers = {
                 { new: true }
             ).populate('tripId');
         },
+
+        toggleLikePost: async (parent, args, context) => {
+            // Find post with same postId
+            const post = await Post.findOne({ _id: args.postId });
+            
+            // If logged-in user has already liked post, remove their userId from likes field
+            if (post.likes.includes(context.user._id)) {
+                return await Post.findOneAndUpdate(
+                    { _id: args.postId },
+                    { $pull: {
+                        likes: args.userId || context.user._id
+                    } },
+                    {
+                        new: true,
+                        runValidators: true,
+                    }
+                ).populate('likes');
+            // If logged-in user has not already liked post, add userId to likes field
+            } else {
+                return await Post.findOneAndUpdate(
+                    { _id: args.postId },
+                    { $addToSet: {
+                        likes: args.userId || context.user._id
+                    } },
+                    {
+                        new: true,
+                        runValidators: true,
+                    }
+                ).populate('likes');
+            }
+        }
     }
 }
 

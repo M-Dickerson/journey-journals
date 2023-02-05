@@ -29,7 +29,8 @@ const typeDefs = gql`
         title: String
         description: String
         image: String
-        likes: Int
+        likes: [User]
+        likesCount: Int
         comments: [Comment]
         commentCount: Int
         createdAt: String
@@ -103,6 +104,7 @@ const typeDefs = gql`
         editPost(postId: String, title: String, description: String, postImage: String) : Post
         addComment(text: String!, username: String, postId: String!): Post
         deleteComment(commentId: String!, postId: String!): Post
+        toggleLikePost(postId: String, userId: String): Post
     }
 `;
 

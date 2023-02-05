@@ -48,6 +48,9 @@ img.travelImg {
     margin-bottom: 2%;
     padding: 1%;
 }
+.fa-heart:hover {
+    cursor: pointer;
+}
 /* MOBILE RESPONSIVENESS */
 @media screen and (max-width: 540px){
     .travel.container {

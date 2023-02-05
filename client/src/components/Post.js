@@ -3,7 +3,7 @@ import { Container, Row, Card, Form, Col, Image, Button } from "react-bootstrap"
 import { Link } from 'react-router-dom';
 import "../styles/TravelFeed.css";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
-import { ADD_COMMENT, DELETE_COMMENT } from '../utils/mutations';
+import { ADD_COMMENT, DELETE_COMMENT, TOGGLE_LIKE_POST } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const Post = ({ posts }) => {
@@ -11,6 +11,7 @@ const Post = ({ posts }) => {
     const [commentText, setCommentText] = useState('');
     const [addComment, { error: errorAddComment } ] = useMutation(ADD_COMMENT);
     const [deleteComment, { error: errorDelComment } ] = useMutation(DELETE_COMMENT);
+    const [toggleLikePost, _ ] = useMutation(TOGGLE_LIKE_POST);
 
     const handleSubmitComment = async (postId, event) => {
         event.preventDefault();
@@ -47,7 +48,23 @@ const Post = ({ posts }) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    };
+
+    const handleLikePost = async (postId, event) => {
+        event.preventDefault();
+
+        try {
+            const { data } = await toggleLikePost({
+                variables: {
+                    postId
+                }
+            });
+            window.location.reload();
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     if (!posts.length) {
         return <h3>No Posts Yet</h3>;
@@ -99,7 +116,15 @@ const Post = ({ posts }) => {
                                     <section className="d-flex justify-content-between">
                                         <Button className="commentButton" as="input" type="submit" value="Submit" onClick={(event) => handleSubmitComment(post._id, event)} />{' '}
                                         <section className="d-flex">
-                                            <h5 className="fs-4"><i className="fa-solid fa-comment pt-2 px-1 fs-4"></i> {post.commentCount}</h5>
+                                            {/* Comment icon and number of comments on post */}
+                                            <h5 className="fs-4 mx-4"><i className="fa-solid fa-comment pt-2 px-1 fs-4"></i> {post.commentCount}</h5>
+
+                                            {/* Render red heart icon to show logged-in user has already liked this post, render black heart otherwise */}
+                                            {post.likes.find(user => user._id === Auth.getProfile().data._id) ? 
+                                                (<h5 className="fs-4" onClick={(event) => handleLikePost(post._id, event)}> <i className="fa-solid fa-heart pt-2 px-1 fs-4" style={{color:"red"}}></i> {post.likesCount}</h5>) 
+                                                : (<h5 className="fs-4" onClick={(event) => handleLikePost(post._id, event)}> <i className="fa-solid fa-heart pt-2 px-1 fs-4"></i> {post.likesCount}</h5>)
+                                            }
+                                                
                                         </section>
                                     </section>
                                 </Form>
