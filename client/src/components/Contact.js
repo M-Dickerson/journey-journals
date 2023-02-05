@@ -4,7 +4,6 @@ import { GET_EMAIL_USER } from '../utils/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
 export default function Contact({ recipientUsername }) {
-    console.log(recipientUsername);
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');

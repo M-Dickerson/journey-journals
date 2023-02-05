@@ -13,7 +13,6 @@ function AppNavbar() {
     // Set modal display state
     const [showModal, setShowModal] = useState(false);
     const { toggleDarkMode, darkMode } = useContext(DarkModeContext)
-    console.log(darkMode)
 
     return (
         <>

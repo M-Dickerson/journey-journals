@@ -7,7 +7,6 @@ import { ADD_COMMENT, DELETE_COMMENT, TOGGLE_LIKE_POST } from '../utils/mutation
 import Auth from '../utils/auth';
 
 const Post = ({ posts }) => {
-    console.log(posts);
     const [commentText, setCommentText] = useState('');
     const [addComment, { error: errorAddComment } ] = useMutation(ADD_COMMENT);
     const [deleteComment, { error: errorDelComment } ] = useMutation(DELETE_COMMENT);
@@ -15,7 +14,6 @@ const Post = ({ posts }) => {
 
     const handleSubmitComment = async (postId, event) => {
         event.preventDefault();
-        console.log('Handle Submit Comment');
 
         try {
             const { data } = await addComment({
@@ -24,7 +22,6 @@ const Post = ({ posts }) => {
                     postId
                 }
             });
-            console.log(data);
             setCommentText('');
         } catch (err) {
             console.log(err);
@@ -32,7 +29,6 @@ const Post = ({ posts }) => {
     };
 
     const handleCommentDelete = async (commentId, postId) => {
-        console.log('Handle Delete Comment');
 
         try {
             const { data } = await deleteComment({
@@ -41,7 +37,6 @@ const Post = ({ posts }) => {
                     postId
                 }
             });
-            console.log(data);
             setCommentText('');
             // Reload page to show that comment count has decreased by 1
             window.location.reload();

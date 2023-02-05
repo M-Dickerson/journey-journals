@@ -48,7 +48,7 @@ img.travelImg {
     margin-bottom: 2%;
     padding: 1%;
 }
-.fa-heart:hover {
+.fa-heart:hover, .fa-trash:hover {
     cursor: pointer;
 }
 /* MOBILE RESPONSIVENESS */

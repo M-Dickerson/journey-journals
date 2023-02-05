@@ -26,7 +26,7 @@ const userSchema = new Schema(
     },
     profileImage: {
       type: String,
-      default: "https://res.cloudinary.com/dqax39nha/image/upload/v1675468564/bwy3xkgvnkc9rmumy1j8.png"
+      default: "https://res.cloudinary.com/dqax39nha/image/upload/v1675623361/fx1gpxgbe3odvlpt8yap.png"
     },
     trips: [
       {

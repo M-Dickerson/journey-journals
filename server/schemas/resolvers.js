@@ -85,7 +85,6 @@ const resolvers = {
         getEmailUser: async (parent, args, context) => {
 
             console.log('the args', args);
-            console.log('the context', context);
 
             if (!context.user) {
                 throw new AuthenticationError('You need to be logged in!');
