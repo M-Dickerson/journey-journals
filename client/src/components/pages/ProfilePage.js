@@ -348,7 +348,7 @@ export default function ProfilePage() {
                         {/* Render card for each trip */}
                         {seeTrips &&
                             profile.trips.map((trip) => (
-                                <Card key={trip._id} className="tTest text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
+                                <Card key={trip._id} className="tTest tripCard text-center d-flex flex-row justify-content-between" onClick={(event) => handleTripClick(trip._id, event)} >
                                     <h2>{trip.location}</h2>
                                     {!userParam && <i id="deleteTrip" className="fa-solid fa-square-minus"></i>}
 
